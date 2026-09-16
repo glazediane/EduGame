@@ -25,6 +25,18 @@ export default function App() {
     <style>{`
       @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
+      :root {
+        --edu-sky: #7dd3fc;
+        --edu-sky-strong: #38bdf8;
+        --edu-sky-deep: #0ea5e9;
+        --edu-sky-soft: rgba(125, 211, 252, 0.18);
+        --edu-deep: #071722;
+        --edu-panel: rgba(12, 27, 39, 0.8);
+        --edu-panel-alt: rgba(15, 34, 56, 0.72);
+        --edu-border: rgba(148, 163, 184, 0.24);
+        --edu-surface: rgba(15, 23, 42, 0.72);
+      }
+
       * {
         box-sizing: border-box;
       }
@@ -36,6 +48,8 @@ export default function App() {
         height: 100%;
         font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
         overflow-x: hidden;
+        background: radial-gradient(circle at top, #0b2236 0%, #071722 52%, #040d16 100%);
+        color: #e2e8f0;
       }
 
       select option {
@@ -45,7 +59,7 @@ export default function App() {
 
       input:focus, select:focus {
         outline: none !important;
-        border-color: #38bdf8 !important;
+        border-color: var(--edu-sky) !important;
         box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.2) !important;
       }
 
@@ -56,6 +70,11 @@ export default function App() {
       button:hover {
         transform: translateY(-2px);
         filter: brightness(1.08);
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
       }
     `}</style>
   )
@@ -179,8 +198,10 @@ const topHeaderStyle = {
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  borderBottom: '1px solid rgba(255, 255, 255, 0.15)',
-  background: 'rgba(15, 23, 42, 0.65)',
+  borderBottom: '1px solid rgba(148, 163, 184, 0.22)',
+  background: 'rgba(8, 23, 34, 0.7)',
+  backdropFilter: 'blur(10px)',
+  WebkitBackdropFilter: 'blur(10px)',
   flexWrap: 'wrap',
   gap: '16px'
 }
@@ -228,13 +249,13 @@ const topTabGroupStyle = {
 const activeTabStyle = {
   padding: '10px 20px',
   borderRadius: '10px',
-  border: 'none',
-  background: '#0284c7',
-  color: '#ffffff',
-  fontWeight: '700',
+  border: '1px solid rgba(125, 211, 252, 0.7)',
+  background: 'linear-gradient(135deg, rgba(125, 211, 252, 0.95) 0%, rgba(56, 189, 248, 0.92) 100%)',
+  color: '#082f49',
+  fontWeight: '800',
   fontSize: '13px',
   cursor: 'pointer',
-  boxShadow: '0 4px 12px rgba(2, 132, 199, 0.4)'
+  boxShadow: '0 8px 20px rgba(56, 189, 248, 0.28)'
 }
 
 const inactiveTabStyle = {
@@ -263,9 +284,9 @@ const transparentGlassPanelStyle = {
   maxWidth: '520px',
   padding: '40px',
   borderRadius: '24px',
-  background: 'rgba(15, 23, 42, 0.85)',
-  border: '1px solid rgba(255, 255, 255, 0.2)',
-  boxShadow: '0 30px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+  background: 'linear-gradient(180deg, rgba(15, 23, 42, 0.82) 0%, rgba(8, 23, 34, 0.8) 100%)',
+  border: '1px solid rgba(125, 211, 252, 0.2)',
+  boxShadow: '0 30px 60px rgba(2, 6, 23, 0.52), inset 0 1px 0 rgba(255, 255, 255, 0.08)'
 }
 
 const bottomFooterStyle = {

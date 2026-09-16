@@ -1,14 +1,14 @@
 import { useState } from 'react'
 
-export default function TeacherSettings({ user }) {
+export default function TeacherSettings({ user, onLogout }) {
+  const safeUser = user || {}
+  const safeUserId = safeUser.userId || safeUser.id || ''
+  const safeUserName = safeUser.fullName || safeUser.name || 'Teacher'
+
   // Password change state
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-
-  // Preference toggles
-  const [emailAlerts, setEmailAlerts] = useState(true)
-  const [weeklyReports, setWeeklyReports] = useState(true)
 
   // Message feedback state
   const [message, setMessage] = useState({ type: '', text: '' })
@@ -29,14 +29,19 @@ export default function TeacherSettings({ user }) {
       return
     }
 
+    if (!safeUserId) {
+      setMessage({ type: 'error', text: 'Teacher session is not ready yet.' })
+      return
+    }
+
     setLoading(true)
 
     try {
-      const res = await fetch('http://localhost/edugame_api/change_password.php', {
+      const res = await fetch('/edugame_api/change_password.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          userId: user.userId,
+          userId: safeUserId,
           currentPassword,
           newPassword,
           role: 'teacher'
@@ -64,7 +69,7 @@ export default function TeacherSettings({ user }) {
   return (
     <div style={containerStyle}>
       <div style={{ marginBottom: '20px' }}>
-        <h3 style={{ margin: 0, color: '#1E293B' }}>⚙️ Teacher Profile & Settings</h3>
+        <h3 style={{ margin: 0, color: '#0f172a' }}>⚙️ Teacher Profile & Settings</h3>
         <p style={{ margin: '5px 0 0 0', color: '#64748B', fontSize: '0.85rem' }}>
           Manage your personal credentials, preferences, and classroom management settings.
         </p>
@@ -78,38 +83,12 @@ export default function TeacherSettings({ user }) {
           <div style={gridStyle}>
             <div>
               <label style={labelStyle}>Teacher Full Name</label>
-              <input type="text" value={user.fullName || user.name || 'Teacher'} disabled style={disabledInputStyle} />
+              <input type="text" value={safeUserName} disabled style={disabledInputStyle} />
             </div>
             <div>
               <label style={labelStyle}>Teacher ID</label>
-              <input type="text" value={user.userId || user.id || 'N/A'} disabled style={disabledInputStyle} />
+              <input type="text" value={safeUserId || 'N/A'} disabled style={disabledInputStyle} />
             </div>
-          </div>
-        </div>
-
-        {/* Notifications & Classroom Preferences */}
-        <div style={sectionCardStyle}>
-          <h4 style={sectionHeaderStyle}>🔔 Notification Preferences</h4>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '10px' }}>
-            <label style={checkboxLabelStyle}>
-              <input
-                type="checkbox"
-                checked={emailAlerts}
-                onChange={(e) => setEmailAlerts(e.target.checked)}
-                style={checkboxStyle}
-              />
-              Receive notifications when a student completes a level
-            </label>
-
-            <label style={checkboxLabelStyle}>
-              <input
-                type="checkbox"
-                checked={weeklyReports}
-                onChange={(e) => setWeeklyReports(e.target.checked)}
-                style={checkboxStyle}
-              />
-              Email weekly classroom score summary reports
-            </label>
           </div>
         </div>
 
@@ -168,6 +147,23 @@ export default function TeacherSettings({ user }) {
               {loading ? 'Updating...' : '🔒 Save New Password'}
             </button>
           </form>
+        </div>
+
+        {/* Logout Section */}
+        <div style={{ ...sectionCardStyle, borderColor: '#FECACA', backgroundColor: '#FEF2F2' }}>
+          <h4 style={{ ...sectionHeaderStyle, color: '#B91C1C' }}>🚪 Session</h4>
+          <button
+            type="button"
+            onClick={onLogout}
+            style={{
+              ...saveBtnStyle,
+              backgroundColor: '#DC2626',
+              width: 'fit-content',
+              marginTop: 0
+            }}
+          >
+            Logout
+          </button>
         </div>
 
       </div>

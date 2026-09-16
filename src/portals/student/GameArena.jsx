@@ -22,11 +22,12 @@ export default function GameArena({ grade, subject, levelConfig, userId, onBack 
   const [feedback, setFeedback] = useState('')
   const [isCompleted, setIsCompleted] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [score, setScore] = useState(0)
 
   // Fetch Questions
   useEffect(() => {
     setLoading(true)
-    fetch(`http://localhost/edugame_api/get_questions.php?userId=${userId}&subject=${subject}&level=${currentLevel}`)
+    fetch(`/edugame_api/get_questions.php?userId=${userId}&subject=${subject}&level=${currentLevel}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.success && data.questions?.length > 0) {
@@ -45,13 +46,21 @@ export default function GameArena({ grade, subject, levelConfig, userId, onBack 
 
   const currentQ = questions[currentIndex]
 
+  useEffect(() => {
+    if (!questions.length) {
+      setFeedback('')
+      setActiveHint('')
+    }
+  }, [questions.length])
+
   const handleAnswer = (selectedOption) => {
     if (lives <= 0 || !currentQ) return
 
     const correctAnswer = currentQ.a || currentQ.answer
 
     if (selectedOption === correctAnswer) {
-      // Correct Answer -> Move to Next Question
+      const nextScore = score + 1
+      setScore(nextScore)
       setFeedback('✅ Correct! Proceeding to next question...')
       setActiveHint('')
       setWrongAttempts([])
@@ -61,7 +70,7 @@ export default function GameArena({ grade, subject, levelConfig, userId, onBack 
         if (currentIndex + 1 < questions.length) {
           setCurrentIndex((prev) => prev + 1)
         } else {
-          finishLevel()
+          finishLevel(nextScore)
         }
       }, 1000)
     } else {
@@ -83,7 +92,7 @@ export default function GameArena({ grade, subject, levelConfig, userId, onBack 
   }
 
   // Complete level & unlock the next level in localStorage + save DB progress
-  const finishLevel = () => {
+  const finishLevel = (finalScore = score) => {
     setIsCompleted(true)
 
     // Unlock next level for this subject
@@ -93,8 +102,8 @@ export default function GameArena({ grade, subject, levelConfig, userId, onBack 
       localStorage.setItem(storageKey, currentLevel + 1)
     }
 
-    // Save to XAMPP API
-    fetch('http://localhost/edugame_api/save_progress.php', {
+    // Score is the number of correct answers; each correct answer = 1 point.
+    fetch('/edugame_api/save_progress.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -102,10 +111,28 @@ export default function GameArena({ grade, subject, levelConfig, userId, onBack 
         subject,
         level: currentLevel,
         difficulty: levelConfig?.difficulty || 'easy',
-        score: questions.length,
+        score: Number(finalScore) || 0,
         totalQuestions: questions.length
       })
-    }).catch((err) => console.error('Save failed:', err))
+    })
+      .then(async (response) => {
+        let payload = null
+        try {
+          payload = await response.json()
+        } catch {
+          payload = null
+        }
+
+        if (!response.ok || (payload && payload.success === false)) {
+          console.error('Save failed:', payload || response.statusText)
+          return
+        }
+
+        window.dispatchEvent(new CustomEvent('eduGameProgressUpdated', {
+          detail: { userId, subject, level: currentLevel, score: Number(finalScore) || 0 }
+        }))
+      })
+      .catch((err) => console.error('Save failed:', err))
   }
 
   if (lockoutTime) {
@@ -134,6 +161,20 @@ export default function GameArena({ grade, subject, levelConfig, userId, onBack 
     )
   }
 
+  if (!questions.length) {
+    return (
+      <div style={containerStyle}>
+        <div style={cardStyle}>
+          <h2 style={{ color: '#DC2626' }}>⚠️ No questions available</h2>
+          <p style={{ color: '#64748B', margin: '10px 0 20px' }}>
+            This level could not load. Please try again or return to the arena.
+          </p>
+          <button onClick={onBack} style={btnStyle}>Return to Arena</button>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div style={containerStyle}>
       {/* Header Bar */}
@@ -150,6 +191,11 @@ export default function GameArena({ grade, subject, levelConfig, userId, onBack 
         <div style={cardStyle}>
           <div style={{ fontSize: '0.85rem', color: '#64748B', marginBottom: '10px' }}>
             Question {currentIndex + 1} of {questions.length}
+          </div>
+
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', color: '#0F172A', fontWeight: '700' }}>
+            <span>Score: {score} pts</span>
+            <span>Correct answers: {score}</span>
           </div>
 
           <h3 style={{ margin: '15px 0', color: '#1E293B', fontSize: '1.2rem' }}>
@@ -189,6 +235,9 @@ export default function GameArena({ grade, subject, levelConfig, userId, onBack 
         <div style={cardStyle}>
           <h2 style={{ color: '#059669' }}>🎉 Level {currentLevel} Completed!</h2>
           <p style={{ fontSize: '1.1rem', margin: '15px 0' }}>
+            You earned <strong>{score}</strong> point{score === 1 ? '' : 's'} in this level.
+          </p>
+          <p style={{ fontSize: '1rem', margin: '10px 0 20px' }}>
             Level {currentLevel + 1} is now unlocked!
           </p>
           <button onClick={onBack} style={btnStyle}>
@@ -205,5 +254,5 @@ const headerStyle = { display: 'flex', justifyContent: 'space-between', alignIte
 const cardStyle = { backgroundColor: 'white', padding: '30px', borderRadius: '12px', textAlign: 'center', boxShadow: '0 4px 15px rgba(0,0,0,0.08)' }
 const optionBtnStyle = { width: '100%', padding: '14px', fontSize: '1rem', borderRadius: '8px', border: '1px solid #CBD5E1', fontWeight: '600', textAlign: 'left' }
 const backBtnStyle = { padding: '6px 12px', backgroundColor: '#64748B', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' }
-const btnStyle = { padding: '10px 20px', backgroundColor: '#0284C7', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }
+const btnStyle = { padding: '10px 20px', background: 'linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%)', color: '#082f49', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }
 const hintBoxStyle = { marginTop: '12px', padding: '12px', backgroundColor: '#FEF3C7', color: '#92400E', borderRadius: '8px', fontSize: '0.85rem', textAlign: 'left' }

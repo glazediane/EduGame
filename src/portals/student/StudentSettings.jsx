@@ -1,6 +1,11 @@
 import { useState } from 'react'
 
 export default function StudentSettings({ user, onLogout }) {
+  const safeUser = user || {}
+  const safeUserId = safeUser.userId || ''
+  const safeUserName = safeUser.fullName || safeUser.name || 'Student'
+  const safeGrade = safeUser.grade || 'kinder'
+
   const [newPassword, setNewPassword] = useState('')
   const [msg, setMsg] = useState({ text: '', isError: false })
 
@@ -8,10 +13,15 @@ export default function StudentSettings({ user, onLogout }) {
     e.preventDefault()
     if (!newPassword.trim()) return
 
-    fetch('http://localhost/edugame_api/update_password.php', {
+    if (!safeUserId) {
+      setMsg({ text: 'Student session is not ready yet.', isError: true })
+      return
+    }
+
+    fetch('/edugame_api/update_password.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userId: user.userId, newPassword })
+      body: JSON.stringify({ userId: safeUserId, newPassword })
     })
       .then((res) => res.json())
       .then((data) => {
@@ -27,14 +37,14 @@ export default function StudentSettings({ user, onLogout }) {
 
   return (
     <div style={cardStyle}>
-      <h2 style={{ color: '#1E293B', marginTop: 0, marginBottom: '20px' }}>⚙️ Account Settings</h2>
+      <h2 style={{ color: '#0f172a', marginTop: 0, marginBottom: '20px' }}>⚙️ Account Settings</h2>
 
       {/* Student Details Card */}
       <div style={sectionStyle}>
         <h3 style={sectionTitleStyle}>Profile Information</h3>
-        <div style={infoRowStyle}><strong>Full Name:</strong> <span>{user.fullName}</span></div>
-        <div style={infoRowStyle}><strong>Student ID:</strong> <span>{user.userId}</span></div>
-        <div style={infoRowStyle}><strong>Grade Level:</strong> <span>{(user.grade || 'kinder').toUpperCase()} (Locked)</span></div>
+        <div style={infoRowStyle}><strong>Full Name:</strong> <span>{safeUserName}</span></div>
+        <div style={infoRowStyle}><strong>Student ID:</strong> <span>{safeUserId || 'N/A'}</span></div>
+        <div style={infoRowStyle}><strong>Grade Level:</strong> <span>{safeGrade.toUpperCase()} (Locked)</span></div>
       </div>
 
       {/* Change Password Section */}

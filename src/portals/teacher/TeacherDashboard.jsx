@@ -2,37 +2,66 @@ import { useState, useEffect } from 'react'
 import TeacherSettings from './TeacherSettings'
 
 export default function TeacherDashboard({ user, onLogout }) {
-  const [activeTab, setActiveTab] = useState('roster') // 'roster' | 'settings'
-  const [selectedGrade, setSelectedGrade] = useState('kinder')
+  const safeUser = user || {}
+  const safeUserId = safeUser.userId || ''
+  const safeUserName = safeUser.fullName || 'Teacher'
+
+  const [activeTab, setActiveTab] = useState('roster') // 'roster' | 'leaderboard' | 'settings'
+  const teacherAssignedGrade = String(safeUser.grade || 'kinder').toLowerCase()
+  const [selectedGrade, setSelectedGrade] = useState(teacherAssignedGrade)
   const [studentsData, setStudentsData] = useState([])
+  const [leaderboardData, setLeaderboardData] = useState([])
   const [loading, setLoading] = useState(true)
+  const [leaderboardLoading, setLeaderboardLoading] = useState(true)
 
   // Fetch student roster and progress data from XAMPP API
-const fetchRoster = async () => {
-  setLoading(true)
-  try {
-    const encodedGrade = encodeURIComponent(selectedGrade)
-    const res = await fetch(`http://localhost/edugame_api/get_teacher_data.php?grade=${encodedGrade}`)
-    const data = await res.json()
-    
-    if (data.success) {
-      setStudentsData(data.students || [])
-    } else {
-      setStudentsData([]) // Clear state if no students found
-    }
-  } catch (err) {
-    console.error('Error loading roster:', err)
-    setStudentsData([])
-  } finally {
-    setLoading(false)
-  }
-}
+  const fetchRoster = async () => {
+    setLoading(true)
+    try {
+      const encodedGrade = encodeURIComponent(selectedGrade)
+      const res = await fetch(`/edugame_api/get_teacher_data.php?grade=${encodedGrade}`)
+      const data = await res.json()
 
-useEffect(() => {
-  if (activeTab === 'roster' && selectedGrade) {
-    fetchRoster()
+      if (data.success) {
+        setStudentsData(data.students || [])
+      } else {
+        setStudentsData([])
+      }
+    } catch (err) {
+      console.error('Error loading roster:', err)
+      setStudentsData([])
+    } finally {
+      setLoading(false)
+    }
   }
-}, [selectedGrade, activeTab])
+
+  useEffect(() => {
+    if (activeTab === 'roster' && selectedGrade) {
+      fetchRoster()
+    }
+  }, [selectedGrade, activeTab, safeUserId])
+
+  const fetchLeaderboard = async () => {
+    setLeaderboardLoading(true)
+    try {
+      const encodedGrade = encodeURIComponent(selectedGrade)
+      const encodedTeacherId = encodeURIComponent(safeUserId)
+      const res = await fetch(`/edugame_api/get_leaderboard.php?teacherId=${encodedTeacherId}&grade=${encodedGrade}`)
+      const data = await res.json()
+      setLeaderboardData(data.success ? (data.leaderboard || []) : [])
+    } catch (err) {
+      console.error('Error loading leaderboard:', err)
+      setLeaderboardData([])
+    } finally {
+      setLeaderboardLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    if (activeTab === 'leaderboard' && selectedGrade) {
+      fetchLeaderboard()
+    }
+  }, [selectedGrade, activeTab, safeUserId])
 
   // Teacher manual override action to unlock levels for a student
   const handleUnlockLevel = async (studentId, currentLevel) => {
@@ -40,7 +69,7 @@ useEffect(() => {
     if (nextLevel > 15) return alert('Student is already at the maximum level (15)!')
 
     try {
-      const res = await fetch('http://localhost/edugame_api/unlock_level.php', {
+      const res = await fetch('/edugame_api/unlock_level.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ studentId, levelToUnlock: nextLevel })
@@ -61,10 +90,10 @@ useEffect(() => {
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#F8FAFC', fontFamily: 'Segoe UI, sans-serif' }}>
       {/* Header Bar */}
-      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#059669', color: 'white', padding: '15px 30px', boxShadow: '0 4px 10px rgba(0,0,0,0.1)' }}>
+      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'linear-gradient(135deg, #38bdf8 0%, #0369a1 100%)', color: 'white', padding: '15px 30px', boxShadow: '0 4px 10px rgba(14,165,233,0.2)' }}>
         <div>
           <h2 style={{ margin: 0 }}>👩‍🏫 Teacher Portal</h2>
-          <small>Welcome back, <strong>{user.fullName}</strong> (ID: {user.userId})</small>
+          <small><strong>{safeUserName}</strong> | ID: {safeUserId || 'Loading...'}</small>
         </div>
         <div style={{ display: 'flex', gap: '10px' }}>
           <button 
@@ -74,12 +103,17 @@ useEffect(() => {
             📋 Class Roster & Progress
           </button>
           <button 
+            onClick={() => setActiveTab('leaderboard')} 
+            style={activeTab === 'leaderboard' ? activeTabStyle : navBtnStyle}
+          >
+            🏆 Leaderboard
+          </button>
+          <button 
             onClick={() => setActiveTab('settings')} 
             style={activeTab === 'settings' ? activeTabStyle : navBtnStyle}
           >
             ⚙️ Teacher Settings
           </button>
-          <button onClick={onLogout} style={logoutBtnStyle}>Logout</button>
         </div>
       </header>
 
@@ -96,20 +130,8 @@ useEffect(() => {
               </div>
 
               <div>
-                <label style={{ marginRight: '10px', fontWeight: 'bold', fontSize: '0.9rem', color: '#475569' }}>Filter Grade:</label>
-                <select 
-                  value={selectedGrade} 
-                  onChange={(e) => setSelectedGrade(e.target.value)}
-                  style={selectStyle}
-                >
-                  <option value="kinder">Kindergarten</option>
-                  <option value="grade1">Grade 1</option>
-                  <option value="grade2">Grade 2</option>
-                  <option value="grade3">Grade 3</option>
-                  <option value="grade4">Grade 4</option>
-                  <option value="grade5">Grade 5</option>
-                  <option value="grade6">Grade 6</option>
-                </select>
+                <label style={{ marginRight: '10px', fontWeight: 'bold', fontSize: '0.9rem', color: '#475569' }}>Assigned Grade:</label>
+                <span style={assignedGradeStyle}>{selectedGrade ? selectedGrade.replace('grade', 'Grade ') : 'Kindergarten'}</span>
               </div>
             </div>
 
@@ -158,8 +180,52 @@ useEffect(() => {
           </div>
         )}
 
+        {activeTab === 'leaderboard' && (
+          <div style={cardStyle}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+              <div>
+                <h3 style={{ margin: 0, color: '#1E293B' }}>🏆 Student Leaderboard</h3>
+                <p style={{ margin: '5px 0 0 0', color: '#64748B', fontSize: '0.85rem' }}>Top performers in your assigned grade.</p>
+              </div>
+              <div>
+                <label style={{ marginRight: '10px', fontWeight: 'bold', fontSize: '0.9rem', color: '#475569' }}>Assigned Grade:</label>
+                <span style={assignedGradeStyle}>{selectedGrade ? selectedGrade.replace('grade', 'Grade ') : 'Kindergarten'}</span>
+              </div>
+            </div>
+
+            {leaderboardLoading ? (
+              <p style={{ textAlign: 'center', padding: '30px', color: '#64748B' }}>Loading leaderboard...</p>
+            ) : leaderboardData.length === 0 ? (
+              <p style={{ textAlign: 'center', padding: '30px', color: '#64748B' }}>No leaderboard data for this class yet.</p>
+            ) : (
+              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                <thead>
+                  <tr style={{ backgroundColor: '#F1F5F9', textAlign: 'left' }}>
+                    <th style={thStyle}>Rank</th>
+                    <th style={thStyle}>Student Name</th>
+                    <th style={thStyle}>Total Score</th>
+                    <th style={thStyle}>Best Level</th>
+                    <th style={thStyle}>Subjects Played</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {leaderboardData.map((entry, index) => (
+                    <tr key={entry.userId} style={{ borderBottom: '1px solid #E2E8F0' }}>
+                      <td style={{ ...tdStyle, fontWeight: 'bold' }}>#{index + 1}</td>
+                      <td style={tdStyle}>{entry.name}</td>
+                      <td style={{ ...tdStyle, fontWeight: 'bold', color: '#0EA5E9' }}>{entry.totalScore} pts</td>
+                      <td style={tdStyle}>Level {entry.bestLevel}</td>
+                      <td style={tdStyle}>{entry.subjectsPlayed}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+        )}
+
         {/* TAB 2: TEACHER SETTINGS */}
-        {activeTab === 'settings' && <TeacherSettings user={user} />}
+        {activeTab === 'settings' && <TeacherSettings user={safeUser} onLogout={onLogout} />}
 
       </div>
     </div>
@@ -168,11 +234,11 @@ useEffect(() => {
 
 // Inline Styles
 const cardStyle = { backgroundColor: 'white', padding: '30px', borderRadius: '12px', boxShadow: '0 4px 15px rgba(0,0,0,0.05)' }
-const navBtnStyle = { backgroundColor: 'transparent', color: 'white', border: '1px solid rgba(255,255,255,0.4)', padding: '8px 14px', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold' }
-const activeTabStyle = { backgroundColor: 'white', color: '#059669', border: 'none', padding: '8px 14px', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold' }
+const navBtnStyle = { backgroundColor: 'transparent', color: 'white', border: '1px solid rgba(224,242,254,0.4)', padding: '8px 14px', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold' }
+const activeTabStyle = { background: 'linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%)', color: '#075985', border: 'none', padding: '8px 14px', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold' }
 const logoutBtnStyle = { backgroundColor: '#EF4444', color: 'white', border: 'none', padding: '8px 14px', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold' }
 
-const selectStyle = { padding: '8px 12px', borderRadius: '6px', border: '1px solid #CBD5E1', fontSize: '0.9rem', backgroundColor: '#F8FAFC' }
+const assignedGradeStyle = { backgroundColor: '#E0F2FE', color: '#075985', padding: '6px 10px', borderRadius: '6px', fontSize: '0.85rem', fontWeight: 'bold' }
 const thStyle = { padding: '12px', fontSize: '0.85rem', color: '#64748B' }
 const tdStyle = { padding: '12px', fontSize: '0.9rem', color: '#334155' }
 
