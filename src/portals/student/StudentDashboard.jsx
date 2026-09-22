@@ -6,8 +6,23 @@ import { apiFetch } from '../../api'
 
 const normalizeGrade = (gradeStr) => {
   if (!gradeStr) return 'kinder'
-  const cleaned = gradeStr.toLowerCase().replace(/\s+/g, '')
-  return cleaned === 'kindergarten' ? 'kinder' : cleaned
+
+  const cleaned = String(gradeStr).trim().toLowerCase().replace(/[^a-z0-9]+/g, '')
+
+  if (cleaned === 'nursery' || cleaned.includes('nursery')) return 'nursery'
+  if (cleaned === 'prekinder' || cleaned === 'prekindergarten' || cleaned.includes('prekinder') || cleaned.includes('prekindergarten')) return 'prekinder'
+  if (cleaned === 'kindergarten' || cleaned === 'ps3kinder' || cleaned === 'kinder' || cleaned.includes('kinder')) {
+    return 'kinder'
+  }
+
+  if (cleaned.includes('grade1') || cleaned.includes('gradeone') || cleaned.includes('ps1')) return 'grade1'
+  if (cleaned.includes('grade2') || cleaned.includes('gradetwo') || cleaned.includes('ps2')) return 'grade2'
+  if (cleaned.includes('grade3') || cleaned.includes('gradethree') || cleaned.includes('ps3')) return 'grade3'
+  if (cleaned.includes('grade4') || cleaned.includes('gradefour')) return 'grade4'
+  if (cleaned.includes('grade5') || cleaned.includes('gradefive')) return 'grade5'
+  if (cleaned.includes('grade6') || cleaned.includes('gradesix')) return 'grade6'
+
+  return cleaned || 'kinder'
 }
 
 export default function StudentDashboard({ user, onLogout }) {
@@ -130,6 +145,8 @@ export default function StudentDashboard({ user, onLogout }) {
             <div style={{ marginBottom: '25px' }}>
               <h3 style={{ color: '#f8fafc', marginBottom: '10px' }}>1. Your Assigned Grade Level:</h3>
               <select value={selectedGrade} disabled style={lockedSelectStyle}>
+                <option value="nursery">Nursery</option>
+                <option value="prekinder">Pre-Kinder</option>
                 <option value="kinder">Kindergarten</option>
                 <option value="grade1">Grade 1</option>
                 <option value="grade2">Grade 2</option>
