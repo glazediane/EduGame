@@ -55,22 +55,22 @@ export default function StudentPerformance({ user }) {
     <div style={{ background: 'linear-gradient(180deg, #10263d 0%, #0d1f2f 100%)', padding: '30px', borderRadius: '12px', border: '1px solid rgba(125, 211, 252, 0.22)' }}>
       <h2 style={{ color: 'white', marginTop: 0 }}>📊 My Game Performance</h2>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: '20px', marginBottom: '30px' }}>
-        <div style={{ backgroundColor: '#0d1f2f', padding: '20px', borderRadius: '8px', textAlign: 'center' }}>
-          <h4 style={{ color: '#bfdbfe', margin: 0 }}>Levels Completed</h4>
-          <h1 style={{ color: '#38bdf8', margin: '10px 0 0 0' }}>{totalLevelsCompleted}</h1>
+      <div style={summaryGridStyle}>
+        <div style={summaryCardStyle}>
+          <h4 style={summaryLabelStyle}>Levels Completed</h4>
+          <h1 style={{ ...summaryValueStyle, color: '#38bdf8' }}>{totalLevelsCompleted}</h1>
         </div>
-        <div style={{ backgroundColor: '#0d1f2f', padding: '20px', borderRadius: '8px', textAlign: 'center' }}>
-          <h4 style={{ color: '#bfdbfe', margin: 0 }}>Total Score</h4>
-          <h1 style={{ color: '#22c55e', margin: '10px 0 0 0' }}>{totalScoreEarned} pts</h1>
+        <div style={summaryCardStyle}>
+          <h4 style={summaryLabelStyle}>Total Score</h4>
+          <h1 style={{ ...summaryValueStyle, color: '#22c55e' }}>{totalScoreEarned} pts</h1>
         </div>
-        <div style={{ backgroundColor: '#0d1f2f', padding: '20px', borderRadius: '8px', textAlign: 'center' }}>
-          <h4 style={{ color: '#bfdbfe', margin: 0 }}>Best Level</h4>
-          <h1 style={{ color: 'var(--edu-sky)', margin: '10px 0 0 0' }}>Level {bestLevel || 0}</h1>
+        <div style={summaryCardStyle}>
+          <h4 style={summaryLabelStyle}>Best Level</h4>
+          <h1 style={{ ...summaryValueStyle, color: 'var(--edu-sky)' }}>Level {bestLevel || 0}</h1>
         </div>
-        <div style={{ backgroundColor: '#0d1f2f', padding: '20px', borderRadius: '8px', textAlign: 'center' }}>
-          <h4 style={{ color: '#bfdbfe', margin: 0 }}>Rank</h4>
-          <h1 style={{ color: '#f472b6', margin: '10px 0 0 0' }}>#{userRank}</h1>
+        <div style={summaryCardStyle}>
+          <h4 style={summaryLabelStyle}>Rank</h4>
+          <h1 style={{ ...summaryValueStyle, color: '#f472b6' }}>#{userRank}</h1>
         </div>
       </div>
 
@@ -140,4 +140,25 @@ export default function StudentPerformance({ user }) {
       )}
     </div>
   );
+}
+
+const summaryGridStyle = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+  gap: '20px',
+  marginBottom: '30px'
+}
+const summaryCardStyle = {
+  minWidth: 0,
+  backgroundColor: '#0d1f2f',
+  padding: '18px 12px',
+  borderRadius: '8px',
+  textAlign: 'center'
+}
+const summaryLabelStyle = { color: '#bfdbfe', margin: 0, fontSize: '1rem' }
+const summaryValueStyle = {
+  margin: '10px 0 0',
+  fontSize: 'clamp(1.65rem, 3.2vw, 2.25rem)',
+  lineHeight: 1,
+  whiteSpace: 'nowrap'
 }

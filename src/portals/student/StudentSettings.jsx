@@ -2,88 +2,131 @@ import { useState } from 'react'
 
 export default function StudentSettings({ user, onLogout }) {
   const safeUser = user || {}
-  const safeUserId = safeUser.userId || ''
+  const safeUserId = safeUser.userId || safeUser.id || ''
   const safeUserName = safeUser.fullName || safeUser.name || 'Student'
-  const safeGrade = safeUser.grade || 'grade1'
+  const safeGrade = safeUser.grade || 'N/A'
 
+  const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
-  const [msg, setMsg] = useState({ text: '', isError: false })
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [message, setMessage] = useState({ type: '', text: '' })
+  const [loading, setLoading] = useState(false)
 
-  const handlePasswordChange = (e) => {
+  const handlePasswordChange = async (e) => {
     e.preventDefault()
-    if (!newPassword.trim()) return
+    setMessage({ type: '', text: '' })
 
+    if (newPassword !== confirmPassword) {
+      setMessage({ type: 'error', text: 'New passwords do not match.' })
+      return
+    }
+    if (newPassword.length < 4) {
+      setMessage({ type: 'error', text: 'Password must be at least 4 characters long.' })
+      return
+    }
     if (!safeUserId) {
-      setMsg({ text: 'Student session is not ready yet.', isError: true })
+      setMessage({ type: 'error', text: 'Student session is not ready yet.' })
       return
     }
 
-    fetch('/edugame_api/update_password.php', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userId: safeUserId, newPassword })
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          setMsg({ text: 'Password updated successfully!', isError: false })
-          setNewPassword('')
-        } else {
-          setMsg({ text: data.message || 'Failed to update password.', isError: true })
-        }
+    setLoading(true)
+    try {
+      const res = await fetch('/edugame_api/update_password.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: safeUserId, currentPassword, newPassword, confirmPassword, role: 'student' })
       })
-      .catch(() => setMsg({ text: 'Error connecting to server.', isError: true }))
+      const data = await res.json()
+
+      if (data.success) {
+        setMessage({ type: 'success', text: 'Password updated successfully!' })
+        setCurrentPassword('')
+        setNewPassword('')
+        setConfirmPassword('')
+      } else {
+        setMessage({ type: 'error', text: data.message || 'Failed to update password.' })
+      }
+    } catch (err) {
+      console.error('Password change error:', err)
+      setMessage({ type: 'error', text: 'Could not connect to the XAMPP server.' })
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
-    <div style={cardStyle}>
-      <h2 style={{ color: '#0f172a', marginTop: 0, marginBottom: '20px' }}>⚙️ Account Settings</h2>
-
-      {/* Student Details Card */}
-      <div style={sectionStyle}>
-        <h3 style={sectionTitleStyle}>Profile Information</h3>
-        <div style={infoRowStyle}><strong>Full Name:</strong> <span>{safeUserName}</span></div>
-        <div style={infoRowStyle}><strong>Student ID:</strong> <span>{safeUserId || 'N/A'}</span></div>
-        <div style={infoRowStyle}><strong>Grade Level:</strong> <span>{safeGrade.toUpperCase()} (Locked)</span></div>
+    <div style={containerStyle}>
+      <div style={{ marginBottom: '20px' }}>
+        <h3 style={{ margin: 0, color: '#0f172a' }}>⚙️ Student Profile & Settings</h3>
+        <p style={{ margin: '5px 0 0 0', color: '#64748B', fontSize: '0.85rem' }}>
+          View your student profile, update your password, and manage your session.
+        </p>
       </div>
 
-      {/* Change Password Section */}
-      <div style={sectionStyle}>
-        <h3 style={sectionTitleStyle}>Change Password</h3>
-        <form onSubmit={handlePasswordChange} style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-          <input
-            type="password"
-            placeholder="Enter new password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            style={inputStyle}
-            required
-          />
-          <button type="submit" style={btnStyle}>Update Password</button>
-        </form>
-        {msg.text && (
-          <p style={{ marginTop: '10px', color: msg.isError ? '#DC2626' : '#16A34A', fontWeight: 'bold' }}>
-            {msg.text}
-          </p>
-        )}
-      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <section style={sectionCardStyle}>
+          <h4 style={sectionHeaderStyle}>🎓 Student Profile</h4>
+          <div style={gridStyle}>
+            <div>
+              <label style={labelStyle}>Student Full Name</label>
+              <input type="text" value={safeUserName} disabled style={disabledInputStyle} />
+            </div>
+            <div>
+              <label style={labelStyle}>Student ID</label>
+              <input type="text" value={safeUserId || 'N/A'} disabled style={disabledInputStyle} />
+            </div>
+            <div>
+              <label style={labelStyle}>Grade</label>
+              <input type="text" value={safeGrade} disabled style={disabledInputStyle} />
+            </div>
+          </div>
+        </section>
 
-      {/* Session Management Section */}
-      <div style={{ ...sectionStyle, borderBottom: 'none' }}>
-        <h3 style={sectionTitleStyle}></h3>
-        <button onClick={onLogout} style={logoutBtnStyle}>
-          🚪 Log Out of Account
-        </button>
+        <section style={sectionCardStyle}>
+          <h4 style={sectionHeaderStyle}>🔑 Security & Password Reset</h4>
+          {message.text && (
+            <div role="status" style={message.type === 'success' ? successBannerStyle : errorBannerStyle}>
+              {message.text}
+            </div>
+          )}
+          <form onSubmit={handlePasswordChange} style={formStyle}>
+            <div>
+              <label style={labelStyle}>Current Password</label>
+              <input type="password" placeholder="Enter current password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} style={inputStyle} required />
+            </div>
+            <div>
+              <label style={labelStyle}>New Password</label>
+              <input type="password" placeholder="Enter new password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} style={inputStyle} required />
+            </div>
+            <div>
+              <label style={labelStyle}>Confirm New Password</label>
+              <input type="password" placeholder="Re-enter new password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} style={inputStyle} required />
+            </div>
+            <button type="submit" disabled={loading} style={{ ...saveBtnStyle, backgroundColor: loading ? '#6EE7B7' : '#059669' }}>
+              {loading ? 'Updating...' : '🔒 Save New Password'}
+            </button>
+          </form>
+        </section>
+
+        <section style={{ ...sectionCardStyle, borderColor: '#FECACA', backgroundColor: '#FEF2F2' }}>
+          <h4 style={{ ...sectionHeaderStyle, color: '#B91C1C' }}>🚪 Session</h4>
+          <button type="button" onClick={onLogout} style={{ ...saveBtnStyle, backgroundColor: '#DC2626', width: 'fit-content', marginTop: 0 }}>
+            Logout
+          </button>
+        </section>
       </div>
     </div>
   )
 }
 
-// Styling
-const cardStyle = { backgroundColor: 'white', padding: '30px', borderRadius: '12px', boxShadow: '0 4px 15px rgba(0,0,0,0.05)' }
-const sectionStyle = { paddingBottom: '20px', marginBottom: '20px', borderBottom: '1px solid #E2E8F0' }
-const sectionTitleStyle = { color: '#1E293B', fontSize: '1.1rem', marginBottom: '12px' }
-const infoRowStyle = { display: 'flex', justifyContent: 'space-between', padding: '8px 0', color: '#334155', maxWidth: '400px' }
-const inputStyle = { padding: '10px', borderRadius: '6px', border: '1px solid #CBD5E1', width: '250px' }
-const btnStyle = { backgroundColor: '#2563EB', color: 'white', border: 'none', padding: '10px 16px', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold' }
-const logoutBtnStyle = { backgroundColor: '#EF4444', color: 'white', border: 'none', padding: '10px 18px', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold' }
+const containerStyle = { backgroundColor: 'white', padding: '30px', borderRadius: '12px', boxShadow: '0 4px 15px rgba(0,0,0,0.05)' }
+const sectionCardStyle = { border: '1px solid #E2E8F0', padding: '20px', borderRadius: '8px', backgroundColor: '#F8FAFC' }
+const sectionHeaderStyle = { margin: '0 0 15px 0', color: '#0D9488', fontSize: '1rem' }
+const gridStyle = { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '15px' }
+const formStyle = { display: 'flex', flexDirection: 'column', gap: '15px', maxWidth: '400px' }
+const labelStyle = { display: 'block', fontSize: '0.85rem', fontWeight: 'bold', color: '#475569', marginBottom: '6px' }
+const inputStyle = { width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #CBD5E1', fontSize: '0.9rem', boxSizing: 'border-box' }
+const disabledInputStyle = { ...inputStyle, backgroundColor: '#E2E8F0', color: '#64748B', cursor: 'not-allowed' }
+const saveBtnStyle = { color: 'white', border: 'none', padding: '10px 20px', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', fontSize: '0.9rem', marginTop: '5px' }
+const successBannerStyle = { backgroundColor: '#DCFCE7', color: '#15803D', padding: '10px 14px', borderRadius: '6px', fontWeight: 'bold', fontSize: '0.85rem', marginBottom: '10px' }
+const errorBannerStyle = { backgroundColor: '#FEE2E2', color: '#DC2626', padding: '10px 14px', borderRadius: '6px', fontWeight: 'bold', fontSize: '0.85rem', marginBottom: '10px' }

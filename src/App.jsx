@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import bgImage from './assets/portal-background.jpg'
 import logoImage from './assets/TCM-Logo.jpg'
+import { keepSessionAlive, releaseSession } from './session'
 
 // Logins
 import StudentLogin from './portals/student/StudentLogin'
@@ -15,8 +16,18 @@ import AdminDashboard from './portals/admin/AdminDashboard'
 export default function App() {
   const [activePortal, setActivePortal] = useState('student')
   const [user, setUser] = useState(null)
+  const normalizedUserRole = String(user?.role || '').toLowerCase()
+
+  useEffect(() => {
+    if (!user) return undefined
+    return keepSessionAlive(user, () => {
+      setUser(null)
+      setActivePortal('student')
+    })
+  }, [user])
 
   const handleLogout = () => {
+    releaseSession(user)
     setUser(null)
     setActivePortal('student')
   }
@@ -45,7 +56,9 @@ export default function App() {
         margin: 0;
         padding: 0;
         width: 100%;
+        min-width: 100%;
         height: 100%;
+        min-height: 100%;
         font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
         overflow-x: hidden;
         background: radial-gradient(circle at top, #0b2236 0%, #071722 52%, #040d16 100%);
@@ -83,9 +96,9 @@ export default function App() {
     return (
       <>
         {globalStyles}
-        {user.role === 'student' && <StudentDashboard user={user} onLogout={handleLogout} />}
-        {user.role === 'teacher' && <TeacherDashboard user={user} onLogout={handleLogout} />}
-        {user.role === 'admin' && <AdminDashboard user={user} onLogout={handleLogout} />}
+        {(normalizedUserRole === 'student' || normalizedUserRole === 'students') && <StudentDashboard user={user} onLogout={handleLogout} />}
+        {(normalizedUserRole === 'teacher' || normalizedUserRole === 'teachers') && <TeacherDashboard user={user} onLogout={handleLogout} />}
+        {(normalizedUserRole === 'admin' || normalizedUserRole === 'administrator' || normalizedUserRole === 'admins') && <AdminDashboard user={user} onLogout={handleLogout} />}
       </>
     )
   }
@@ -106,7 +119,7 @@ export default function App() {
           />
           <div>
             <h1 style={headerTitleStyle}>The College of Maasin</h1>
-            <p style={headerSubtitleStyle}>Interactive Gamification & Learning Management Portal</p>
+            <p style={headerSubtitleStyle}>Learning Management Portal</p>
           </div>
         </div>
 
@@ -172,7 +185,8 @@ export default function App() {
 const fullScreenContainerStyle = {
   position: 'relative',
   minHeight: '100vh',
-  width: '100vw',
+  width: '100%',
+  maxWidth: '100%',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',

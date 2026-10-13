@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
+import { getStoredSessionToken, rememberSession } from '../../session'
 
 export default function StudentLogin({ onLoginSuccess }) {
   const [studentId, setStudentId] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const lockedOut = /locked|multiple failed attempts|request unlock token|contact admin/i.test(error)
-  const unlockToken = /unlock token is:\s*([A-Z0-9]+)/i.exec(error)?.[1] || null
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -17,25 +16,19 @@ export default function StudentLogin({ onLoginSuccess }) {
       const res = await fetch('/edugame_api/login.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: studentId, password, role: 'student' })
+        body: JSON.stringify({ userId: studentId, password, role: 'student', sessionToken: getStoredSessionToken('student', studentId) })
       })
       const data = await res.json()
 
       if (data.success) {
+        rememberSession(data.user)
         window.setTimeout(() => {
           onLoginSuccess(data.user)
         }, 800)
         return
       }
 
-      const message = data.unlockToken
-        ? `Account locked due to multiple failed attempts. Your unlock token is: ${data.unlockToken}. Bring it to the ISAO office.`
-        : (data.message || 'Invalid student credentials')
-
-      setError(message)
-      if (data.unlockToken) {
-        window.alert(`Your unlock token is: ${data.unlockToken}\nBring it to the ISAO office for admin release.`)
-      }
+      setError(data.message || 'Invalid student credentials')
     } catch (err) {
       setError('Server error. Please ensure XAMPP is running.')
     } finally {
@@ -50,27 +43,6 @@ export default function StudentLogin({ onLoginSuccess }) {
       </div>
 
       {error && <div style={errorMessageStyle}>{error}</div>}
-
-      {unlockToken && (
-        <div style={tokenBoxStyle}>
-          <div style={{ fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#fef3c7', fontWeight: 700 }}>
-            Unlock Token
-          </div>
-          <div style={{ fontSize: '24px', fontWeight: 800, letterSpacing: '0.15em', color: '#fff' }}>
-            {unlockToken}
-          </div>
-        </div>
-      )}
-
-      {lockedOut && (
-        <button
-          type="button"
-          onClick={() => window.location.href = '/request-unlock.html'}
-          style={contactBtnStyle}
-        >
-          Request Unlock Token
-        </button>
-      )}
 
       <form onSubmit={handleSubmit} style={formStyle}>
         <div style={inputGroupStyle}>
@@ -124,6 +96,8 @@ export default function StudentLogin({ onLoginSuccess }) {
 
 const formContainerStyle = {
   width: '100%',
+  maxWidth: '560px',
+  margin: '0 auto',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center'
@@ -132,6 +106,7 @@ const formContainerStyle = {
 const portalBadgeStyle = {
   display: 'inline-flex',
   alignItems: 'center',
+  justifyContent: 'center',
   gap: '6px',
   padding: '6px 16px',
   borderRadius: '20px',
@@ -140,7 +115,8 @@ const portalBadgeStyle = {
   border: '1px solid rgba(56, 189, 248, 0.3)',
   fontSize: '12px',
   fontWeight: '700',
-  marginBottom: '20px'
+  marginBottom: '20px',
+  alignSelf: 'center'
 }
 
 const formStyle = {
@@ -154,7 +130,8 @@ const inputGroupStyle = {
   display: 'flex',
   flexDirection: 'column',
   gap: '6px',
-  textAlign: 'left'
+  textAlign: 'left',
+  width: '100%'
 }
 
 const labelStyle = {
@@ -168,11 +145,13 @@ const inputStyle = {
   width: '100%',
   padding: '12px 16px',
   borderRadius: '10px',
-  border: '1px solid rgba(255, 255, 255, 0.2)',
+  border: '1px solid rgba(255, 255, 255, 0.25)',
   fontSize: '14px',
   color: '#ffffff',
   backgroundColor: 'rgba(255, 255, 255, 0.07)',
-  boxSizing: 'border-box'
+  boxSizing: 'border-box',
+  outline: 'none',
+  transition: 'border-color 0.2s ease, box-shadow 0.2s ease'
 }
 
 const submitBtnStyle = {
@@ -191,15 +170,16 @@ const submitBtnStyle = {
 
 const errorMessageStyle = {
   width: '100%',
-  padding: '10px 12px',
-  borderRadius: '8px',
-  backgroundColor: 'rgba(239, 68, 68, 0.2)',
+  padding: '12px 16px',
+  borderRadius: '10px',
+  backgroundColor: 'rgba(239, 68, 68, 0.18)',
   color: '#fca5a5',
-  border: '1px solid rgba(239, 68, 68, 0.4)',
-  fontSize: '12px',
-  fontWeight: '600',
+  border: '1px solid rgba(239, 68, 68, 0.45)',
+  fontSize: '14px',
+  fontWeight: '700',
   textAlign: 'center',
-  marginBottom: '16px'
+  marginBottom: '16px',
+  boxSizing: 'border-box'
 }
 
 const tokenBoxStyle = {

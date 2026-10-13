@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
+import { getStoredSessionToken, rememberSession } from '../../session'
 
 export default function TeacherLogin({ onLoginSuccess }) {
   const [teacherId, setTeacherId] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const lockedOut = /locked|multiple failed attempts|request unlock token|contact admin/i.test(error)
-  const unlockToken = /unlock token is:\s*([A-Z0-9]+)/i.exec(error)?.[1] || null
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -17,25 +16,21 @@ export default function TeacherLogin({ onLoginSuccess }) {
       const res = await fetch('/edugame_api/login.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: teacherId, password, role: 'teacher' })
+        body: JSON.stringify({ userId: teacherId, password, role: 'teacher', sessionToken: getStoredSessionToken('teacher', teacherId) })
       })
       const data = await res.json()
 
       if (data.success) {
+        rememberSession(data.user)
         window.setTimeout(() => {
           onLoginSuccess(data.user)
         }, 800)
         return
       }
 
-      const message = data.unlockToken
-        ? `Account locked due to multiple failed attempts. Your unlock token is: ${data.unlockToken}. Bring it to the ISAO office.`
-        : (data.message || 'Invalid teacher credentials')
-
-      setError(message)
-      if (data.unlockToken) {
-        window.alert(`Your unlock token is: ${data.unlockToken}\nBring it to the ISAO office for admin release.`)
-      }
+      const message = String(data.message || '')
+      const isInvalidLogin = /invalid credentials|user does not exist|wrong password|invalid teacher/i.test(message)
+      setError(isInvalidLogin ? 'Invalid teacher ID or password. Please try again.' : (message || 'Invalid teacher ID or password. Please try again.'))
     } catch (err) {
       setError('Server connection error.')
     } finally {
@@ -50,27 +45,6 @@ export default function TeacherLogin({ onLoginSuccess }) {
       </div>
 
       {error && <div style={errorMessageStyle}>{error}</div>}
-
-      {unlockToken && (
-        <div style={tokenBoxStyle}>
-          <div style={{ fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#fef3c7', fontWeight: 700 }}>
-            Unlock Token
-          </div>
-          <div style={{ fontSize: '24px', fontWeight: 800, letterSpacing: '0.15em', color: '#fff' }}>
-            {unlockToken}
-          </div>
-        </div>
-      )}
-
-      {lockedOut && (
-        <button
-          type="button"
-          onClick={() => window.location.href = '/request-unlock.html'}
-          style={contactBtnStyle}
-        >
-          Request Unlock Token
-        </button>
-      )}
 
       <form onSubmit={handleSubmit} style={formStyle}>
         <div style={inputGroupStyle}>

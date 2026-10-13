@@ -193,20 +193,26 @@ const createInteractiveQuestion = (grade, subject, level, index) => {
   };
 };
 
+const getQuestionLimitForGrade = (grade) => (normalizeGradeKey(grade) === 'grade4' ? 10 : 15);
+
 const buildLevelQuestions = (grade, subject, level, existing = []) => {
   const questions = Array.isArray(existing) ? [...existing] : [];
-  while (questions.length < 15) {
+  const questionLimit = getQuestionLimitForGrade(grade);
+
+  while (questions.length < questionLimit) {
     questions.push(createInteractiveQuestion(grade, subject, level, questions.length));
   }
-  return questions.slice(0, 15);
+  return questions.slice(0, questionLimit);
 };
 
 const normalizeSubjectLevels = (grade, subject, subjectData = {}) => {
   const normalized = {};
+  const questionLimit = getQuestionLimitForGrade(grade);
+
   for (let level = 1; level <= 15; level += 1) {
     const existing = Array.isArray(subjectData[level]) ? subjectData[level] : [];
     normalized[level] = Array.isArray(existing) && existing.length > 0
-      ? existing.slice(0, 15).map((item) => ({
+      ? existing.slice(0, questionLimit).map((item) => ({
           q: item.q || item.question || `Question ${level}`,
           visual: item.visual || item.emoji || '',
           options: Array.isArray(item.options) && item.options.length ? item.options : ['A', 'B', 'C', 'D'],
@@ -216,8 +222,8 @@ const normalizeSubjectLevels = (grade, subject, subjectData = {}) => {
           reward: item.reward || '🎉 Learning Boost'
         }))
       : buildLevelQuestions(grade, subject, level, existing);
-    if (normalized[level].length < 15) {
-      while (normalized[level].length < 15) {
+    if (normalized[level].length < questionLimit) {
+      while (normalized[level].length < questionLimit) {
         normalized[level].push(createInteractiveQuestion(grade, subject, level, normalized[level].length));
       }
     }
@@ -229,13 +235,11 @@ const normalizeSubjectLevels = (grade, subject, subjectData = {}) => {
 export const questionBank = {
   grade1: {
     math: normalizeSubjectLevels('grade1', 'math', grade1Math),
-    english: normalizeSubjectLevels('grade1', 'english', grade1English),
-    science: normalizeSubjectLevels('grade1', 'science', grade1Science)
+    english: normalizeSubjectLevels('grade1', 'english', grade1English)
   },
   grade2: {
     math: normalizeSubjectLevels('grade2', 'math', grade2Math),
-    english: normalizeSubjectLevels('grade2', 'english', grade2English),
-    science: normalizeSubjectLevels('grade2', 'science', grade2Science)
+    english: normalizeSubjectLevels('grade2', 'english', grade2English)
   },
   grade3: {
     math: normalizeSubjectLevels('grade3', 'math', grade3Math),
@@ -249,7 +253,8 @@ export const questionBank = {
 
 // Fallback riddle question generator if a level isn't explicitly detailed yet
 const generateRiddleQuestions = (grade, subject, level) => {
-  return Array.from({ length: 15 }, (_, i) => createInteractiveQuestion(grade, subject, level, i));
+  const questionLimit = getQuestionLimitForGrade(grade);
+  return Array.from({ length: questionLimit }, (_, i) => createInteractiveQuestion(grade, subject, level, i));
 };
 
 // Strictly pulls questions matching the student's assigned grade
