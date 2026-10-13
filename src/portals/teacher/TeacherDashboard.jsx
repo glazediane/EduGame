@@ -7,7 +7,7 @@ export default function TeacherDashboard({ user, onLogout }) {
   const safeUserName = safeUser.fullName || 'Teacher'
 
   const [activeTab, setActiveTab] = useState('roster') // 'roster' | 'leaderboard' | 'settings'
-  const teacherAssignedGrade = String(safeUser.grade || 'kinder').toLowerCase()
+  const teacherAssignedGrade = String(safeUser.grade || 'grade1').toLowerCase()
   const [selectedGrade, setSelectedGrade] = useState(teacherAssignedGrade)
   const [studentsData, setStudentsData] = useState([])
   const [leaderboardData, setLeaderboardData] = useState([])
@@ -137,7 +137,7 @@ export default function TeacherDashboard({ user, onLogout }) {
 
               <div>
                 <label style={{ marginRight: '10px', fontWeight: 'bold', fontSize: '0.9rem', color: '#475569' }}>Assigned Grade:</label>
-                <span style={assignedGradeStyle}>{selectedGrade ? selectedGrade.replace('grade', 'Grade ') : 'Kindergarten'}</span>
+                <span style={assignedGradeStyle}>{selectedGrade ? selectedGrade.replace('grade', 'Grade ') : 'Grade 1'}</span>
               </div>
             </div>
 
@@ -195,7 +195,7 @@ export default function TeacherDashboard({ user, onLogout }) {
               </div>
               <div>
                 <label style={{ marginRight: '10px', fontWeight: 'bold', fontSize: '0.9rem', color: '#475569' }}>Assigned Grade:</label>
-                <span style={assignedGradeStyle}>{selectedGrade ? selectedGrade.replace('grade', 'Grade ') : 'Kindergarten'}</span>
+                <span style={assignedGradeStyle}>{selectedGrade ? selectedGrade.replace('grade', 'Grade ') : 'Grade 1'}</span>
               </div>
             </div>
 
@@ -243,6 +243,14 @@ const cardStyle = { backgroundColor: 'white', padding: '30px', borderRadius: '12
 const navBtnStyle = { backgroundColor: 'transparent', color: 'white', border: '1px solid rgba(224,242,254,0.4)', padding: '8px 14px', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold' }
 const activeTabStyle = { background: 'linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%)', color: '#075985', border: 'none', padding: '8px 14px', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold' }
 const logoutBtnStyle = { backgroundColor: '#EF4444', color: 'white', border: 'none', padding: '8px 14px', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold' }
+const searchInputStyle = { padding: '10px 15px', borderRadius: '8px', border: '1px solid #CBD5E1', width: '250px', fontSize: '0.9rem' }
+const labelStyle = { display: 'block', marginBottom: '6px', color: '#475569', fontWeight: '700', fontSize: '0.85rem' }
+const inputStyle = { width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '0.9rem', boxSizing: 'border-box' }
+const primaryBtnStyle = { backgroundColor: '#0EA5E9', color: 'white', border: 'none', padding: '10px 18px', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }
+const secondaryBtnStyle = { backgroundColor: '#E2E8F0', color: '#0F172A', border: 'none', padding: '10px 18px', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }
+const editBtnStyle = { backgroundColor: '#2563EB', color: 'white', border: 'none', padding: '6px 10px', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.8rem' }
+const deleteBtnStyle = { backgroundColor: '#DC2626', color: 'white', border: 'none', padding: '6px 10px', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.8rem' }
+const tokenBtnStyle = { backgroundColor: '#F59E0B', color: '#ffffff', border: 'none', padding: '6px 10px', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.75rem' }
 
 const assignedGradeStyle = { backgroundColor: '#E0F2FE', color: '#075985', padding: '6px 10px', borderRadius: '6px', fontSize: '0.85rem', fontWeight: 'bold' }
 const thStyle = { padding: '12px', fontSize: '0.85rem', color: '#64748B' }
@@ -250,3 +258,5 @@ const tdStyle = { padding: '12px', fontSize: '0.9rem', color: '#334155' }
 
 const badgeStyle = { backgroundColor: '#D1FAE5', color: '#065F46', padding: '4px 8px', borderRadius: '4px', fontSize: '0.8rem', fontWeight: 'bold' }
 const actionBtnStyle = { backgroundColor: '#059669', color: 'white', border: 'none', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.8rem' }
+const activeBadgeStyle = { backgroundColor: '#DCFCE7', color: '#166534', padding: '4px 8px', borderRadius: '4px', fontSize: '0.8rem', fontWeight: 'bold' }
+const lockedBadgeStyle = { backgroundColor: '#FEE2E2', color: '#991B1B', padding: '4px 8px', borderRadius: '4px', fontSize: '0.8rem', fontWeight: 'bold' }

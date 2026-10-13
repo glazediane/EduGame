@@ -1,143 +1,270 @@
 // src/data/questions/grade2/english.jsx
 
-export const grade2EnglishTemplates = [
-  {
-    q: 'Which word is the opposite of happy?',
-    visual: '😊 vs 😢',
-    options: ['Sad', 'Big', 'Fast', 'Old'],
-    a: 'Sad',
-    hint: 'Sad is the opposite of happy.',
-    reward: '🔄 Opposite Pair'
-  },
-  {
-    q: 'Choose the correct spelling of the word for a pet that barks.',
-    visual: '🐶',
-    options: ['Dog', 'Dgo', 'Dg', 'Ddog'],
-    a: 'Dog',
-    hint: 'A dog is a friendly pet.',
-    reward: '🐶 Pet Word'
-  },
-  {
-    q: 'Which word rhymes with "sun"?',
-    visual: '☀️',
-    options: ['Fun', 'Tree', 'Ball', 'Book'],
-    a: 'Fun',
-    hint: 'Fun rhymes with sun.',
-    reward: '🎶 Rhyme Time'
-  },
-  {
-    q: 'Which sentence is correct?',
-    visual: '🧠',
-    options: ['I am playing.', 'I playing am.', 'Am I playing.', 'Playing I am.'],
-    a: 'I am playing.',
-    hint: 'This sentence has the correct word order.',
-    reward: '💬 Sentence Builder'
-  },
-  {
-    q: 'Pick the word that means a place where children learn.',
-    visual: '🏫',
-    options: ['School', 'Park', 'Kitchen', 'Garden'],
-    a: 'School',
-    hint: 'Children learn at school.',
-    reward: '📚 Learning Place'
-  },
-  {
-    q: 'Choose the correct plural word for "box".',
-    visual: '📦',
-    options: ['Boxes', 'Boxs', 'Boxeses', 'Box'],
-    a: 'Boxes',
-    hint: 'Boxes is the correct plural form.',
-    reward: '📦 Plural Play'
-  },
-  {
-    q: 'Which word tells a person what to do?',
-    visual: '🧍',
-    options: ['Verb', 'Noun', 'Color', 'Shape'],
-    a: 'Verb',
-    hint: 'A verb shows an action.',
-    reward: '⚡ Action Word'
-  },
-  {
-    q: 'Which word has the long vowel sound in "cake"?',
-    visual: '🎂',
-    options: ['Cake', 'Cat', 'Car', 'Cap'],
-    a: 'Cake',
-    hint: 'Cake has the long a sound.',
-    reward: '🎵 Long Vowel'
-  },
-  {
-    q: 'Which word is a noun?',
-    visual: '🌳',
-    options: ['Tree', 'Jump', 'Run', 'Happy'],
-    a: 'Tree',
-    hint: 'A noun names a person, place, or thing.',
-    reward: '🌳 Naming Word'
-  },
-  {
-    q: 'Pick the correct sentence.',
-    visual: '✍️',
-    options: ['We run to school.', 'Run we to school.', 'School run we.', 'We school run.'],
-    a: 'We run to school.',
-    hint: 'This sentence has the correct order.',
-    reward: '🏫 Good Grammar'
-  },
-  {
-    q: 'Which word is the opposite of fast?',
-    visual: '⚡ vs 🐢',
-    options: ['Slow', 'Big', 'Happy', 'Cold'],
-    a: 'Slow',
-    hint: 'Slow is the opposite of fast.',
-    reward: '🔄 Opposite Match'
-  },
-  {
-    q: 'Choose the correct pronoun to finish the sentence: ___ am ready.',
-    visual: '🙂',
-    options: ['I', 'You', 'He', 'We'],
-    a: 'I',
-    hint: 'The sentence is about yourself.',
-    reward: '🧠 Pronoun Power'
-  },
-  {
-    q: 'Which word is a synonym for happy?',
-    visual: '😊',
-    options: ['Joyful', 'Sad', 'Cold', 'Slow'],
-    a: 'Joyful',
-    hint: 'Joyful means happy.',
-    reward: '😊 Happy Word'
-  },
-  {
-    q: 'Which sentence uses correct capitalization?',
-    visual: '📝',
-    options: ['The dog barked loudly.', 'the dog barked loudly.', 'The Dog barked loudly.', 'the Dog barked loudly.'],
-    a: 'The dog barked loudly.',
-    hint: 'The first word in the sentence should start with a capital letter.',
-    reward: '✍️ Capital Start'
-  },
-  {
-    q: 'Which word belongs in the sentence: I ___ a book.',
-    visual: '📚',
-    options: ['read', 'house', 'ball', 'tree'],
-    a: 'read',
-    hint: 'We read a book.',
-    reward: '📚 Fill the Blank'
-  }
-];
+export const grade2English = {
+  
+  // ==================== EASY LEVELS (1 - 5) ====================
+  
+  1: [
+    { q: "Choose the word that rhymes with 'cat'.", options: ["mat", "sun", "tree", "ball"], a: "mat", hint: "It has the same ending sound as 'cat'." },
+    { q: "What is the opposite of 'big'?", options: ["small", "happy", "slow", "bright"], a: "small", hint: "A tiny thing is not big." },
+    { q: "Which word is a noun?", options: ["run", "happy", "dog", "jump"], a: "dog", hint: "A noun is a person, place, or thing." },
+    { q: "Which word means the same as 'happy'?", options: ["sad", "glad", "angry", "cold"], a: "glad", hint: "Both words describe feeling good." },
+    { q: "Which sentence is correct?", options: ["The cat sleep on the mat.", "The cat sleeps on the mat.", "The cat sleeping on the mat.", "Cat sleeps the on mat."], a: "The cat sleeps on the mat.", hint: "A singular subject needs a singular verb." },
+    { q: "What is the plural of 'book'?", options: ["bookes", "books", "bookies", "bookses"], a: "books", hint: "Use the usual plural spelling for this noun." },
+    { q: "Which word is an adjective?", options: ["jump", "blue", "run", "chair"], a: "blue", hint: "An adjective tells what kind." },
+    { q: "Which sentence uses a simile?", options: ["The sun smiled at us.", "He was as brave as a lion.", "The flower danced in the wind.", "The classroom was noisy."], a: "He was as brave as a lion.", hint: "A simile compares with 'as' or 'like'." },
+    { q: "What is the beginning sound of 'ship'?", options: ["sh", "ch", "th", "ph"], a: "sh", hint: "Listen to the first sound you hear." },
+    { q: "Which word is the opposite of 'hot'?", options: ["warm", "cool", "bright", "loud"], a: "cool", hint: "Think of the weather on a chilly morning." },
+    { q: "Which word rhymes with 'sun'?", options: ["fun", "tree", "cake", "boat"], a: "fun", hint: "They end with the same sound." },
+    { q: "Choose the correct word: 'I ___ my toy.'", options: ["have", "has", "haves", "having"], a: "have", hint: "It matches the subject 'I'." },
+    { q: "Which word is the opposite of 'up'?", options: ["down", "out", "in", "far"], a: "down", hint: "It is the direction opposite of up." },
+    { q: "Which sentence is a question?", options: ["I am happy.", "Please sit down.", "Where are you going?", "The dog barks."], a: "Where are you going?", hint: "It ends with a question mark." },
+    { q: "Which word means the same as 'little'?", options: ["small", "big", "loud", "fast"], a: "small", hint: "Both mean not big." }
+  ],
+  2: [
+    { q: "What is the opposite of 'fast'?", options: ["quick", "slow", "loud", "soft"], a: "slow", hint: "A turtle moves slowly." },
+    { q: "Which word means the same as 'tiny'?", options: ["little", "huge", "angry", "red"], a: "little", hint: "Both describe something very small." },
+    { q: "Choose the correct spelling.", options: ["becaus", "because", "becase", "becuase"], a: "because", hint: "This word has 'cause' in it." },
+    { q: "Which sentence is a question?", options: ["I am happy.", "Please sit down.", "Where are you going?", "The dog barks."], a: "Where are you going?", hint: "It ends with a question mark." },
+    { q: "What is the adjective in this sentence: 'The red apple fell.'?", options: ["apple", "fell", "red", "the"], a: "red", hint: "It tells what kind of apple." },
+    { q: "Which word is a synonym for 'smile'?", options: ["laugh", "cry", "sleep", "run"], a: "laugh", hint: "Both are happy actions." },
+    { q: "Which word best completes the sentence: 'I ___ my lunch.'", options: ["ate", "run", "blue", "happy"], a: "ate", hint: "You eat food before lunch is finished." },
+    { q: "What is the contraction for 'I am'?", options: ["I'm", "Ive", "I amn't", "Im"], a: "I'm", hint: "It joins the words with an apostrophe." },
+    { q: "Which sentence uses personification?", options: ["The leaves danced in the wind.", "She sings like a bird.", "The sky is blue.", "He runs fast."], a: "The leaves danced in the wind.", hint: "Leaves cannot really dance." },
+    { q: "Which word has the same vowel sound as 'cake'?", options: ["hat", "make", "fish", "ball"], a: "make", hint: "The long a sound is the same." },
+    { q: "Which word is the opposite of 'day'?", options: ["night", "morning", "sun", "bright"], a: "night", hint: "It is the opposite of daytime." },
+    { q: "Choose the correct sentence.", options: ["I am to school went.", "I went to school.", "I go school.", "School I went."], a: "I went to school.", hint: "The sentence needs a subject and a verb in order." },
+    { q: "Which word means the same as 'kind'?", options: ["gentle", "angry", "loud", "small"], a: "gentle", hint: "Both describe someone nice." },
+    { q: "What is the plural of 'child'?", options: ["childs", "children", "childes", "childer"], a: "children", hint: "This noun changes in the plural form." },
+    { q: "Which word is a verb?", options: ["jump", "purple", "table", "happy"], a: "jump", hint: "A verb shows action." }
+  ],
+  3: [
+    { q: "What is the antonym of 'day'?", options: ["night", "sun", "morning", "bright"], a: "night", hint: "It is the opposite of daytime." },
+    { q: "Which word is a synonym for 'kind'?", options: ["gentle", "angry", "loud", "tiny"], a: "gentle", hint: "Both describe someone nice." },
+    { q: "What is the plural of 'child'?", options: ["childs", "children", "childes", "childer"], a: "children", hint: "This noun changes its spelling in the plural form." },
+    { q: "Which word is a verb?", options: ["jump", "purple", "table", "happy"], a: "jump", hint: "A verb shows action." },
+    { q: "Which sentence shows a simile?", options: ["The stars winked at us.", "The road was a ribbon.", "He was as quiet as a mouse.", "The teacher is nice."], a: "He was as quiet as a mouse.", hint: "A simile uses 'as' or 'like'." },
+    { q: "Which word comes between 'cat' and 'dog' in alphabetical order?", options: ["apple", "bird", "elephant", "fish"], a: "bird", hint: "Alphabetical order follows the letters a to z." },
+    { q: "What is the opposite of 'soft'?", options: ["hard", "gentle", "warm", "kind"], a: "hard", hint: "Think of a pillow compared to a rock." },
+    { q: "Which word is a proper noun?", options: ["city", "mountain", "Sofia", "book"], a: "Sofia", hint: "A proper noun names a specific person, place, or thing." },
+    { q: "Which word is the opposite of 'cold'?", options: ["warm", "wet", "heavy", "slow"], a: "warm", hint: "On a sunny day, the weather can feel warm." },
+    { q: "What does the idiom 'break a leg' mean?", options: ["to break a body part", "to do well", "to sit down", "to cry"], a: "to do well", hint: "It is a saying used to wish someone luck." },
+    { q: "Which sentence uses ext correct capitalization?", options: ["i went to the park.", "I went to the park.", "I Went to the park.", "i Went to the park."], a: "I went to the park.", hint: "The pronoun I must be capitalized." },
+    { q: "What is the synonym of 'little'?", options: ["small", "large", "quick", "loud"], a: "small", hint: "Both mean not big." },
+    { q: "Which word rhymes with 'tree'?", options: ["three", "cat", "red", "sun"], a: "three", hint: "It has the same ending sound." },
+    { q: "Which word is a pronoun?", options: ["ball", "she", "run", "blue"], a: "she", hint: "A pronoun takes the place of a noun." },
+    { q: "What is the antonym of 'inside'?", options: ["out", "over", "under", "near"], a: "out", hint: "It means the opposite of being within." }
+  ],
+  4: [
+    { q: "Which word is the opposite of 'cold'?", options: ["warm", "wet", "heavy", "slow"], a: "warm", hint: "On a sunny day, the weather may feel warm." },
+    { q: "Which word means the same as 'brave'?", options: ["fearless", "sleepy", "small", "tired"], a: "fearless", hint: "Both describe someone who is not afraid." },
+    { q: "What is the correct plural of 'box'?", options: ["boxs", "boxes", "boxies", "boxen"], a: "boxes", hint: "Words ending in x often take -es." },
+    { q: "Which of these is a complete sentence?", options: ["The happy dog.", "Barked loudly.", "The dog barked loudly.", "Loudly dog barked."], a: "The dog barked loudly.", hint: "It has a subject and an action." },
+    { q: "Which word is an adverb in this sentence: 'The bird sang softly.'?", options: ["bird", "sang", "softly", "the"], a: "softly", hint: "An adverb tells how an action is done." },
+    { q: "Which phrase is a metaphor?", options: ["The moon is like a silver coin.", "The classroom was a zoo.", "He ran as fast as lightning.", "The wind whispered."], a: "The classroom was a zoo.", hint: "A metaphor says one thing is another without 'like' or 'as'." },
+    { q: "What is the antonym of 'empty'?", options: ["full", "dark", "quiet", "clean"], a: "full", hint: "A container that is not empty is full." },
+    { q: "Which word is a compound word?", options: ["rainbow", "happy", "run", "smile"], a: "rainbow", hint: "It is made from two smaller words: rain + bow." },
+    { q: "Which sentence uses correct punctuation?", options: ["Where is my book!", "Where is my book?", "Where is my book.", "where is my book?"], a: "Where is my book?", hint: "Questions end with a question mark." },
+    { q: "Which word is the opposite of 'friend'?", options: ["enemy", "pal", "buddy", "classmate"], a: "enemy", hint: "A friend is not an enemy." },
+    { q: "Which word means the same as 'quick'?", options: ["fast", "slow", "sad", "tiny"], a: "fast", hint: "Both describe speed." },
+    { q: "What is the opposite of 'loud'?", options: ["quiet", "bright", "big", "happy"], a: "quiet", hint: "A whisper is quiet, not loud." },
+    { q: "Which word is a noun in this sentence: 'The flower smells sweet.'?", options: ["smells", "sweet", "flower", "the"], a: "flower", hint: "It is a thing." },
+    { q: "Which sentence has a proper noun?", options: ["I like my teacher.", "We visited Manila.", "The dog ran home.", "The book is new."], a: "We visited Manila.", hint: "Proper nouns name specific places." },
+    { q: "What is the synonym of 'angry'?", options: ["mad", "calm", "kind", "warm"], a: "mad", hint: "Both describe a strong feeling of anger." }
+  ],
+  5: [
+    { q: "Which word means the same as 'quick'?", options: ["fast", "slow", "sad", "tiny"], a: "fast", hint: "Both describe speed." },
+    { q: "What is the opposite of 'loud'?", options: ["quiet", "bright", "big", "happy"], a: "quiet", hint: "A whisper is quiet, not loud." },
+    { q: "Which word is a noun in this sentence: 'The flower smells sweet.'?", options: ["smells", "sweet", "flower", "the"], a: "flower", hint: "It is a thing." },
+    { q: "Which sentence has a proper noun?", options: ["I like my teacher.", "We visited Manila.", "The dog ran home.", "The book is new."], a: "We visited Manila.", hint: "Proper nouns name specific places." },
+    { q: "What is the synonym of 'angry'?", options: ["mad", "calm", "kind", "warm"], a: "mad", hint: "Both describe a strong feeling of anger." },
+    { q: "Choose the word that matches the sound: 'h__t'", options: ["hit", "hat", "hot", "hut"], a: "hot", hint: "It is a word describing temperature." },
+    { q: "Which sentence is a command?", options: ["The dog is barking.", "Close the door.", "What a big dog!", "I went to the park."], a: "Close the door.", hint: "A command tells someone to do something." },
+    { q: "Which word is an antonym of 'beautiful'?", options: ["ugly", "bright", "happy", "golden"], a: "ugly", hint: "These two words are opposites." },
+    { q: "Which sentence has a metaphor?", options: ["The classroom was a busy beehive.", "The leaves fell like rain.", "The moon shone bright.", "She was taller than her brother."], a: "The classroom was a busy beehive.", hint: "It says the classroom is a beehive without 'like' or 'as'." },
+    { q: "Which word completes the sentence: 'The kids are ___ in the playground.'", options: ["playing", "jumped", "book", "happy"], a: "playing", hint: "This tells what they are doing now." },
+    { q: "Which word is the opposite of 'before'?", options: ["after", "under", "inside", "behind"], a: "after", hint: "It means the time that comes later." },
+    { q: "What is the synonym of 'little'?", options: ["small", "large", "quick", "loud"], a: "small", hint: "Both mean not big." },
+    { q: "Which word rhymes with 'tree'?", options: ["three", "cat", "red", "sun"], a: "three", hint: "It has the same ending sound." },
+    { q: "Which word is a pronoun?", options: ["ball", "she", "run", "blue"], a: "she", hint: "A pronoun takes the place of a noun." },
+    { q: "What is the antonym of 'inside'?", options: ["out", "over", "under", "near"], a: "out", hint: "It means the opposite of being within." }
+  ],
 
-export const grade2English = {};
+// ==================== MEDIUM LEVELS (6 - 10) ====================
 
-for (let level = 1; level <= 15; level += 1) {
-  grade2English[level] = Array.from({ length: 15 }, (_, index) => {
-    const template = grade2EnglishTemplates[(level + index) % grade2EnglishTemplates.length];
-    return {
-      q: template.q,
-      visual: template.visual,
-      options: template.options,
-      optionIcons: ['1️⃣', '2️⃣', '3️⃣', '4️⃣'],
-      a: template.a,
-      hint: template.hint,
-      reward: template.reward
-    };
-  });
-}
+  6: [
+    { q: "Which word is the opposite of 'before'?", options: ["after", "under", "inside", "behind"], a: "after", hint: "It means the time that comes later." },
+    { q: "What is the synonym of 'little'?", options: ["small", "large", "quick", "loud"], a: "small", hint: "Both mean not big." },
+    { q: "Which word rhymes with 'tree'?", options: ["three", "cat", "red", "sun"], a: "three", hint: "It has the same ending sound." },
+    { q: "Which sentence uses correct capitalization?", options: ["i went to the park.", "I went to the park.", "I Went to the park.", "i Went to the park."], a: "I went to the park.", hint: "The pronoun I must be capitalized." },
+    { q: "Which word is a pronoun?", options: ["ball", "she", "run", "blue"], a: "she", hint: "A pronoun takes the place of a noun." },
+    { q: "What is the antonym of 'inside'?", options: ["out", "over", "under", "near"], a: "out", hint: "It means the opposite of being within." },
+    { q: "Which phrase is an example of alliteration?", options: ["big blue balloon", "as strong as steel", "the wind whispered", "The tree is tall."], a: "big blue balloon", hint: "Alliteration repeats the same beginning sound." },
+    { q: "What is the plural of 'lady'?", options: ["ladys", "ladies", "ladyes", "ladyes"], a: "ladies", hint: "Words ending in y often change to ies." },
+    { q: "Which is the correct spelling?", options: ["friend", "frend", "freind", "frendd"], a: "friend", hint: "The word has the letters 'frie' in it." },
+    { q: "Which word means the same as 'tired'?", options: ["sleepy", "happy", "bright", "clean"], a: "sleepy", hint: "Both describe wanting rest." },
+    { q: "What is the opposite of 'light'?", options: ["dark", "bright", "small", "soft"], a: "dark", hint: "Think of the opposite of a bright room." },
+    { q: "Which sentence is a fact?", options: ["Cats are pets.", "Cats are the best pets.", "Cats are funny.", "Cats are cuddly."], a: "Cats are pets.", hint: "A fact is something true and can be checked." },
+    { q: "What is the synonym of 'clean'?", options: ["neat", "messy", "rough", "noisy"], a: "neat", hint: "Both describe something tidy." },
+    { q: "Which word is a vowel team?", options: ["sh", "ch", "ee", "th"], a: "ee", hint: "It is made of two vowels together." },
+    { q: "Choose the correct punctuation: 'I like apples ___'", options: [".", "!", "?", ","], a: ".", hint: "A statement ends with a period." }
+  ],
+  7: [
+    { q: "What is the opposite of 'light'?", options: ["dark", "bright", "small", "soft"], a: "dark", hint: "Think of the opposite of a bright room." },
+    { q: "Which sentence is a fact?", options: ["Cats are pets.", "Cats are the best pets.", "Cats are funny.", "Cats are cuddly."], a: "Cats are pets.", hint: "A fact is something true and can be checked." },
+    { q: "What is the synonym of 'clean'?", options: ["neat", "messy", "rough", "noisy"], a: "neat", hint: "Both describe something tidy." },
+    { q: "Which word is a vowel team?", options: ["sh", "ch", "ee", "th"], a: "ee", hint: "It is made of two vowels together." },
+    { q: "Choose the correct punctuation: 'I like apples ___'", options: [".", "!", "?", ","], a: ".", hint: "A statement ends with a period." },
+    { q: "Which word is the opposite of 'up'?", options: ["down", "in", "over", "under"], a: "down", hint: "It is the opposite direction." },
+    { q: "What does the simile 'as busy as a bee' mean?", options: ["very sleepy", "very busy", "very quiet", "very tiny"], a: "very busy", hint: "Bees are known for working hard." },
+    { q: "Which word is a synonym for 'difficult'?", options: ["hard", "easy", "warm", "shiny"], a: "hard", hint: "Both describe something not easy." },
+    { q: "What is the past tense of 'play'?", options: ["playd", "played", "playes", "playing"], a: "played", hint: "This verb uses the common past-tense ending." },
+    { q: "Which sentence uses personification?", options: ["The stars smiled down on us.", "She is tall.", "The bird is blue.", "We ran home."], a: "The stars smiled down on us.", hint: "Stars cannot really smile." },
+    { q: "Which is the antonym of 'gentle'?", options: ["rough", "soft", "quiet", "kind"], a: "rough", hint: "Rough is not gentle." },
+    { q: "What is the meaning of 'careful'?", options: ["not safe", "being cautious", "very loud", "easy"], a: "being cautious", hint: "It means paying attention and being safe." },
+    { q: "Which word is a synonym of 'brisk'?", options: ["quick", "slow", "sad", "dark"], a: "quick", hint: "Both describe being fast." },
+    { q: "What is the correct ending for 'jump'?", options: ["-ed", "-ing", "-er", "-ly"], a: "-ed", hint: "This makes it the past tense in 'jumped'." },
+    { q: "Which word has the same beginning sound as 'chair'?", options: ["ship", "cheese", "tree", "sun"], a: "cheese", hint: "Both begin with the 'ch' sound." }
+  ],
+  8: [
+    { q: "Which is the antonym of 'gentle'?", options: ["rough", "soft", "quiet", "kind"], a: "rough", hint: "Rough is not gentle." },
+    { q: "What is the meaning of 'careful'?", options: ["not safe", "being cautious", "very loud", "easy"], a: "being cautious", hint: "It means paying attention and being safe." },
+    { q: "Which word is a synonym of 'brisk'?", options: ["quick", "slow", "sad", "dark"], a: "quick", hint: "Both describe being fast." },
+    { q: "What is the correct ending for 'jump'?", options: ["-ed", "-ing", "-er", "-ly"], a: "-ed", hint: "This makes it the past tense in 'jumped'." },
+    { q: "Which word has the same beginning sound as 'chair'?", options: ["ship", "cheese", "tree", "sun"], a: "cheese", hint: "Both begin with the 'ch' sound." },
+    { q: "Which sentence contains an apostrophe correctly?", options: ["The dogs bone is big.", "The dog's bone is big.", "The dogs's bone is big.", "The dog bone is big."], a: "The dog's bone is big.", hint: "The apostrophe shows possession." },
+    { q: "Which word is the opposite of 'healthy'?", options: ["sick", "strong", "happy", "fast"], a: "sick", hint: "A healthy person is not sick." },
+    { q: "What is the meaning of the metaphor 'He is a shining star'?", options: ["He is in the sky.", "He is very talented.", "He is a starfish.", "He is sleepy."], a: "He is very talented.", hint: "It compares a person to a bright star." },
+    { q: "Which word is a compound word?", options: ["sunflower", "purple", "smile", "paper"], a: "sunflower", hint: "It is made from sun + flower." },
+    { q: "What is the antonym of 'old'?", options: ["new", "tall", "happy", "sharp"], a: "new", hint: "These are opposite ages." },
+    { q: "Which word means the same as 'kindly'?", options: ["nicely", "rudely", "quietly", "angrily"], a: "nicely", hint: "Both describe a gentle way of acting." },
+    { q: "What is the opposite of 'begin'?", options: ["start", "end", "move", "open"], a: "end", hint: "It marks the opposite of starting." },
+    { q: "Choose the correct spelling.", options: ["seperate", "separate", "seperete", "separete"], a: "separate", hint: "The word has 'par' in it." },
+    { q: "Which of these is a descriptive adjective?", options: ["jump", "quickly", "happy", "run"], a: "happy", hint: "It tells how someone feels." },
+    { q: "Which sentence uses a simile?", options: ["The wind sang a song.", "The grass was a carpet.", "The moon glowed like a lantern.", "The stars are bright."], a: "The moon glowed like a lantern.", hint: "It compares using 'like'." }
+  ],
+  9: [
+    { q: "Which word means the same as 'kindly'?", options: ["nicely", "rudely", "quietly", "angrily"], a: "nicely", hint: "Both describe a gentle way of acting." },
+    { q: "What is the opposite of 'begin'?", options: ["start", "end", "move", "open"], a: "end", hint: "It marks the opposite of starting." },
+    { q: "Choose the correct spelling.", options: ["seperate", "separate", "seperete", "separete"], a: "separate", hint: "The word has 'par' in it." },
+    { q: "Which of these is a descriptive adjective?", options: ["jump", "quickly", "happy", "run"], a: "happy", hint: "It tells how someone feels." },
+    { q: "Which sentence uses a simile?", options: ["The wind sang a song.", "The grass was a carpet.", "The moon glowed like a lantern.", "The stars are bright."], a: "The moon glowed like a lantern.", hint: "It compares using 'like'." },
+    { q: "Which word is an antonym of 'rich'?", options: ["poor", "happy", "kind", "soft"], a: "poor", hint: "A rich person is not poor." },
+    { q: "Which capital letter should start this sentence: '___ dog ran to the gate.'", options: ["A", "The", "My", "We"], a: "The", hint: "A sentence usually starts with a capital letter, and 'The' is a correct choice here." },
+    { q: "What is the past tense of 'see'?", options: ["seed", "saw", "seen", "seeing"], a: "saw", hint: "It is an irregular past-tense verb." },
+    { q: "Which word is a synonym for 'giggle'?", options: ["laugh", "cry", "scream", "whisper"], a: "laugh", hint: "Both are happy sounds." },
+    { q: "Which is the correct homophone pair?", options: ["bear / bare", "sun / moon", "dog / cat", "book / read"], a: "bear / bare", hint: "They sound the same but have different meanings." },
+    { q: "Which word is the opposite of 'above'?", options: ["below", "near", "before", "inside"], a: "below", hint: "Above means higher than; below means lower than." },
+    { q: "What is the synonym of 'delightful'?", options: ["pleasant", "ugly", "heavy", "angry"], a: "pleasant", hint: "Both mean nice or enjoyable." },
+    { q: "Which sentence is written correctly?", options: ["She go to the store.", "She goes to the store.", "She going to the store.", "She goed to the store."], a: "She goes to the store.", hint: "The verb matches the subject she." },
+    { q: "Which word has the same meaning as 'tiny'?", options: ["little", "huge", "loud", "dark"], a: "little", hint: "Both describe something very small." },
+    { q: "What is the antonym of 'winner'?", options: ["loser", "champion", "leader", "player"], a: "loser", hint: "A winner is not a loser." }
+  ],
+  10: [
+    { q: "Which word is the opposite of 'above'?", options: ["below", "near", "before", "inside"], a: "below", hint: "Above means higher than; below means lower than." },
+    { q: "What is the synonym of 'delightful'?", options: ["pleasant", "ugly", "heavy", "angry"], a: "pleasant", hint: "Both mean nice or enjoyable." },
+    { q: "Which sentence is written correctly?", options: ["She go to the store.", "She goes to the store.", "She going to the store.", "She goed to the store."], a: "She goes to the store.", hint: "The verb matches the subject she." },
+    { q: "Which word has the same meaning as 'tiny'?", options: ["little", "huge", "loud", "dark"], a: "little", hint: "Both describe something very small." },
+    { q: "What is the antonym of 'winner'?", options: ["loser", "champion", "leader", "player"], a: "loser", hint: "A winner is not a loser." },
+    { q: "Which phrase is an example of alliteration?", options: ["soft and slow", "fuzzy fox", "happy day", "blue sky"], a: "fuzzy fox", hint: "The same initial sound repeats." },
+    { q: "Which word is a proper noun?", options: ["teacher", "school", "Monday", "book"], a: "Monday", hint: "It names a specific day of the week." },
+    { q: "What is the meaning of the idiom 'piece of cake'?", options: ["very hard", "very easy", "very fast", "very cold"], a: "very easy", hint: "It means something is simple to do." },
+    { q: "What is the past tense of 'eat'?", options: ["eated", "ate", "eaten", "eats"], a: "ate", hint: "This is an irregular past-tense verb." },
+    { q: "Which sentence uses a metaphor?", options: ["The moon was a silver lantern.", "The cat slept like a baby.", "She ran as fast as the wind.", "The house is big."], a: "The moon was a silver lantern.", hint: "A metaphor compares without 'like' or 'as'." },
+    { q: "Which word is an antonym of 'safe'?", options: ["dangerous", "careful", "happy", "bright"], a: "dangerous", hint: "Safe means protected; dangerous means risky." },
+    { q: "Choose the word that means the same as 'grin'.", options: ["smile", "cry", "whisper", "frown"], a: "smile", hint: "Both are expressions of happiness." },
+    { q: "Which is the correct question mark sentence?", options: ["We are going home.", "We are going home!", "We are going home?", "we are going home?"], a: "We are going home?", hint: "This sentence is a question." },
+    { q: "What is the opposite of 'borrow'?", options: ["lend", "give", "share", "take"], a: "lend", hint: "Borrow means take from someone; lend means give." },
+    { q: "Which sentence contains an adjective?", options: ["The puppy is playful.", "The puppy runs.", "The puppy barks.", "The puppy sleeps."], a: "The puppy is playful.", hint: "Playful tells what kind of puppy." }
+  ],
+
+// ==================== HARD LEVELS (11 - 15) ====================
+
+  11: [
+    { q: "Which word is an antonym of 'safe'?", options: ["dangerous", "careful", "happy", "bright"], a: "dangerous", hint: "Safe means protected; dangerous means risky." },
+    { q: "Choose the word that means the same as 'grin'.", options: ["smile", "cry", "whisper", "frown"], a: "smile", hint: "Both are expressions of happiness." },
+    { q: "Which is the correct question mark sentence?", options: ["We are going home.", "We are going home!", "We are going home?", "we are going home?"], a: "We are going home?", hint: "This sentence is a question." },
+    { q: "What is the opposite of 'borrow'?", options: ["lend", "give", "share", "take"], a: "lend", hint: "Borrow means take from someone; lend means give." },
+    { q: "Which sentence contains an adjective?", options: ["The puppy is playful.", "The puppy runs.", "The puppy barks.", "The puppy sleeps."], a: "The puppy is playful.", hint: "Playful tells what kind of puppy." },
+    { q: "Which word completes the sentence: 'The ___ sky looked beautiful.'", options: ["blue", "run", "jump", "laugh"], a: "blue", hint: "It describes the sky." },
+    { q: "What is the meaning of the idiom 'under the weather'?", options: ["happy", "sick", "sunny", "busy"], a: "sick", hint: "It means feeling unwell." },
+    { q: "Which word is a synonym for 'frightened'?", options: ["afraid", "excited", "joyful", "brave"], a: "afraid", hint: "Both describe fear." },
+    { q: "What is the plural of 'tomato'?", options: ["tomatos", "tomatoes", "tomatoes", "tomato"], a: "tomatoes", hint: "This noun follows a special plural spelling pattern." },
+    { q: "Which sentence is an example of personification?", options: ["The rain tapped the window.", "The dog is fast.", "The cat is small.", "The book is red."], a: "The rain tapped the window.", hint: "Rain cannot really tap." },
+    { q: "Which word is the opposite of 'generous'?", options: ["stingy", "kind", "happy", "friendly"], a: "stingy", hint: "Generous means giving; stingy means not giving." },
+    { q: "What is the synonym of 'joyful'?", options: ["happy", "sad", "slow", "hard"], a: "happy", hint: "Both describe a cheerful feeling." },
+    { q: "Which word is a compound word?", options: ["butterfly", "garden", "flower", "tree"], a: "butterfly", hint: "It is made from butter + fly." },
+    { q: "Choose the correct homophone: 'I ___ a red balloon.'", options: ["see", "sea", "saw", "sun"], a: "see", hint: "It means to look with your eyes." },
+    { q: "Which word means the same as 'merry'?", options: ["happy", "angry", "cold", "small"], a: "happy", hint: "Merry is a cheerful word." }
+  ],
+  12: [
+    { q: "Which word is the opposite of 'generous'?", options: ["stingy", "kind", "happy", "friendly"], a: "stingy", hint: "Generous means giving; stingy means not giving." },
+    { q: "What is the synonym of 'joyful'?", options: ["happy", "sad", "slow", "hard"], a: "happy", hint: "Both describe a cheerful feeling." },
+    { q: "Which word is a compound word?", options: ["butterfly", "garden", "flower", "tree"], a: "butterfly", hint: "It is made from butter + fly." },
+    { q: "Choose the correct homophone: 'I ___ a red balloon.'", options: ["see", "sea", "saw", "sun"], a: "see", hint: "It means to look with your eyes." },
+    { q: "Which word means the same as 'merry'?", options: ["happy", "angry", "cold", "small"], a: "happy", hint: "Merry is a cheerful word." },
+    { q: "What is the past tense of 'write'?", options: ["writed", "written", "wrote", "writing"], a: "wrote", hint: "It is an irregular past-tense verb." },
+    { q: "Which sentence uses alliteration?", options: ["Silly snakes slither silently.", "The sky is blue.", "The dog barks.", "The moon is round."], a: "Silly snakes slither silently.", hint: "Many words begin with the same sound." },
+    { q: "Which word is the antonym of 'clear'?", options: ["cloudy", "bright", "clean", "fresh"], a: "cloudy", hint: "Clear and cloudy are opposites in description." },
+    { q: "Which sentence is a statement?", options: ["Can you help me?", "Close the window.", "The window is open.", "What a big window!"], a: "The window is open.", hint: "It tells information, not a command or question." },
+    { q: "What is the correct spelling of the word meaning 'to go with someone'?", options: ["accompany", "acompany", "akompany", "acompany"], a: "accompany", hint: "It has 'company' inside the word." },
+    { q: "Which word is the opposite of 'noisy'?", options: ["quiet", "bright", "happy", "fast"], a: "quiet", hint: "Noisy means loud; quiet means not loud." },
+    { q: "What is the synonym of 'tiny'?", options: ["small", "big", "kind", "long"], a: "small", hint: "Both mean very little." },
+    { q: "Which word is an adverb?", options: ["slowly", "chair", "happy", "apple"], a: "slowly", hint: "It tells how an action happens." },
+    { q: "Which sentence contains a metaphor?", options: ["The snow is like a blanket.", "The snow was a blanket.", "The snow is white.", "The snow fell softly."], a: "The snow was a blanket.", hint: "It compares without using 'like' or 'as'." },
+    { q: "What is the correct plural of 'knife'?", options: ["knifes", "knive", "knives", "knifees"], a: "knives", hint: "The f changes to ves in some plurals." }
+  ],
+  13: [
+    { q: "Which word is the opposite of 'noisy'?", options: ["quiet", "bright", "happy", "fast"], a: "quiet", hint: "Noisy means loud; quiet means not loud." },
+    { q: "What is the synonym of 'tiny'?", options: ["small", "big", "kind", "long"], a: "small", hint: "Both mean very little." },
+    { q: "Which word is an adverb?", options: ["slowly", "chair", "happy", "apple"], a: "slowly", hint: "It tells how an action happens." },
+    { q: "Which sentence contains a metaphor?", options: ["The snow is like a blanket.", "The snow was a blanket.", "The snow is white.", "The snow fell softly."], a: "The snow was a blanket.", hint: "It compares without using 'like' or 'as'." },
+    { q: "What is the correct plural of 'knife'?", options: ["knifes", "knive", "knives", "knifees"], a: "knives", hint: "The f changes to ves in some plurals." },
+    { q: "Which word is the opposite of 'cheap'?", options: ["expensive", "small", "short", "light"], a: "expensive", hint: "Cheap and expensive are opposites." },
+    { q: "What is the meaning of 'as light as a feather'?", options: ["very heavy", "very light", "very loud", "very short"], a: "very light", hint: "A feather is light, so the comparison means very light." },
+    { q: "Which word completes the sentence: 'She was ___ when she got a prize.'", options: ["happy", "table", "jump", "chair"], a: "happy", hint: "A prize often makes someone feel joyful." },
+    { q: "Which sentence uses correct punctuation?", options: ["Wow, that was fun!", "Wow, that was fun?", "Wow that was fun?", "wow, that was fun!"], a: "Wow, that was fun!", hint: "Exclamations end with an exclamation mark." },
+    { q: "What is the antonym of 'silly'?", options: ["smart", "loud", "weak", "tiny"], a: "smart", hint: "Silly and smart are opposites." },
+    { q: "Which word is a synonym for 'wonderful'?", options: ["great", "awful", "boring", "tiny"], a: "great", hint: "Both describe something very good." },
+    { q: "What is the opposite of 'deep'?", options: ["shallow", "wide", "bright", "slow"], a: "shallow", hint: "A shallow pool is not deep." },
+    { q: "Which sentence shows personification?", options: ["The moon watched over us.", "The dog barks loudly.", "The sky is blue.", "The child laughs."], a: "The moon watched over us.", hint: "The moon cannot really watch." },
+    { q: "Which word belongs in the blank: 'The puppy is ___.'", options: ["sleepy", "run", "jump", "book"], a: "sleepy", hint: "It describes the puppy." },
+    { q: "Choose the word with the same meaning as 'rapid'.", options: ["fast", "slow", "soft", "small"], a: "fast", hint: "Rapid means quick." }
+  ],
+  14: [
+    { q: "Which word is a synonym for 'wonderful'?", options: ["great", "awful", "boring", "tiny"], a: "great", hint: "Both describe something very good." },
+    { q: "What is the opposite of 'deep'?", options: ["shallow", "wide", "bright", "slow"], a: "shallow", hint: "A shallow pool is not deep." },
+    { q: "Which sentence shows personification?", options: ["The moon watched over us.", "The dog barks loudly.", "The sky is blue.", "The child laughs."], a: "The moon watched over us.", hint: "The moon cannot really watch." },
+    { q: "Which word belongs in the blank: 'The puppy is ___.'", options: ["sleepy", "run", "jump", "book"], a: "sleepy", hint: "It describes the puppy." },
+    { q: "Choose the word with the same meaning as 'rapid'.", options: ["fast", "slow", "soft", "small"], a: "fast", hint: "Rapid means quick." },
+    { q: "What is the correct contraction for 'we are'?", options: ["we're", "wer'e", "wear", "we ar"], a: "we're", hint: "It combines we and are with an apostrophe." },
+    { q: "Which sentence uses a simile?", options: ["The river was a ribbon.", "The river was like a ribbon.", "The river is wide.", "The river flowed."], a: "The river was like a ribbon.", hint: "A simile uses 'like' or 'as'." },
+    { q: "What is the antonym of 'easy'?", options: ["hard", "small", "narrow", "soft"], a: "hard", hint: "Easy and hard are opposites." },
+    { q: "Which phrase is an example of alliteration?", options: ["bright blue bike", "happy dog", "purple apple", "loud noise"], a: "bright blue bike", hint: "The b sound repeats." },
+    { q: "What is the plural of 'mouse'?", options: ["mouses", "mice", "mousees", "mouse"], a: "mice", hint: "It changes its spelling in the plural form." },
+    { q: "Which word is the opposite of 'difficult'?", options: ["easy", "gentle", "safe", "bright"], a: "easy", hint: "Difficult and easy are opposites." },
+    { q: "What is the synonym of 'glad'?", options: ["happy", "sad", "angry", "sleepy"], a: "happy", hint: "Both describe feeling cheerful." },
+    { q: "Which sentence uses the correct verb?", options: ["He run fast.", "He runs fast.", "He running fast.", "He runned fast."], a: "He runs fast.", hint: "The verb matches a singular subject." },
+    { q: "Which word means the same as 'calm'?", options: ["peaceful", "loud", "rough", "angry"], a: "peaceful", hint: "Both describe being relaxed and quiet." },
+    { q: "What is the antonym of 'late'?", options: ["early", "slow", "bright", "young"], a: "early", hint: "Late is the opposite of early." }
+  ],
+  15: [
+    { q: "Which word is the opposite of 'difficult'?", options: ["easy", "gentle", "safe", "bright"], a: "easy", hint: "Difficult and easy are opposites." },
+    { q: "What is the synonym of 'glad'?", options: ["happy", "sad", "angry", "sleepy"], a: "happy", hint: "Both describe feeling cheerful." },
+    { q: "Which sentence uses the correct verb?", options: ["He run fast.", "He runs fast.", "He running fast.", "He runned fast."], a: "He runs fast.", hint: "The verb matches a singular subject." },
+    { q: "Which word means the same as 'calm'?", options: ["peaceful", "loud", "rough", "angry"], a: "peaceful", hint: "Both describe being relaxed and quiet." },
+    { q: "What is the antonym of 'late'?", options: ["early", "slow", "bright", "young"], a: "early", hint: "Late is the opposite of early." },
+    { q: "Which of these is a metaphor?", options: ["The stars winked at me.", "The stars were sparkling gems.", "The stars are bright.", "The stars are above us."], a: "The stars were sparkling gems.", hint: "It compares stars to gems without using 'like' or 'as'." },
+    { q: "What is the meaning of 'at the drop of a hat'?", options: ["very slowly", "right away", "in the dark", "very carefully"], a: "right away", hint: "It means immediately." },
+    { q: "Which word is the correct antonym of 'thin'?", options: ["thick", "short", "fast", "small"], a: "thick", hint: "Thin and thick are opposites." },
+    { q: "Choose the correct sentence.", options: ["I am going to school today.", "I is going to school today.", "I am go school today.", "I are going to school today."], a: "I am going to school today.", hint: "The verb phrase must match the subject I." },
+    { q: "Which word completes the sentence: 'The ___ teacher smiled at us.'", options: ["kind", "jump", "chair", "bark"], a: "kind", hint: "It describes the teacher." },
+    { q: "Which word is the opposite of 'safe'?", options: ["dangerous", "careful", "happy", "bright"], a: "dangerous", hint: "Safe means protected; dangerous means risky." },
+    { q: "Choose the word that means the same as 'grin'.", options: ["smile", "cry", "whisper", "frown"], a: "smile", hint: "Both are expressions of happiness." },
+    { q: "Which is the correct question mark sentence?", options: ["We are going home.", "We are going home!", "We are going home?", "we are going home?"], a: "We are going home?", hint: "This sentence is a question." },
+    { q: "What is the opposite of 'borrow'?", options: ["lend", "give", "share", "take"], a: "lend", hint: "Borrow means take from someone; lend means give." },
+    { q: "Which sentence uses personification?", options: ["The rain tapped the window.", "The dog is fast.", "The cat is small.", "The book is red."], a: "The rain tapped the window.", hint: "Rain cannot really tap." }
+  ]
+};
 
 export default grade2English;

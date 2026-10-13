@@ -1,143 +1,267 @@
 // src/data/questions/grade2/math.jsx
 
-export const grade2MathTemplates = [
-  {
-    q: 'What is 10 + 5?',
-    visual: '🔟 + 5️⃣',
-    options: ['12', '14', '15', '16'],
-    a: '15',
-    hint: '10 and 5 make 15.',
-    reward: '➕ Number Builder'
-  },
-  {
-    q: 'Which number is even?',
-    visual: '2️⃣ 3️⃣ 5️⃣ 7️⃣',
-    options: ['2', '3', '5', '7'],
-    a: '2',
-    hint: 'Even numbers can be paired equally.',
-    reward: '🎯 Even Pair'
-  },
-  {
-    q: 'What is 9 - 4?',
-    visual: '9️⃣ - 4️⃣',
-    options: ['3', '4', '5', '6'],
-    a: '5',
-    hint: '9 minus 4 is 5.',
-    reward: '➖ Subtract Splash'
-  },
-  {
-    q: 'Which time is 2 o’clock?',
-    visual: '🕑',
-    options: ['2:00', '3:00', '1:00', '4:00'],
-    a: '2:00',
-    hint: '2 o’clock means 2:00.',
-    reward: '🕒 Clock Time'
-  },
-  {
-    q: 'What is 6 + 3?',
-    visual: '6️⃣ + 3️⃣',
-    options: ['8', '9', '10', '11'],
-    a: '9',
-    hint: '6 + 3 = 9.',
-    reward: '🚀 Quick Sum'
-  },
-  {
-    q: 'Which shape has 4 sides?',
-    visual: '🟦 🔺 ⭕',
-    options: ['Rectangle', 'Triangle', 'Circle', 'Oval'],
-    a: 'Rectangle',
-    hint: 'A rectangle has four sides.',
-    reward: '🧩 Four Sides'
-  },
-  {
-    q: 'What is 12 + 6?',
-    visual: '1️⃣2️⃣ + 6️⃣',
-    options: ['16', '18', '20', '22'],
-    a: '18',
-    hint: '12 + 6 = 18.',
-    reward: '🎯 Add More'
-  },
-  {
-    q: 'Which number is odd?',
-    visual: '8️⃣ 9️⃣ 10️⃣ 12️⃣',
-    options: ['9', '8', '10', '12'],
-    a: '9',
-    hint: '9 is odd because it cannot make pairs.',
-    reward: '🌟 Odd One Out'
-  },
-  {
-    q: 'What is 15 - 7?',
-    visual: '1️⃣5️⃣ - 7️⃣',
-    options: ['7', '8', '9', '10'],
-    a: '8',
-    hint: '15 take away 7 leaves 8.',
-    reward: '➖ Deep Subtract'
-  },
-  {
-    q: 'How many sides does a hexagon have?',
-    visual: '🧩',
-    options: ['5', '6', '7', '8'],
-    a: '6',
-    hint: 'Hexagon means six sides.',
-    reward: '🧩 Six-Sided Hero'
-  },
-  {
-    q: 'What is 7 + 8?',
-    visual: '7️⃣ + 8️⃣',
-    options: ['14', '15', '16', '17'],
-    a: '15',
-    hint: '7 + 8 = 15.',
-    reward: '⭐ Sum Spark'
-  },
-  {
-    q: 'What is 18 - 9?',
-    visual: '1️⃣8️⃣ - 9️⃣',
-    options: ['8', '9', '10', '11'],
-    a: '9',
-    hint: '18 minus 9 is 9.',
-    reward: '🔢 Take Away'
-  },
-  {
-    q: 'Which number is bigger: 13 or 17?',
-    visual: '1️⃣3️⃣ vs 1️⃣7️⃣',
-    options: ['13', '17', '15', '11'],
-    a: '17',
-    hint: '17 is greater than 13.',
-    reward: '📈 Bigger Number'
-  },
-  {
-    q: 'What is 5 x 2?',
-    visual: '5️⃣ x 2️⃣',
-    options: ['7', '9', '10', '12'],
-    a: '10',
-    hint: '5 groups of 2 make 10.',
-    reward: '✖️ Multiply Magic'
-  },
-  {
-    q: 'What is 16 ÷ 4?',
-    visual: '1️⃣6️⃣ ÷ 4️⃣',
-    options: ['3', '4', '5', '6'],
-    a: '4',
-    hint: '4 groups of 4 make 16.',
-    reward: '➗ Divide Smarts'
-  }
-];
+export const grade2Math = {
 
-export const grade2Math = {};
+    // ==================== EASY LEVELS (1 - 5) ====================
+  1: [
+    { q: "What is the value of the digit 4 in 47?", options: ["4", "7", "40", "47"], a: "40", hint: "The 4 is in the tens place." },
+    { q: "Which number is greatest?", options: ["62", "26", "52", "25"], a: "62", hint: "Compare the tens digits first." },
+    { q: "What number comes after 399?", options: ["398", "400", "409", "390"], a: "400", hint: "Count one more." },
+    { q: "What is 26 + 13?", options: ["39", "38", "49", "33"], a: "39", hint: "Add the ones, then the tens." },
+    { q: "What is 54 - 20?", options: ["34", "74", "35", "24"], a: "34", hint: "Take away two tens." },
+    { q: "Which number has 6 tens and 2 ones?", options: ["26", "602", "62", "620"], a: "62", hint: "Six tens is 60." },
+    { q: "What is 8 + 8?", options: ["14", "16", "18", "15"], a: "16", hint: "Double 8." },
+    { q: "What is 73 - 3?", options: ["70", "76", "43", "73"], a: "70", hint: "Take away three ones." },
+    { q: "Which is an even number?", options: ["17", "23", "36", "41"], a: "36", hint: "An even number can be split into pairs." },
+    { q: "Complete the pattern: 5, 10, 15, __", options: ["18", "20", "25", "30"], a: "20", hint: "Add 5 each time." },
+    { q: "How many sides does a rectangle have?", options: ["3", "4", "5", "6"], a: "4", hint: "Count its straight edges." },
+    { q: "Which number is closest to 50?", options: ["39", "47", "61", "72"], a: "47", hint: "Compare how far each number is from 50." },
+    { q: "What is 31 + 9?", options: ["39", "40", "41", "49"], a: "40", hint: "Nine more than 31 reaches the next ten." },
+    { q: "What is 90 - 1?", options: ["89", "91", "80", "99"], a: "89", hint: "Count back one." },
+    { q: "Which number is written as eighty-two?", options: ["28", "72", "82", "92"], a: "82", hint: "Eighty means 8 tens." }
+  ],
+  2: [
+    { q: "What is 47 + 25?", options: ["62", "72", "82", "68"], a: "72", hint: "Add 40 + 20 and 7 + 5." },
+    { q: "What is 83 - 47?", options: ["36", "46", "34", "40"], a: "36", hint: "Regroup one ten as 10 ones." },
+    { q: "What is 6 groups of 2?", options: ["8", "10", "12", "14"], a: "12", hint: "Count by twos six times." },
+    { q: "Which addition sentence equals 50?", options: ["28 + 12", "35 + 15", "42 + 8", "24 + 16"], a: "42 + 8", hint: "Add each pair carefully." },
+    { q: "Mia has 24 stickers and gets 18 more. How many stickers does she have?", options: ["32", "40", "42", "44"], a: "42", hint: "Join the two amounts." },
+    { q: "There are 65 birds. 29 fly away. How many remain?", options: ["34", "36", "46", "39"], a: "36", hint: "Subtract 29 from 65." },
+    { q: "What is 5 x 3?", options: ["8", "10", "15", "20"], a: "15", hint: "Add 5 three times." },
+    { q: "What is half of 18?", options: ["6", "8", "9", "12"], a: "9", hint: "Split 18 into two equal groups." },
+    { q: "Which fraction shows one out of four equal parts?", options: ["1/2", "1/3", "1/4", "4/1"], a: "1/4", hint: "The bottom number tells the total parts." },
+    { q: "What number is 10 more than 56?", options: ["46", "66", "76", "86"], a: "66", hint: "Increase the tens digit by one." },
+    { q: "Complete the pattern: 100, 90, 80, __", options: ["75", "70", "60", "110"], a: "70", hint: "Subtract 10 each time." },
+    { q: "Which expression equals 24?", options: ["6 x 4", "5 x 4", "8 + 8", "30 - 4"], a: "6 x 4", hint: "Use equal groups." },
+    { q: "What is 7 + 6 + 3?", options: ["15", "16", "17", "18"], a: "16", hint: "Add 7 + 3 first." },
+    { q: "A square has a side length of 5 centimeters. What is its perimeter?", options: ["10 cm", "15 cm", "20 cm", "25 cm"], a: "20 cm", hint: "Add four equal sides." },
+    { q: "Which number is odd?", options: ["24", "38", "51", "60"], a: "51", hint: "Odd numbers do not split into pairs." }
+  ],
+  3: [
+    { q: "What is 136 + 42?", options: ["168", "178", "188", "174"], a: "178", hint: "Add ones, tens, and hundreds." },
+    { q: "What is 205 - 73?", options: ["122", "132", "142", "172"], a: "132", hint: "Subtract 70, then 3." },
+    { q: "What is 4 x 5?", options: ["9", "15", "20", "25"], a: "20", hint: "Four groups of five." },
+    { q: "What is 18 divided into 3 equal groups?", options: ["5", "6", "7", "9"], a: "6", hint: "Think 3 x what equals 18?" },
+    { q: "A class has 3 rows of 7 chairs. How many chairs are there?", options: ["10", "18", "21", "24"], a: "21", hint: "Multiply 3 by 7." },
+    { q: "What time is 30 minutes after 2:15?", options: ["2:30", "2:45", "3:15", "3:45"], a: "2:45", hint: "Move the minute hand forward 30 minutes." },
+    { q: "How many centimeters are in 1 meter?", options: ["10", "50", "100", "1,000"], a: "100", hint: "A meter ruler has 100 centimeters." },
+    { q: "Which is longer?", options: ["1 meter", "90 centimeters", "50 centimeters", "10 centimeters"], a: "1 meter", hint: "1 meter equals 100 centimeters." },
+    { q: "What is the value of 3 quarters?", options: ["25 cents", "50 cents", "75 cents", "90 cents"], a: "75 cents", hint: "Each quarter is worth 25 cents." },
+    { q: "What is 2/4 in simplest form?", options: ["1/2", "1/4", "2/2", "4/2"], a: "1/2", hint: "Two of four equal parts is half." },
+    { q: "Which shape has exactly 3 sides?", options: ["Triangle", "Rectangle", "Pentagon", "Circle"], a: "Triangle", hint: "Its name begins with tri-, meaning three." },
+    { q: "What is 9 x 2?", options: ["11", "16", "18", "20"], a: "18", hint: "Add 9 twice." },
+    { q: "Lena has 50 cents and spends 20 cents. How much is left?", options: ["20 cents", "30 cents", "40 cents", "70 cents"], a: "30 cents", hint: "Subtract 20 from 50." },
+    { q: "Which number rounds to 80 when rounded to the nearest ten?", options: ["74", "76", "84", "89"], a: "76", hint: "Numbers from 75 through 84 round to 80." },
+    { q: "What is 7 x 2 + 3?", options: ["14", "17", "21", "24"], a: "17", hint: "Multiply first, then add 3." }
+  ],
+  4: [
+    { q: "What is 248 + 137?", options: ["375", "385", "395", "405"], a: "385", hint: "Regroup when the ones and tens totals reach 10." },
+    { q: "What is 400 - 156?", options: ["244", "254", "344", "256"], a: "244", hint: "Subtract 100, then 56." },
+    { q: "A farmer puts 5 apples in each of 4 baskets. How many apples are there?", options: ["9", "15", "20", "25"], a: "20", hint: "Use 5 x 4." },
+    { q: "What is 24 divided by 4?", options: ["4", "6", "8", "12"], a: "6", hint: "How many groups of 4 make 24?" },
+    { q: "Which number is equivalent to 3 hundreds, 4 tens, and 8 ones?", options: ["348", "384", "438", "843"], a: "348", hint: "Write each place-value amount together." },
+    { q: "A movie starts at 1:30 and lasts 1 hour. When does it end?", options: ["1:60", "2:00", "2:30", "3:30"], a: "2:30", hint: "Add 60 minutes." },
+    { q: "How many minutes are in 2 hours?", options: ["60", "90", "120", "200"], a: "120", hint: "Each hour has 60 minutes." },
+    { q: "A ribbon is 1 meter long. Ana cuts off 35 centimeters. How many centimeters remain?", options: ["35 cm", "55 cm", "65 cm", "75 cm"], a: "65 cm", hint: "Change 1 meter to 100 centimeters first." },
+    { q: "Which amount is greatest?", options: ["2 quarters", "3 dimes", "8 nickels", "15 pennies"], a: "2 quarters", hint: "Find the value of each group." },
+    { q: "What is 3/4 of a pizza if it is cut into 4 equal pieces?", options: ["1 piece", "2 pieces", "3 pieces", "4 pieces"], a: "3 pieces", hint: "The numerator tells how many pieces to take." },
+    { q: "A rectangle is 6 centimeters long and 3 centimeters wide. What is its perimeter?", options: ["9 cm", "12 cm", "18 cm", "24 cm"], a: "18 cm", hint: "Add 6 + 3 + 6 + 3." },
+    { q: "What is the missing number? 8 x __ = 32", options: ["3", "4", "5", "6"], a: "4", hint: "How many groups of 8 make 32?" },
+    { q: "Which angle looks like the corner of a square?", options: ["Right angle", "Straight angle", "Curved angle", "Full circle"], a: "Right angle", hint: "It is a square corner." },
+    { q: "A pictograph shows 1 star for every 2 books. Four stars represent how many books?", options: ["4", "6", "8", "10"], a: "8", hint: "Multiply 4 stars by 2 books." },
+    { q: "What is 72 rounded to the nearest ten?", options: ["70", "72", "75", "80"], a: "70", hint: "The ones digit is less than 5." }
+  ],
+  5: [
+    { q: "What is 367 + 258?", options: ["525", "615", "625", "635"], a: "625", hint: "Add each place and regroup as needed." },
+    { q: "What is 500 - 278?", options: ["212", "222", "232", "322"], a: "222", hint: "Subtract 278 from 500 with regrouping." },
+    { q: "There are 6 boxes with 4 pencils in each. How many pencils are there?", options: ["10", "20", "24", "28"], a: "24", hint: "Use 6 x 4." },
+    { q: "What is 35 divided by 5?", options: ["5", "6", "7", "8"], a: "7", hint: "5 groups of what make 35?" },
+    { q: "Sam has ₱5.00 and spends ₱2.75. How much money remains?", options: ["₱2.15", "₱2.25", "₱3.25", "₱7.75"], a: "₱2.25", hint: "Subtract 275 cents from 500 cents." },
+    { q: "A bus leaves at 8:45 and arrives at 9:30. How long is the trip?", options: ["30 minutes", "45 minutes", "50 minutes", "1 hour"], a: "45 minutes", hint: "Count from 8:45 to 9:00, then to 9:30." },
+    { q: "Which fraction is greater than 1/2?", options: ["1/4", "2/8", "3/4", "2/5"], a: "3/4", hint: "Compare each fraction with one-half." },
+    { q: "A garden has 4 rows of 8 plants. If 5 plants are removed, how many remain?", options: ["27", "32", "35", "37"], a: "27", hint: "Find 4 x 8, then subtract 5." },
+    { q: "What is the area of a rectangle 5 units long and 3 units wide?", options: ["8 square units", "15 square units", "16 square units", "20 square units"], a: "15 square units", hint: "Area equals length times width." },
+    { q: "Which shape has 5 sides?", options: ["Hexagon", "Pentagon", "Octagon", "Quadrilateral"], a: "Pentagon", hint: "Penta- means five." },
+    { q: "A number is even, greater than 40, and less than 50. Which could it be?", options: ["41", "43", "46", "49"], a: "46", hint: "Even numbers end in 0, 2, 4, 6, or 8." },
+    { q: "What is 9 x 3?", options: ["18", "21", "27", "36"], a: "27", hint: "Add 9 three times." },
+    { q: "A class collected 128 cans on Monday and 96 on Tuesday. How many cans did they collect?", options: ["214", "224", "234", "324"], a: "224", hint: "Add 128 and 96." },
+    { q: "What is the rule for this pattern: 3, 6, 12, 24?", options: ["Add 3", "Add 6", "Multiply by 2", "Subtract 2"], a: "Multiply by 2", hint: "Each number is twice the one before it." },
+    { q: "A school has 3 buses with 28 students on each bus. How many students are riding?", options: ["31", "56", "84", "92"], a: "84", hint: "Multiply 3 by 28." }
+  ],
 
-for (let level = 1; level <= 15; level += 1) {
-  grade2Math[level] = Array.from({ length: 15 }, (_, index) => {
-    const template = grade2MathTemplates[(level + index) % grade2MathTemplates.length];
-    return {
-      q: template.q,
-      visual: template.visual,
-      options: template.options,
-      optionIcons: ['1️⃣', '2️⃣', '3️⃣', '4️⃣'],
-      a: template.a,
-      hint: template.hint,
-      reward: template.reward
-    };
-  });
-}
+  // ==================== MEDIUM LEVELS (6 - 10) ====================
+
+  6: [
+    { q: "What is 6 x 4?", options: ["10", "20", "24", "28"], a: "24", hint: "Add 6 four times." },
+    { q: "What is 42 divided by 6?", options: ["6", "7", "8", "9"], a: "7", hint: "Think 6 x 7." },
+    { q: "What is 234 + 125?", options: ["349", "359", "369", "459"], a: "359", hint: "Add each place-value column." },
+    { q: "What is 481 - 230?", options: ["251", "261", "351", "711"], a: "251", hint: "Subtract 2 hundreds and 3 tens." },
+    { q: "There are 5 bags with 7 marbles in each. How many marbles?", options: ["12", "30", "35", "40"], a: "35", hint: "Multiply 5 by 7." },
+    { q: "Which fraction is equal to one half?", options: ["1/3", "2/4", "3/4", "4/4"], a: "2/4", hint: "Two of four equal parts make one half." },
+    { q: "What is 25 more than 146?", options: ["161", "171", "181", "196"], a: "171", hint: "Add 20, then 5." },
+    { q: "A clock shows 4:30. What time is 30 minutes later?", options: ["4:45", "5:00", "5:30", "6:00"], a: "5:00", hint: "Thirty minutes completes the hour." },
+    { q: "What is the perimeter of a square with sides of 4 units?", options: ["8 units", "12 units", "16 units", "20 units"], a: "16 units", hint: "Add four sides of 4 units." },
+    { q: "Complete the pattern: 7, 14, 21, __", options: ["24", "27", "28", "35"], a: "28", hint: "Add 7 each time." },
+    { q: "What is 7 x 5?", options: ["12", "30", "35", "40"], a: "35", hint: "Add 7 five times." },
+    { q: "What is 48 divided by 6?", options: ["6", "8", "9", "12"], a: "8", hint: "Think 6 x 8." },
+    { q: "Which number is 100 more than 245?", options: ["255", "345", "355", "445"], a: "345", hint: "Increase the hundreds digit by one." },
+    { q: "How many sides does a hexagon have?", options: ["5", "6", "7", "8"], a: "6", hint: "Hexa means six." },
+    { q: "What is 65 - 28?", options: ["27", "37", "47", "93"], a: "37", hint: "Regroup one ten before subtracting." }
+  ],
+  7: [
+    { q: "What is 7 x 6?", options: ["13", "36", "42", "48"], a: "42", hint: "Use the 7s facts." },
+    { q: "What is 56 divided by 8?", options: ["6", "7", "8", "9"], a: "7", hint: "Think 8 x 7." },
+    { q: "What is 356 + 287?", options: ["533", "643", "653", "743"], a: "643", hint: "Regroup the ones and tens." },
+    { q: "What is 702 - 458?", options: ["244", "254", "344", "354"], a: "244", hint: "Regroup across the zero." },
+    { q: "A carton holds 6 rows of 4 eggs. How many eggs?", options: ["10", "20", "24", "28"], a: "24", hint: "Multiply rows by eggs in each row." },
+    { q: "What is 3/4 of 8 objects?", options: ["2", "4", "6", "8"], a: "6", hint: "Take three of four equal groups." },
+    { q: "A toy costs $3. You pay with $5. How much change?", options: ["$1", "$2", "$3", "$8"], a: "$2", hint: "Subtract the cost from the amount paid." },
+    { q: "What time is 45 minutes after 2:15?", options: ["2:45", "3:00", "3:15", "3:45"], a: "3:00", hint: "Add 15 minutes, then 30 more." },
+    { q: "What is the area of a rectangle 4 units by 3 units?", options: ["7 square units", "10 square units", "12 square units", "14 square units"], a: "12 square units", hint: "Multiply length by width." },
+    { q: "Complete the pattern: 96, 88, 80, __", options: ["70", "72", "74", "78"], a: "72", hint: "Subtract 8 each time." },
+    { q: "What is 9 x 4?", options: ["13", "32", "36", "45"], a: "36", hint: "Add 9 four times." },
+    { q: "What is 64 divided by 8?", options: ["6", "7", "8", "9"], a: "8", hint: "Think 8 x 8." },
+    { q: "What is 1/2 of 14?", options: ["5", "6", "7", "8"], a: "7", hint: "Split 14 into two equal groups." },
+    { q: "A square has sides of 6 cm. What is its perimeter?", options: ["12 cm", "18 cm", "24 cm", "36 cm"], a: "24 cm", hint: "Multiply one side by four." },
+    { q: "What is 300 - 125?", options: ["175", "185", "225", "425"], a: "175", hint: "Subtract 100, then 25." }
+  ],
+  8: [
+    { q: "What is 8 x 7?", options: ["48", "54", "56", "64"], a: "56", hint: "Use the 8s facts." },
+    { q: "What is 63 divided by 9?", options: ["6", "7", "8", "9"], a: "7", hint: "Think 9 x 7." },
+    { q: "What is 425 + 198?", options: ["513", "613", "623", "633"], a: "623", hint: "Add 198 as 200 minus 2." },
+    { q: "What is 800 - 367?", options: ["433", "443", "533", "567"], a: "433", hint: "Subtract 367 from 800." },
+    { q: "A baker puts 8 cookies on each of 5 plates. How many?", options: ["13", "35", "40", "45"], a: "40", hint: "Use 8 x 5." },
+    { q: "Which fraction is less than 1/2?", options: ["3/4", "2/3", "1/4", "4/4"], a: "1/4", hint: "One of four parts is less than half." },
+    { q: "What is 4/4 equal to?", options: ["0", "1/2", "1", "4"], a: "1", hint: "All equal parts make one whole." },
+    { q: "A ribbon is 80 cm. Mia cuts 25 cm. How much remains?", options: ["45 cm", "55 cm", "65 cm", "105 cm"], a: "55 cm", hint: "Subtract 25 from 80." },
+    { q: "How many minutes are in 3 hours?", options: ["90", "120", "180", "300"], a: "180", hint: "Multiply 3 by 60." },
+    { q: "What is the rule for 4, 8, 12, 16?", options: ["Add 2", "Add 4", "Multiply by 2", "Subtract 4"], a: "Add 4", hint: "Compare consecutive numbers." }
+  ],
+  9: [
+    { q: "What is 9 x 8?", options: ["17", "64", "72", "81"], a: "72", hint: "Use the 9s facts." },
+    { q: "What is 72 divided by 8?", options: ["8", "9", "10", "12"], a: "9", hint: "Think 8 x 9." },
+    { q: "What is 678 + 145?", options: ["713", "813", "823", "833"], a: "823", hint: "Regroup the ones and tens." },
+    { q: "What is 934 - 276?", options: ["648", "658", "668", "758"], a: "658", hint: "Subtract by place value." },
+    { q: "A theater has 7 rows with 9 seats each. How many seats?", options: ["16", "56", "63", "72"], a: "63", hint: "Multiply 7 by 9." },
+    { q: "Which fraction is equivalent to 1/2?", options: ["2/3", "3/6", "4/6", "5/6"], a: "3/6", hint: "Three of six equal parts is one half." },
+    { q: "What is 1/3 of 12?", options: ["3", "4", "6", "9"], a: "4", hint: "Divide 12 into three equal groups." },
+    { q: "A train leaves 10:20 and arrives 11:05. How long?", options: ["35 minutes", "45 minutes", "50 minutes", "1 hour"], a: "45 minutes", hint: "Count to 11:00, then 5 minutes." },
+    { q: "Which is equal to 2 meters?", options: ["20 cm", "100 cm", "200 cm", "2,000 cm"], a: "200 cm", hint: "One meter equals 100 centimeters." },
+    { q: "Complete the pattern: 2, 6, 18, 54, __", options: ["57", "108", "162", "216"], a: "162", hint: "Multiply by 3 each time." },
+    { q: "What is 7 x 8?", options: ["48", "54", "56", "64"], a: "56", hint: "Use the 7s facts." },
+    { q: "What is 90 divided by 10?", options: ["0", "9", "10", "90"], a: "9", hint: "How many tens are in 90?" },
+    { q: "Which number rounds to 500 to the nearest hundred?", options: ["449", "451", "549", "650"], a: "451", hint: "Numbers from 450 to 549 round to 500." },
+    { q: "What is 2/4 in simplest form?", options: ["1/2", "1/4", "2/2", "4/2"], a: "1/2", hint: "Two of four equal parts make one half." },
+    { q: "A rectangle is 8 units long and 3 units wide. What is its area?", options: ["11 square units", "22 square units", "24 square units", "32 square units"], a: "24 square units", hint: "Multiply length by width." }
+  ],
+  10: [
+    { q: "What is 12 x 4?", options: ["16", "36", "48", "52"], a: "48", hint: "Use 10 x 4 plus 2 x 4." },
+    { q: "What is 81 divided by 9?", options: ["7", "8", "9", "10"], a: "9", hint: "Think 9 x 9." },
+    { q: "What is 567 + 289?", options: ["746", "846", "856", "866"], a: "856", hint: "Add 289 as 300 minus 11." },
+    { q: "What is 1,000 - 456?", options: ["444", "544", "554", "644"], a: "544", hint: "Subtract 456 from 1,000." },
+    { q: "A library has 4 shelves with 18 books each. How many?", options: ["22", "54", "72", "82"], a: "72", hint: "Multiply 4 by 18." },
+    { q: "Which fraction is closest to one whole?", options: ["1/4", "1/2", "3/4", "1/8"], a: "3/4", hint: "Three fourths leaves one fourth." },
+    { q: "What is 2/3 of 12?", options: ["4", "6", "8", "10"], a: "8", hint: "Find one third, then take two groups." },
+    { q: "A game starts 3:40 and lasts 55 minutes. When does it end?", options: ["4:25", "4:30", "4:35", "4:45"], a: "4:35", hint: "Add 20 minutes, then 35 minutes." },
+    { q: "How many millimeters are in 1 centimeter?", options: ["1", "5", "10", "100"], a: "10", hint: "A centimeter has ten millimeters." },
+    { q: "What is the rule for 80, 40, 20, 10?", options: ["Add 20", "Subtract 10", "Divide by 2", "Multiply by 2"], a: "Divide by 2", hint: "Each number is half the previous one." },
+    { q: "What is 11 x 3?", options: ["14", "22", "33", "44"], a: "33", hint: "Add 11 three times." },
+    { q: "What is 100 divided by 4?", options: ["20", "25", "40", "50"], a: "25", hint: "Think 4 x 25." },
+    { q: "What is 3/5 of 10?", options: ["2", "3", "5", "6"], a: "6", hint: "Find one fifth, then take three groups." },
+    { q: "A bus has 4 rows of 12 seats. How many seats?", options: ["16", "36", "48", "52"], a: "48", hint: "Multiply 4 by 12." },
+    { q: "What is 725 rounded to the nearest hundred?", options: ["700", "720", "800", "900"], a: "700", hint: "The tens digit is less than 5." }
+  ],
+
+  // ==================== HARD LEVELS (11 - 15) ====================
+
+  11: [
+    { q: "What is 23 x 3?", options: ["26", "46", "69", "73"], a: "69", hint: "Multiply 20 and 3, then 3 and 3." },
+    { q: "What is 96 divided by 8?", options: ["10", "11", "12", "14"], a: "12", hint: "Think 8 x 12." },
+    { q: "What is 1,245 + 378?", options: ["1,523", "1,613", "1,623", "1,723"], a: "1,623", hint: "Add each place value." },
+    { q: "What is 1,000 - 638?", options: ["362", "372", "462", "638"], a: "362", hint: "Regroup across the zeros." },
+    { q: "A shop packs 8 boxes with 16 crayons each. How many?", options: ["64", "96", "128", "136"], a: "128", hint: "Multiply 8 by 16." },
+    { q: "Which fraction is equivalent to 2/4?", options: ["1/2", "1/4", "2/8", "4/6"], a: "1/2", hint: "Simplify both parts by 2." },
+    { q: "What is 3/4 of 20?", options: ["5", "10", "15", "18"], a: "15", hint: "Find one fourth, then take three." },
+    { q: "A lesson is 9:35 to 10:20. How long?", options: ["35 minutes", "45 minutes", "55 minutes", "1 hour"], a: "45 minutes", hint: "Count to 10:00, then 20 minutes." },
+    { q: "A 2-meter rope is cut into 4 equal pieces. Each piece?", options: ["25 cm", "50 cm", "75 cm", "100 cm"], a: "50 cm", hint: "200 centimeters divided by 4." },
+    { q: "Complete the pattern: 5, 15, 45, 135, __", options: ["180", "270", "405", "540"], a: "405", hint: "Multiply by 3 each time." },
+    { q: "What is 24 x 4?", options: ["48", "72", "96", "104"], a: "96", hint: "Multiply 20 and 4 by 4." },
+    { q: "What is 132 divided by 11?", options: ["10", "11", "12", "13"], a: "12", hint: "Think 11 x 12." },
+    { q: "What is 2/3 of 18?", options: ["6", "9", "12", "15"], a: "12", hint: "Find one third, then take two groups." },
+    { q: "A movie starts at 2:30 and lasts 1 hour 25 minutes. When does it end?", options: ["3:45", "3:55", "4:05", "4:25"], a: "3:55", hint: "Add one hour, then 25 minutes." },
+    { q: "What is the perimeter of a rectangle 7 cm by 4 cm?", options: ["11 cm", "18 cm", "22 cm", "28 cm"], a: "22 cm", hint: "Add 7 + 4 + 7 + 4." }
+  ],
+  12: [
+    { q: "What is 34 x 2?", options: ["36", "58", "68", "72"], a: "68", hint: "Double 34." },
+    { q: "What is 144 divided by 12?", options: ["10", "11", "12", "14"], a: "12", hint: "Think 12 x 12." },
+    { q: "What is 2,356 + 487?", options: ["2,743", "2,843", "2,853", "2,943"], a: "2,843", hint: "Add with regrouping." },
+    { q: "What is 1,205 - 678?", options: ["427", "527", "537", "627"], a: "527", hint: "Regroup across the zero." },
+    { q: "A theater has 9 rows with 12 seats each. How many?", options: ["96", "108", "118", "120"], a: "108", hint: "Multiply 9 by 12." },
+    { q: "Which fraction is greater than 3/4?", options: ["1/2", "2/3", "4/4", "1/4"], a: "4/4", hint: "One whole is greater than three fourths." },
+    { q: "What is 5/6 of 12?", options: ["6", "8", "10", "12"], a: "10", hint: "Find one sixth, then take five groups." },
+    { q: "A movie starts 6:25 and lasts 1 hour 40 minutes. End time?", options: ["7:45", "8:00", "8:05", "8:15"], a: "8:05", hint: "Add one hour, then 40 minutes." },
+    { q: "How many centimeters are in 3 meters?", options: ["30", "103", "300", "3,000"], a: "300", hint: "Multiply 3 by 100." },
+    { q: "Complete the pattern: 2, 5, 11, 23, __", options: ["35", "46", "47", "50"], a: "47", hint: "Double each number and add one." },
+    { q: "What is 15 x 6?", options: ["60", "90", "96", "105"], a: "90", hint: "Multiply 15 by 6." },
+    { q: "What is 168 divided by 14?", options: ["10", "12", "14", "16"], a: "12", hint: "Think 14 x 12." },
+    { q: "What is 4/5 of 20?", options: ["4", "12", "16", "18"], a: "16", hint: "Find one fifth, then take four groups." },
+    { q: "How many minutes are in 2 hours and 30 minutes?", options: ["120", "130", "150", "180"], a: "150", hint: "Two hours is 120 minutes." },
+    { q: "A box has 6 rows of 14 pencils. How many pencils?", options: ["20", "74", "84", "96"], a: "84", hint: "Multiply 6 by 14." }
+  ],
+  13: [
+    { q: "What is 46 x 3?", options: ["128", "138", "148", "158"], a: "138", hint: "Multiply 40 and 6 by 3." },
+    { q: "What is 156 divided by 12?", options: ["11", "12", "13", "14"], a: "13", hint: "Think 12 x 13." },
+    { q: "What is 3,478 + 965?", options: ["4,343", "4,443", "4,453", "4,543"], a: "4,443", hint: "Add with regrouping." },
+    { q: "What is 2,000 - 875?", options: ["1,025", "1,125", "1,135", "1,225"], a: "1,125", hint: "Subtract 875 from 2,000." },
+    { q: "A factory makes 12 packs with 15 pencils each. How many?", options: ["120", "150", "180", "210"], a: "180", hint: "Multiply 12 by 15." },
+    { q: "Which fraction is equal to 3/6?", options: ["1/2", "1/3", "2/3", "3/4"], a: "1/2", hint: "Divide both parts by 3." },
+    { q: "What is 2/5 of 25?", options: ["5", "8", "10", "15"], a: "10", hint: "Find one fifth, then take two groups." },
+    { q: "Practice is 2:50 to 4:15. How long?", options: ["1 hour 15 minutes", "1 hour 25 minutes", "1 hour 35 minutes", "2 hours 25 minutes"], a: "1 hour 25 minutes", hint: "Count to 3:50, then add 25 minutes." },
+    { q: "A 5-meter ribbon is cut into 10 equal pieces. Each piece?", options: ["5 cm", "25 cm", "50 cm", "500 cm"], a: "50 cm", hint: "500 centimeters divided by 10." },
+    { q: "Complete the pattern: 81, 27, 9, 3, __", options: ["0", "1", "2", "6"], a: "1", hint: "Divide by 3 each time." },
+    { q: "What is 27 x 4?", options: ["81", "98", "108", "118"], a: "108", hint: "Multiply 20 and 7 by 4." },
+    { q: "What is 240 divided by 15?", options: ["12", "15", "16", "20"], a: "16", hint: "Think 15 x 16." },
+    { q: "What is 3/4 of 28?", options: ["7", "14", "21", "24"], a: "21", hint: "Find one fourth, then take three groups." },
+    { q: "A 10 Peso toy is on sale for 3 Pesos off. What is the sale price?", options: ["6 Pesos", "7 Pesos", "8 Pesos", "13 Pesos"], a: "7 Pesos", hint: "Subtract the discount from the original price." },
+    { q: "A rectangle has an area of 54 square units and a width of 6 units. What is its length?", options: ["7 units", "8 units", "9 units", "10 units"], a: "9 units", hint: "Divide 54 by 6." }
+  ],
+  14: [
+    { q: "What is 58 x 4?", options: ["212", "222", "232", "242"], a: "232", hint: "Multiply 50 and 8 by 4." },
+    { q: "What is 225 divided by 15?", options: ["12", "15", "18", "20"], a: "15", hint: "Think 15 x 15." },
+    { q: "What is 4,506 + 1,789?", options: ["6,195", "6,295", "6,305", "6,395"], a: "6,295", hint: "Regroup while adding." },
+    { q: "What is 3,000 - 1,456?", options: ["1,444", "1,544", "1,554", "1,644"], a: "1,544", hint: "Subtract 1,456 from 3,000." },
+    { q: "A warehouse packs 14 boxes with 18 toys each. How many?", options: ["212", "242", "252", "262"], a: "252", hint: "Multiply 14 by 18." },
+    { q: "Which fraction is closest to 1/2?", options: ["1/8", "3/8", "5/8", "7/8"], a: "3/8", hint: "Compare each distance from four eighths." },
+    { q: "What is 3/5 of 30?", options: ["6", "15", "18", "20"], a: "18", hint: "Find one fifth, then take three groups." },
+    { q: "A concert is 7:45 to 9:20. How long?", options: ["1 hour 25 minutes", "1 hour 35 minutes", "1 hour 45 minutes", "2 hours 35 minutes"], a: "1 hour 35 minutes", hint: "Count to 8:45, then 35 minutes." },
+    { q: "A 4-meter board is cut into 8 equal pieces. Each piece?", options: ["25 cm", "50 cm", "75 cm", "100 cm"], a: "50 cm", hint: "400 centimeters divided by 8." },
+    { q: "Complete the pattern: 100, 90, 70, 40, __", options: ["0", "10", "20", "30"], a: "0", hint: "Subtract 10, then 20, then 30, then 40." },
+    { q: "What is 32 x 5?", options: ["120", "150", "160", "180"], a: "160", hint: "Multiply 32 by 5." },
+    { q: "What is 360 divided by 18?", options: ["18", "20", "22", "24"], a: "20", hint: "Think 18 x 20." },
+    { q: "Which fraction is equivalent to 4/8?", options: ["1/4", "1/2", "2/3", "3/4"], a: "1/2", hint: "Divide both parts by 4." },
+    { q: "A square has an area of 49 square units. What is the side length?", options: ["6 units", "7 units", "8 units", "9 units"], a: "7 units", hint: "Seven times seven equals 49." },
+    { q: "A class has 5 groups of 18 students. If 12 leave, how many remain?", options: ["68", "78", "88", "90"], a: "78", hint: "Multiply first, then subtract 12." }
+  ],
+  15: [
+    { q: "What is 72 x 5?", options: ["260", "320", "360", "420"], a: "360", hint: "Multiply 72 by 10, then take half." },
+    { q: "What is 288 divided by 16?", options: ["16", "18", "20", "24"], a: "18", hint: "Think 16 x 18." },
+    { q: "What is 5,678 + 2,945?", options: ["8,523", "8,623", "8,633", "8,723"], a: "8,623", hint: "Add each place and regroup." },
+    { q: "What is 5,000 - 2,678?", options: ["2,222", "2,322", "2,332", "2,422"], a: "2,322", hint: "Regroup across the zeros." },
+    { q: "A company sends 16 boxes with 24 books each. How many?", options: ["284", "384", "394", "404"], a: "384", hint: "Multiply 16 by 24." },
+    { q: "Which fraction is greater than 2/3?", options: ["1/3", "1/2", "3/4", "2/6"], a: "3/4", hint: "Three fourths is more than two thirds." },
+    { q: "What is 4/5 of 35?", options: ["7", "20", "28", "30"], a: "28", hint: "Find one fifth, then take four groups." },
+    { q: "A flight is 8:35 to 11:10. How long?", options: ["2 hours 25 minutes", "2 hours 35 minutes", "2 hours 45 minutes", "3 hours 35 minutes"], a: "2 hours 35 minutes", hint: "Count to 10:35, then add 35 minutes." },
+    { q: "A 6-meter rope is cut into 12 equal pieces. Each piece?", options: ["25 cm", "50 cm", "75 cm", "100 cm"], a: "50 cm", hint: "600 centimeters divided by 12." },
+    { q: "Complete the pattern: 3, 9, 27, 81, __", options: ["162", "180", "243", "324"], a: "243", hint: "Multiply by 3 each time." },
+    { q: "What is 45 x 6?", options: ["180", "240", "270", "300"], a: "270", hint: "Multiply 45 by 6." },
+    { q: "What is 324 divided by 18?", options: ["16", "18", "20", "22"], a: "18", hint: "Think 18 x 18." },
+    { q: "What is 5/6 of 24?", options: ["15", "18", "20", "22"], a: "20", hint: "Find one sixth, then take five groups." },
+    { q: "A store has 9 boxes with 24 items each. It sells 50 items. How many remain?", options: ["156", "166", "176", "216"], a: "166", hint: "Multiply 9 by 24, then subtract 50." },
+    { q: "What is 2 hours and 45 minutes after 1:30?", options: ["3:45", "4:00", "4:15", "4:30"], a: "4:15", hint: "Add 2 hours, then 45 minutes." }
+  ]
+};
 
 export default grade2Math;
+
+
+

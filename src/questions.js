@@ -1,28 +1,12 @@
 // src/questions.js
 
-// --- Nursery / Pre-Kinder ---
-import * as NurseryMathModule from './data/questions/Nursery/Numeracy.jsx';
-import * as NurseryEnglishModule from './data/questions/Nursery/Language and Literacy.jsx';
-import * as NurseryScienceModule from './data/questions/Nursery/Art and Craft.jsx';
-
-import * as PreKinderMathModule from './data/questions/PreKinder/Early Numeracy.jsx';
-import * as PreKinderEnglishModule from './data/questions/PreKinder/Language and Literacy.jsx';
-import * as PreKinderScienceModule from './data/questions/PreKinder/Sensory Exploration.jsx';
-
-// --- Kinder ---
-import * as KinderMathModule from './data/questions/kinder/math.jsx';
-import * as KinderEnglishModule from './data/questions/kinder/english.jsx';
-import * as KinderScienceModule from './data/questions/kinder/science.jsx';
-
 // --- Grade 1 ---
 import * as Grade1MathModule from './data/questions/grade1/math.jsx';
-import * as Grade1EnglishModule from './data/questions/grade1/english.jsx';
-import * as Grade1ScienceModule from './data/questions/grade1/science.jsx';
+import * as Grade1EnglishModule from './data/questions/grade1/ReadingAndLiteracy.jsx';
 
 // --- Grade 2 ---
 import * as Grade2MathModule from './data/questions/grade2/math.jsx';
 import * as Grade2EnglishModule from './data/questions/grade2/english.jsx';
-import * as Grade2ScienceModule from './data/questions/grade2/science.jsx';
 
 // --- Grade 3 ---
 import * as Grade3MathModule from './data/questions/grade3/math.jsx';
@@ -45,27 +29,18 @@ import * as Grade6EnglishModule from './data/questions/grade6/english.jsx';
 import * as Grade6ScienceModule from './data/questions/grade6/science.jsx';
 
 // Helper to safely extract question objects whether exported named or default
-const extractData = (mod, key) => mod[key] || mod.default || {};
-
-const nurseryMath = extractData(NurseryMathModule, 'nurseryMath');
-const nurseryEnglish = extractData(NurseryEnglishModule, 'nurseryEnglish');
-const nurseryScience = extractData(NurseryScienceModule, 'nurseryScience');
-
-const preKinderMath = extractData(PreKinderMathModule, 'preKinderMath');
-const preKinderEnglish = extractData(PreKinderEnglishModule, 'preKinderEnglish');
-const preKinderScience = extractData(PreKinderScienceModule, 'preKinderScience');
-
-const kinderMath = extractData(KinderMathModule, 'kinderMath');
-const kinderEnglish = extractData(KinderEnglishModule, 'kinderEnglish');
-const kinderScience = extractData(KinderScienceModule, 'kinderScience');
+const extractData = (mod, key) => {
+  const moduleObj = mod && typeof mod === 'object' ? mod : {};
+  return moduleObj[key] || moduleObj.default || {};
+};
 
 const grade1Math = extractData(Grade1MathModule, 'grade1Math');
-const grade1English = extractData(Grade1EnglishModule, 'grade1English');
-const grade1Science = extractData(Grade1ScienceModule, 'grade1Science');
+const grade1English = extractData(Grade1EnglishModule, 'grade1English') || {};
+const grade1Science = {};
 
 const grade2Math = extractData(Grade2MathModule, 'grade2Math');
 const grade2English = extractData(Grade2EnglishModule, 'grade2English');
-const grade2Science = extractData(Grade2ScienceModule, 'grade2Science');
+const grade2Science = {};
 
 const grade3Math = extractData(Grade3MathModule, 'grade3Math');
 const grade3English = extractData(Grade3EnglishModule, 'grade3English');
@@ -83,14 +58,8 @@ const grade6Math = extractData(Grade6MathModule, 'grade6Math');
 const grade6English = extractData(Grade6EnglishModule, 'grade6English');
 const grade6Science = extractData(Grade6ScienceModule, 'grade6Science');
 
-const normalizeGradeKey = (grade = 'kinder') => {
-  const cleaned = String(grade || 'kinder').trim().toLowerCase().replace(/[^a-z0-9]+/g, '');
-
-  if (cleaned === 'nursery' || cleaned === 'nurseryclass') return 'nursery';
-  if (cleaned === 'prekinder' || cleaned === 'prekindergarten' || cleaned === 'pre-kinder' || cleaned === 'prekinderclass') return 'prekinder';
-  if (cleaned === 'kindergarten' || cleaned === 'ps3kinder' || cleaned === 'kinder') {
-    return 'kinder';
-  }
+const normalizeGradeKey = (grade = 'grade1') => {
+  const cleaned = String(grade || 'grade1').trim().toLowerCase().replace(/[^a-z0-9]+/g, '');
 
   if (cleaned === 'grade1' || cleaned === 'ps1grade1' || cleaned === 'gradeone') return 'grade1';
   if (cleaned === 'grade2' || cleaned === 'ps2grade2' || cleaned === 'gradetwo') return 'grade2';
@@ -99,9 +68,6 @@ const normalizeGradeKey = (grade = 'kinder') => {
   if (cleaned === 'grade5' || cleaned === 'gradefive') return 'grade5';
   if (cleaned === 'grade6' || cleaned === 'gradesix') return 'grade6';
 
-  if (cleaned.includes('nursery')) return 'nursery';
-  if (cleaned.includes('prekinder') || cleaned.includes('prekindergarten') || cleaned.includes('prekinder')) return 'prekinder';
-  if (cleaned.includes('kinder')) return 'kinder';
   if (cleaned.includes('grade1') || cleaned.includes('gradeone')) return 'grade1';
   if (cleaned.includes('grade2') || cleaned.includes('gradetwo')) return 'grade2';
   if (cleaned.includes('grade3') || cleaned.includes('gradethree')) return 'grade3';
@@ -109,7 +75,7 @@ const normalizeGradeKey = (grade = 'kinder') => {
   if (cleaned.includes('grade5') || cleaned.includes('gradefive')) return 'grade5';
   if (cleaned.includes('grade6') || cleaned.includes('gradesix')) return 'grade6';
 
-  return cleaned || 'kinder';
+  return cleaned || 'grade1';
 };
 
 const SUBJECT_THEME = {
@@ -261,21 +227,6 @@ const normalizeSubjectLevels = (grade, subject, subjectData = {}) => {
 
 // Master Question Bank strictly organized by Grade Folder > Subject > Level
 export const questionBank = {
-  nursery: {
-    math: normalizeSubjectLevels('nursery', 'math', nurseryMath),
-    english: normalizeSubjectLevels('nursery', 'english', nurseryEnglish),
-    science: normalizeSubjectLevels('nursery', 'science', nurseryScience)
-  },
-  prekinder: {
-    math: normalizeSubjectLevels('prekinder', 'math', preKinderMath),
-    english: normalizeSubjectLevels('prekinder', 'english', preKinderEnglish),
-    science: normalizeSubjectLevels('prekinder', 'science', preKinderScience)
-  },
-  kinder: {
-    math: normalizeSubjectLevels('kinder', 'math', kinderMath),
-    english: normalizeSubjectLevels('kinder', 'english', kinderEnglish),
-    science: normalizeSubjectLevels('kinder', 'science', kinderScience)
-  },
   grade1: {
     math: normalizeSubjectLevels('grade1', 'math', grade1Math),
     english: normalizeSubjectLevels('grade1', 'english', grade1English),
@@ -302,7 +253,7 @@ const generateRiddleQuestions = (grade, subject, level) => {
 };
 
 // Strictly pulls questions matching the student's assigned grade
-export const getQuestionsForLevel = (grade = 'kinder', subject = 'math', level = 1) => {
+export const getQuestionsForLevel = (grade = 'grade1', subject = 'math', level = 1) => {
   const normalizedGrade = normalizeGradeKey(grade);
   const normalizedSubject = (subject || 'math').toLowerCase();
   const selectedGrade = questionBank[normalizedGrade];
@@ -314,5 +265,5 @@ export const getQuestionsForLevel = (grade = 'kinder', subject = 'math', level =
   return generateRiddleQuestions(normalizedGrade, normalizedSubject, level);
 };
 
-export const questionsData = getQuestionsForLevel('kinder', 'math', 1);
+export const questionsData = getQuestionsForLevel('grade1', 'math', 1);
 export default getQuestionsForLevel;

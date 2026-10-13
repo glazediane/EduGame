@@ -1,143 +1,231 @@
 // src/data/questions/grade1/math.jsx
 
-export const grade1MathTemplates = [
-  {
-    q: 'How many stars do you see?',
-    visual: '⭐ ⭐ ⭐ ⭐',
-    options: ['3', '4', '5', '6'],
-    a: '4',
-    hint: 'Count all the stars together.',
-    reward: '⭐ Star Count'
-  },
-  {
-    q: 'What is 3 + 2?',
-    visual: '3️⃣ + 2️⃣',
-    options: ['4', '5', '6', '7'],
-    a: '5',
-    hint: 'Add the two numbers together.',
-    reward: '➕ Add It Up'
-  },
-  {
-    q: 'What is 6 - 1?',
-    visual: '6️⃣ - 1️⃣',
-    options: ['4', '5', '6', '7'],
-    a: '5',
-    hint: 'Take away 1 from 6.',
-    reward: '➖ Minus Fun'
-  },
-  {
-    q: 'Which number comes after 7?',
-    visual: '7️⃣ ?',
-    options: ['6', '7', '8', '9'],
-    a: '8',
-    hint: 'Think of the next number.',
-    reward: '🔢 Number Jump'
-  },
-  {
-    q: 'Which shape is a square?',
-    visual: '🟦 🔺 🔴 ⭕',
-    options: ['Square', 'Triangle', 'Circle', 'Star'],
-    a: 'Square',
-    hint: 'A square has 4 equal sides.',
-    reward: '🧩 Shape Match'
-  },
-  {
-    q: 'What is 5 + 3?',
-    visual: '5️⃣ + 3️⃣',
-    options: ['7', '8', '9', '10'],
-    a: '8',
-    hint: '5 and 3 make 8.',
-    reward: '🚀 Number Boost'
-  },
-  {
-    q: 'Which number is bigger: 9 or 2?',
-    visual: '9️⃣ vs 2️⃣',
-    options: ['9', '2', '7', '5'],
-    a: '9',
-    hint: 'Compare both numbers and choose the larger one.',
-    reward: '📈 Bigger Number'
-  },
-  {
-    q: 'What is 4 + 4?',
-    visual: '4️⃣ + 4️⃣',
-    options: ['7', '8', '9', '10'],
-    a: '8',
-    hint: 'Double 4 is 8.',
-    reward: '🎯 Double Up'
-  },
-  {
-    q: 'What number comes before 10?',
-    visual: '? 1️⃣0️⃣',
-    options: ['8', '9', '10', '11'],
-    a: '9',
-    hint: 'Find the number right before 10.',
-    reward: '⏮️ Before Me'
-  },
-  {
-    q: 'Which number is smaller: 3 or 6?',
-    visual: '3️⃣ vs 6️⃣',
-    options: ['3', '6', '8', '9'],
-    a: '3',
-    hint: 'The smaller number is the one that comes first.',
-    reward: '📉 Small Number'
-  },
-  {
-    q: 'How many sides does a triangle have?',
-    visual: '🔺',
-    options: ['2', '3', '4', '5'],
-    a: '3',
-    hint: 'A triangle has three sides.',
-    reward: '🔺 Side Count'
-  },
-  {
-    q: 'Which is longer?',
-    visual: '📏 vs 🪵',
-    options: ['Ruler', 'Stick', 'Both same', 'None'],
-    a: 'Ruler',
-    hint: 'The ruler is longer than the stick.',
-    reward: '📏 Measure It'
-  },
-  {
-    q: 'What is 2 + 5?',
-    visual: '2️⃣ + 5️⃣',
-    options: ['6', '7', '8', '9'],
-    a: '7',
-    hint: '2 and 5 make 7.',
-    reward: '✨ Number Hooray'
-  },
-  {
-    q: 'What is 8 - 2?',
-    visual: '8️⃣ - 2️⃣',
-    options: ['5', '6', '7', '8'],
-    a: '6',
-    hint: 'Take 2 away from 8.',
-    reward: '🔢 Subtract Fun'
-  },
-  {
-    q: 'Which one is a circle?',
-    visual: '🔴 🟦 🔺 🟩',
-    options: ['Circle', 'Square', 'Triangle', 'Rectangle'],
-    a: 'Circle',
-    hint: 'A circle is round.',
-    reward: '🌈 Shape Spotter'
-  }
-];
+export const grade1Math = {
+  // ==================== EASY LEVELS (1 - 5) ====================
+  1: [
+    { q: "How many sides does a triangle have?", options: ["2", "3", "4", "5"], a: "3", hint: "A triangle has 3 sides." },
+    { q: "Which shape has four equal sides?", options: ["Square", "Triangle", "Circle", "Pentagon"], a: "Square", hint: "It looks like a box." },
+    { q: "Count: 1, 2, 3, ___", options: ["4", "5", "6", "7"], a: "4", hint: "What comes next after 3?" },
+    { q: "What number comes after 9?", options: ["8", "10", "11", "7"], a: "10", hint: "Count one more than 9." },
+    { q: "What is the numeral for twelve?", options: ["21", "12", "20", "13"], a: "12", hint: "It is written with 1 and 2." },
+    { q: "Which number is bigger?", options: ["15", "9", "8", "1"], a: "15", hint: "Compare the numbers." },
+    { q: "Which number is smaller?", options: ["1", "10", "5", "24"], a: "1", hint: "Find the least number." },
+    { q: "Which is the 3rd position?", options: ["First", "Second", "Third", "Fourth"], a: "Third", hint: "3rd means the third place." },
+    { q: "5 + 2 = ___?", options: ["6", "7", "8", "9"], a: "7", hint: "Count 2 more than 5." },
+    { q: "8 + 0 = ___?", options: ["0", "8", "10", "18"], a: "8", hint: "Adding zero keeps the same number." },
+    { q: "Which is longer?", options: ["Pencil", "Crayon", "Coin", "Apple"], a: "Pencil", hint: "Look for the object with more length." },
+    { q: "Count backwards: 10, 9, 8, ___", options: ["7", "6", "5", "4"], a: "7", hint: "Go down by 1." },
+    { q: "What number is more than 18?", options: ["17", "19", "6", "3"], a: "19", hint: "Choose the number greater than 18." },
+    { q: "Which shape has four corners?", options: ["Rectangle", "Triangle", "Circle", "Pentagon"], a: "Rectangle", hint: "It has 4 sides and 4 corners." },
+    { q: "10 + 5 = ___?", options: ["14", "15", "16", "51"], a: "15", hint: "Add 5 to 10." }
+  ],
+  2: [
+    { q: "How many corners does a rectangle have?", options: ["3", "4", "5", "6"], a: "4", hint: "A rectangle has 4 corners." },
+    { q: "Which is 1 less than 20?", options: ["19", "18", "21", "23"], a: "19", hint: "Subtract 1 from 20." },
+    { q: "What comes next? 22, 23, 24, ___", options: ["25", "26", "27", "29"], a: "25", hint: "Count by 1." },
+    { q: "Which is greater?", options: ["16", "14", "6", "7"], a: "16", hint: "Choose the larger value." },
+    { q: "Arrange from smallest to biggest: 12, 5, 8", options: ["5, 8, 12", "12, 8, 5", "8, 5, 12", "5, 12, 8"], a: "5, 8, 12", hint: "Order the numbers from least to greatest." },
+    { q: "The first student is in the ___ position.", options: ["1st", "2nd", "3rd", "4th"], a: "1st", hint: "First means number 1." },
+    { q: "6 + 4 = ___?", options: ["9", "10", "11", "12"], a: "10", hint: "Add 4 to 6." },
+    { q: "7 + 3 = ___?", options: ["8", "9", "10", "11"], a: "10", hint: "7 and 3 make 10." },
+    { q: "9 + 1 = ___?", options: ["10", "11", "12", "13"], a: "10", hint: "One more than 9 is 10." },
+    { q: "Which object is shorter?", options: ["Eraser", "Ruler", "Pencil", "Meter Stick"], a: "Eraser", hint: "Choose the smallest length." },
+    { q: "Count down: 15, 14, 13, ___", options: ["12", "11", "10", "9"], a: "12", hint: "Subtract 1 each time." },
+    { q: "Which has 3 sides?", options: ["Square", "Triangle", "Rectangle", "Hexagon"], a: "Triangle", hint: "A triangle has 3 sides." },
+    { q: "Which number comes before 50?", options: ["49", "51", "58", "12"], a: "49", hint: "One less than 50 is 49." },
+    { q: "4 + 5 = ___?", options: ["8", "9", "10", "6"], a: "9", hint: "4 and 5 together make 9." },
+    { q: "Which number is larger?", options: ["20", "18", "19", "8"], a: "20", hint: "Choose the greatest number." }
+  ],
+  3: [
+    { q: "11 + 4 = ?", options: ["23", "34", "15", "67"], a: "15", hint: "11 + 4 = 15." },
+    { q: "13 + 5 = ?", options: ["18", "68", "56", "79"], a: "18", hint: "Add 5 to 13." },
+    { q: "Which number is between 16 and 18?", options: ["15", "10", "11", "17"], a: "17", hint: "17 comes between 16 and 18." },
+    { q: "What is the 5th position called?", options: ["First", "Second", "Fifth", "Fourth"], a: "Fifth", hint: "5th is the fifth place." },
+    { q: "Which has more sides?", options: ["Triangle", "Square", "Circle", "Pentagon"], a: "Pentagon", hint: "A pentagon has 5 sides." },
+    { q: "What is the numeral for ninety?", options: ["32", "15", "90", "67"], a: "90", hint: "Ninety = 90." },
+    { q: "Which number is greater?", options: ["19", "17", "18", "16"], a: "19", hint: "19 is greater than 17 and 18." },
+    { q: "10 + 8 = ?", options: ["0", "18", "6", "90"], a: "18", hint: "10 plus 8 equals 18." },
+    { q: "What number is one less than 35?", options: ["34", "56", "20", "79"], a: "34", hint: "35 - 1 = 34." },
+    { q: "Arrange: 18, 12, 15 from smallest to largest", options: ["12, 15, 18", "15, 12, 18", "18, 12, 15", "18, 15, 12"], a: "12, 15, 18", hint: "Sort the numbers from least to greatest." },
+    { q: "Which is longer?", options: ["Rope", "Spoon", "Fork", "Pencil"], a: "Rope", hint: "A rope is usually longer than a spoon." },
+    { q: "6 + 6 = ?", options: ["12", "15", "18", "34"], a: "12", hint: "Double 6 is 12." },
+    { q: "Which shape has 4 sides?", options: ["Square", "Triangle", "Octagon", "Circle"], a: "Square", hint: "A square has 4 equal sides." },
+    { q: "Count backwards from 20 to 17", options: ["20, 19, 18, 17", "17, 19, 18, 20", "18, 17, 19, 20", "17, 18, 19, 20"], a: "20, 19, 18, 17", hint: "Subtract 1 each time." },
+    { q: "9 + 8 = ?", options: ["15", "18", "12", "17"], a: "17", hint: "9 + 8 = 17." }
+  ],
+  4: [
+    { q: "Which shape has 3 corners?", options: ["Triangle", "Circle", "Pentagon", "Square"], a: "Triangle", hint: "A triangle has 3 corners." },
+    { q: "Which is the smallest?", options: ["8", "15", "12", "56"], a: "8", hint: "Find the least number." },
+    { q: "What number comes after 69?", options: ["70", "86", "30", "41"], a: "70", hint: "Add 1 to 69." },
+    { q: "What comes before 40?", options: ["39", "12", "97", "8"], a: "39", hint: "One less than 40 is 39." },
+    { q: "Arrange from smallest to largest: 20, 17, 19", options: ["20, 17, 19", "19, 17, 20", "17, 19, 20", "19, 17, 20"], a: "17, 19, 20", hint: "Order the numbers from least to greatest." },
+    { q: "8 + 7 = ?", options: ["15", "45", "89", "65"], a: "15", hint: "8 + 7 = 15." },
+    { q: "9 + 9 = ?", options: ["43", "90", "18", "78"], a: "18", hint: "Double 9 is 18." },
+    { q: "What comes before 2nd?", options: ["1st", "3rd", "4th", "5th"], a: "1st", hint: "The number before second is first." },
+    { q: "Which is longer?", options: ["Table", "Book", "Pencil", "Eraser"], a: "Table", hint: "A table is longer than a pencil." },
+    { q: "Which shape has no corners and no sides?", options: ["Circle", "Triangle", "Square", "Pentagram"], a: "Circle", hint: "A circle is round." },
+    { q: "One more than 49 is ___", options: ["50", "15", "12", "96"], a: "50", hint: "49 + 1 = 50." },
+    { q: "One less than 60 is ___", options: ["8", "17", "59", "56"], a: "59", hint: "60 - 1 = 59." },
+    { q: "5 + 9 = ?", options: ["8", "15", "14", "86"], a: "14", hint: "5 + 9 = 14." },
+    { q: "Count: 45, 46, ___", options: ["47", "15", "90", "56"], a: "47", hint: "Add 1 to 46." },
+    { q: "Which is bigger?", options: ["8", "19", "45", "56"], a: "56", hint: "56 is the greatest value." }
+  ],
+  5: [
+    { q: "12 + 7 = ?", options: ["21", "19", "45", "89"], a: "19", hint: "12 + 7 = 19." },
+    { q: "15 + 5 = ?", options: ["20", "98", "89", "67"], a: "20", hint: "15 + 5 = 20." },
+    { q: "Which is the largest?", options: ["18", "11", "12", "9"], a: "18", hint: "18 is the greatest number." },
+    { q: "Arrange from smallest to largest: 9, 4, 7, 2", options: ["9, 7, 4, 2", "4, 2, 7, 9", "7, 9, 4, 2", "2, 4, 7, 9"], a: "2, 4, 7, 9", hint: "Sort the numbers from least to greatest." },
+    { q: "What is the 10th position called?", options: ["Tenth", "Ninth", "Eight", "Seventh"], a: "Tenth", hint: "10th means tenth place." },
+    { q: "Which shape has four corners and four sides?", options: ["Square", "Triangle", "Circle", "Pentagon"], a: "Square", hint: "A square has 4 sides." },
+    { q: "One more than 99 is ___", options: ["23", "45", "12", "100"], a: "100", hint: "99 + 1 = 100." },
+    { q: "One less than 70 is ___", options: ["70", "69", "87", "67"], a: "69", hint: "70 - 1 = 69." },
+    { q: "8 + 9 = ?", options: ["89", "90", "17", "98"], a: "17", hint: "8 + 9 = 17." },
+    { q: "Which is shorter?", options: ["Pencil", "Schoolbus", "Measuring Tape", "Meter Stick"], a: "Pencil", hint: "Choose the shortest object." },
+    { q: "What comes before 81?", options: ["80", "70", "60", "90"], a: "80", hint: "81 - 1 = 80." },
+    { q: "Count backwards: 30, 29, 28, ___", options: ["27", "67", "90", "60"], a: "27", hint: "Subtract 1 each time." },
+    { q: "10 + 10 = ?", options: ["20", "100", "0", "79"], a: "20", hint: "10 and 10 make 20." },
+    { q: "Which number is greater?", options: ["19", "16", "9", "3"], a: "19", hint: "Check which number is largest." },
+    { q: "Which shape has 3 sides?", options: ["Circle", "Square", "Octagon", "Triangle"], a: "Triangle", hint: "A triangle has 3 sides." }
+  ],
 
-export const grade1Math = {};
+  // ==================== MEDIUM LEVELS (6 - 10) ====================
+  6: [
+    { q: "What comes after 14?", options: ["15", "19", "45", "89"], a: "15", hint: "Add 1 to 14." },
+    { q: "What number comes before 20?", options: ["13", "89", "22", "19"], a: "19", hint: "20 - 1 = 19." },
+    { q: "Which number is greater?", options: ["8", "5", "6", "7"], a: "8", hint: "Choose the largest number." },
+    { q: "Count to complete: 1, 2, 3, ___, ___", options: ["6, 7", "4, 5", "8, 9", "10, 11"], a: "4, 5", hint: "Keep counting by 1." },
+    { q: "Arrange from smallest to largest: 7, 3, 5", options: ["3, 5, 7", "5, 7, 3", "7, 5, 3", "5, 3, 7"], a: "3, 5, 7", hint: "Order from least to greatest." },
+    { q: "What is 4 + 3?", options: ["7", "0", "6", "8"], a: "7", hint: "4 plus 3 is 7." },
+    { q: "What is 6 + 2?", options: ["8", "9", "12", "7"], a: "8", hint: "6 plus 2 equals 8." },
+    { q: "What is 9 - 3?", options: ["7", "6", "5", "4"], a: "6", hint: "Take away 3 from 9." },
+    { q: "What is 7 - 2?", options: ["9", "10", "6", "5"], a: "5", hint: "7 minus 2 is 5." },
+    { q: "Continue the pattern: 2, 4, 2, 4, ___, ___", options: ["2, 4", "4, 2", "8, 9", "3, 4"], a: "2, 4", hint: "The pattern repeats." },
+    { q: "Which shape has 4 equal sides?", options: ["Circle", "Square", "Triangle", "Hexagon"], a: "Square", hint: "A square has 4 equal sides." },
+    { q: "Which is longer?", options: ["Eraser", "Coin", "Crayon", "Pencil"], a: "Pencil", hint: "A pencil is usually longer than a coin." },
+    { q: "Which is more?", options: ["5 pesos", "10 pesos", "2 pesos", "3 pesos"], a: "10 pesos", hint: "Compare the amounts." },
+    { q: "How many days are there in one week?", options: ["7", "24", "8", "4"], a: "7", hint: "There are 7 days in a week." },
+    { q: "Three o'clock is written as:", options: ["2:54", "4:02", "8:00", "3:00"], a: "3:00", hint: "The hour is 3." }
+  ],
+  7: [
+    { q: "Count from 21 to 25", options: ["21, 22, 23, 24, 25", "1, 2, 3", "3, 6, 7", "45, 46, 47, 48"], a: "21, 22, 23, 24, 25", hint: "Count by 1 from 21 to 25." },
+    { q: "What is the numeral for twenty-eight?", options: ["28", "45", "89", "90"], a: "28", hint: "20 + 8 = 28." },
+    { q: "What is 1 more than 34?", options: ["87", "35", "98", "100"], a: "35", hint: "34 + 1 = 35." },
+    { q: "What is 1 less than 40?", options: ["39", "80", "78", "90"], a: "39", hint: "40 - 1 = 39." },
+    { q: "What is the correct arrangement from greatest to smallest?", options: ["12, 15, 19", "19, 15, 12", "15, 19, 12", "19, 12, 15"], a: "19, 15, 12", hint: "Order the numbers from largest to smallest." },
+    { q: "What is eight plus seven?", options: ["15", "12", "9", "60"], a: "15", hint: "8 + 7 = 15." },
+    { q: "What is thirteen plus five?", options: ["18", "20", "16", "90"], a: "18", hint: "13 + 5 = 18." },
+    { q: "Sixteen minus four equals what?", options: ["12", "7", "8", "11"], a: "12", hint: "16 - 4 = 12." },
+    { q: "Ana has 9 pencils, and her teacher gave her 6 more. How many pencils does she have now?", options: ["15 pencils", "12 pencils", "5 pencils", "No pencils"], a: "15 pencils", hint: "9 + 6 = 15." },
+    { q: "Continue the pattern: 5, 10, 5, 10, ___, ___", options: ["5, 10", "10, 5", "9, 8", "1, 0"], a: "5, 10", hint: "The pattern repeats." },
+    { q: "Which is bigger?", options: ["1/2", "1/4", "1/8", "1"], a: "1", hint: "1 is greater than all fractions less than 1." },
+    { q: "Which is longer?", options: ["Pencil", "Crayon", "Coin", "Eraser"], a: "Pencil", hint: "A pencil is usually longer than a coin." },
+    { q: "10 pesos + 5 pesos equals", options: ["15 pesos", "11 pesos", "9 pesos", "10 pesos"], a: "15 pesos", hint: "10 + 5 = 15." },
+    { q: "What day comes after Tuesday?", options: ["Monday", "Wednesday", "Friday", "Thursday"], a: "Wednesday", hint: "Tuesday is followed by Wednesday." },
+    { q: "What month comes after June?", options: ["August", "July", "November", "December"], a: "July", hint: "June is followed by July." }
+  ],
+  8: [
+    { q: "What number comes after 49?", options: ["90", "50", "98", "70"], a: "50", hint: "49 + 1 = 50." },
+    { q: "What number comes before 70?", options: ["69", "86", "67", "45"], a: "69", hint: "70 - 1 = 69." },
+    { q: "Compare: 17 __ 21", options: [">", "<", "=", "None"], a: "<", hint: "17 is less than 21." },
+    { q: "Compare: 25 __ 25", options: [">", "<", "=", "None"], a: "=", hint: "Numbers that are equal are the same." },
+    { q: "What is 24 + 6?", options: ["30", "67", "90", "89"], a: "30", hint: "24 + 6 = 30." },
+    { q: "What is 32 + 15?", options: ["47", "90", "78", "68"], a: "47", hint: "32 + 15 = 47." },
+    { q: "What is 19 - 8?", options: ["11", "89", "60", "78"], a: "11", hint: "19 - 8 = 11." },
+    { q: "What is 27 - 5?", options: ["22", "30", "32", "23"], a: "22", hint: "27 - 5 = 22." },
+    { q: "Leo has 15 toy cars. He gives 6 to his brother. How many toy cars does he have left?", options: ["9", "8", "3", "0"], a: "9", hint: "15 - 6 = 9." },
+    { q: "Arrange from smallest to largest: 36, 24, 31", options: ["31, 24, 36", "36, 34, 31", "24, 31, 36", "36, 24, 31"], a: "24, 31, 36", hint: "Sort least to greatest." },
+    { q: "Continue the pattern: 3, 6, 3, 6, ___, ___", options: ["3, 6", "6, 3", "7, 9", "8, 0"], a: "3, 6", hint: "Pattern repeats every 2 numbers." },
+    { q: "What is 1/4 + 1/4?", options: ["1/3", "1/2", "1/8", "1"], a: "1/2", hint: "Two fourths make one half." },
+    { q: "What month comes after August?", options: ["September", "October", "November", "December"], a: "September", hint: "August is followed by September." },
+    { q: "If today is Monday, what day comes tomorrow?", options: ["Tuesday", "Wednesday", "Thursday", "Friday"], a: "Tuesday", hint: "The next day after Monday is Tuesday." },
+    { q: "Which has more value?", options: ["20 pesos", "15 pesos", "13 pesos", "5 pesos"], a: "20 pesos", hint: "20 is greater than 15, 13, and 5." }
+  ],
+  9: [
+    { q: "What is 15 + 6?", options: ["21", "22", "23", "24"], a: "21", hint: "15 + 6 = 21." },
+    { q: "What is 24 - 9?", options: ["14", "15", "16", "17"], a: "15", hint: "24 - 9 = 15." },
+    { q: "What is half of 12?", options: ["6", "8", "4", "10"], a: "6", hint: "12 ÷ 2 = 6." },
+    { q: "Which number is even?", options: ["13", "15", "18", "21"], a: "18", hint: "Even numbers end in 0, 2, 4, 6, or 8." },
+    { q: "Which number is odd?", options: ["14", "16", "19", "20"], a: "19", hint: "Odd numbers end in 1, 3, 5, 7, or 9." },
+    { q: "What is 7 × 2?", options: ["12", "14", "16", "18"], a: "14", hint: "7 doubled is 14." },
+    { q: "What is 8 × 1?", options: ["8", "9", "7", "0"], a: "8", hint: "Any number times 1 stays the same." },
+    { q: "What is 20 ÷ 5?", options: ["4", "5", "3", "6"], a: "4", hint: "5 groups of 4 make 20." },
+    { q: "Find the missing number: 6, 12, 18, ___", options: ["20", "24", "30", "36"], a: "24", hint: "Add 6 each time." },
+    { q: "Find the missing number: 25, 20, 15, ___", options: ["10", "12", "14", "16"], a: "10", hint: "Subtract 5 each time." }
+  ],
+  10: [
+    { q: "What text type gives step-by-step instructions for making a cake?", options: ["Procedural", "Recount", "Enumeration"], a: "Procedural", hint: "It tells you how to do something." },
+    { q: "Which text type lists items or characteristics?", options: ["Enumeration-Description", "Chronology", "Persuasive"], a: "Enumeration-Description", hint: "It lists details." },
+    { q: "What text type retells past personal experiences?", options: ["Recount", "Procedural", "Explanation"], a: "Recount", hint: "It tells what happened." },
+    { q: "A timeline of events uses which order?", options: ["Chronological order", "Procedural order", "Random order"], a: "Chronological order", hint: "Events are placed in time order." },
+    { q: "Signal words like 'First, Next, Then, Finally' indicate:", options: ["Procedural / Sequence", "Comparison", "Cause and Effect"], a: "Procedural / Sequence", hint: "These show steps." },
+    { q: "A news report about a recent storm is an example of:", options: ["Informational Text", "Fantasy", "Procedural"], a: "Informational Text", hint: "It gives real facts." },
+    { q: "What is the primary purpose of persuasive text?", options: ["To convince the reader", "To tell a joke", "To list ingredients"], a: "To convince the reader", hint: "It tries to change your mind." },
+    { q: "Which text type explains 'how' or 'why' a phenomenon occurs?", options: ["Explanation", "Recount", "Narrative"], a: "Explanation", hint: "It gives reasons." },
+    { q: "An autobiography is an example of a:", options: ["Personal Recount", "Procedural Text", "Fable"], a: "Personal Recount", hint: "It tells someone's life story." },
+    { q: "In what text type would you find a list of rules for a game?", options: ["Procedural", "Narrative", "Poetry"], a: "Procedural", hint: "It guides how to do something." }
+  ],
 
-for (let level = 1; level <= 15; level += 1) {
-  grade1Math[level] = Array.from({ length: 15 }, (_, index) => {
-    const template = grade1MathTemplates[(level + index) % grade1MathTemplates.length];
-    return {
-      q: template.q,
-      visual: template.visual,
-      options: template.options,
-      optionIcons: ['1️⃣', '2️⃣', '3️⃣', '4️⃣'],
-      a: template.a,
-      hint: template.hint,
-      reward: template.reward
-    };
-  });
-}
+  // ==================== HARD LEVELS (11 - 15) ====================
+  11: [
+    { q: "What is 24 + 18?", options: ["32", "40", "42", "44"], a: "42", hint: "24 + 18 = 42." },
+    { q: "What is 36 - 15?", options: ["19", "21", "23", "25"], a: "21", hint: "36 - 15 = 21." },
+    { q: "What is 7 × 6?", options: ["36", "42", "48", "54"], a: "42", hint: "7 groups of 6 make 42." },
+    { q: "What is 48 ÷ 6?", options: ["6", "7", "8", "9"], a: "8", hint: "6 × 8 = 48." },
+    { q: "Which fraction is greater: 3/4 or 1/2?", options: ["3/4", "1/2", "They are equal"], a: "3/4", hint: "Three quarters is larger than one half." },
+    { q: "Which number is a multiple of 5?", options: ["17", "25", "32", "41"], a: "25", hint: "Multiples of 5 end in 0 or 5." },
+    { q: "Find the missing number: 14, 21, 28, ___", options: ["34", "35", "36", "42"], a: "35", hint: "Add 7 each time." },
+    { q: "Which shape has 6 sides?", options: ["Triangle", "Square", "Hexagon", "Circle"], a: "Hexagon", hint: "Hexagon = 6 sides." },
+    { q: "What is 1/3 + 1/3?", options: ["1/6", "2/3", "1/2", "3/3"], a: "2/3", hint: "Two thirds make 2/3." },
+    { q: "If a box has 5 apples and you add 4 more, how many apples are there?", options: ["8", "9", "10", "11"], a: "9", hint: "5 + 4 = 9." }
+  ],
+  12: [
+    { q: "What is 9 + 8 + 7?", options: ["20", "22", "24", "25"], a: "24", hint: "9 + 8 = 17, then + 7 = 24." },
+    { q: "Subtract: 52 - 17", options: ["33", "35", "37", "39"], a: "35", hint: "52 - 17 = 35." },
+    { q: "Multiply: 12 × 3", options: ["30", "32", "36", "38"], a: "36", hint: "12 × 3 = 36." },
+    { q: "Divide: 63 ÷ 7", options: ["7", "8", "9", "10"], a: "9", hint: "7 × 9 = 63." },
+    { q: "Which is the smallest fraction?", options: ["1/2", "1/3", "1/4", "3/4"], a: "1/4", hint: "A smaller denominator often means a smaller fraction when numerators are same." },
+    { q: "What does 4² equal?", options: ["8", "12", "16", "20"], a: "16", hint: "4 × 4 = 16." },
+    { q: "What is 5 + 5 + 5?", options: ["10", "15", "20", "25"], a: "15", hint: "3 groups of 5 make 15." },
+    { q: "Which number is between 29 and 31?", options: ["28", "30", "32", "33"], a: "30", hint: "30 is between 29 and 31." },
+    { q: "What is the perimeter of a square with side 3 cm?", options: ["6 cm", "9 cm", "12 cm", "15 cm"], a: "12 cm", hint: "Perimeter = 4 × side." },
+    { q: "What is 100 - 25?", options: ["65", "70", "75", "80"], a: "75", hint: "100 - 25 = 75." }
+  ],
+  13: [
+    { q: "Which is a prime number?", options: ["9", "11", "15", "21"], a: "11", hint: "Prime numbers have only 2 factors." },
+    { q: "What is 9 × 4?", options: ["32", "34", "36", "38"], a: "36", hint: "9 × 4 = 36." },
+    { q: "What is 72 ÷ 8?", options: ["7", "8", "9", "10"], a: "9", hint: "8 × 9 = 72." },
+    { q: "Find the missing number: 3, 6, 9, 12, ___", options: ["13", "14", "15", "16"], a: "15", hint: "Count by 3." },
+    { q: "Which fraction is equal to 1/2?", options: ["2/4", "1/3", "3/5", "4/6"], a: "2/4", hint: "2/4 simplifies to 1/2." },
+    { q: "What is 2/5 + 1/5?", options: ["1/5", "2/5", "3/5", "4/5"], a: "3/5", hint: "Add the numerators: 2 + 1 = 3." },
+    { q: "Which number is a factor of 18?", options: ["5", "7", "9", "11"], a: "9", hint: "18 ÷ 9 = 2." },
+    { q: "What is the sum of 27 and 18?", options: ["35", "45", "47", "49"], a: "45", hint: "27 + 18 = 45." },
+    { q: "A rectangle has length 8 cm and width 3 cm. What is its area?", options: ["11 cm²", "22 cm²", "24 cm²", "26 cm²"], a: "24 cm²", hint: "Area = length × width." },
+    { q: "What is 150 - 75?", options: ["65", "70", "75", "80"], a: "75", hint: "150 - 75 = 75." }
+  ],
+  14: [
+    { q: "Which number is divisible by 3?", options: ["14", "16", "18", "20"], a: "18", hint: "18 can be grouped by 3s." },
+    { q: "What is 13 + 29?", options: ["38", "40", "42", "44"], a: "42", hint: "13 + 29 = 42." },
+    { q: "What is 50 - 24?", options: ["24", "26", "28", "30"], a: "26", hint: "50 - 24 = 26." },
+    { q: "What is 6 × 8?", options: ["40", "42", "48", "54"], a: "48", hint: "6 groups of 8 are 48." },
+    { q: "If a triangle has sides 3 cm, 4 cm, and 5 cm, what is its perimeter?", options: ["11 cm", "12 cm", "13 cm", "14 cm"], a: "12 cm", hint: "Add all sides." },
+    { q: "What is 1/2 of 20?", options: ["5", "10", "15", "20"], a: "10", hint: "Half of 20 is 10." },
+    { q: "Find the next number: 2, 4, 8, 16, ___", options: ["18", "20", "24", "32"], a: "32", hint: "Double each time." },
+    { q: "Which is the largest number?", options: ["0.5", "0.75", "0.8", "0.25"], a: "0.8", hint: "Compare decimals." },
+    { q: "What is 25% of 80?", options: ["15", "20", "25", "30"], a: "20", hint: "25% means one quarter." },
+    { q: "What is the value of 3/4 + 1/4?", options: ["1/2", "1", "3/4", "4/4"], a: "1", hint: "Three quarters plus one quarter equals a whole." }
+  ],
+  15: [
+    { q: "What is the area of a rectangle with length 9 cm and width 5 cm?", options: ["14 cm²", "36 cm²", "45 cm²", "54 cm²"], a: "45 cm²", hint: "Area = length × width." },
+    { q: "Solve: 125 + 75", options: ["180", "190", "200", "210"], a: "200", hint: "125 + 75 = 200." },
+    { q: "Solve: 90 - 37", options: ["42", "43", "53", "63"], a: "53", hint: "90 - 37 = 53." },
+    { q: "Which number is not a multiple of 4?", options: ["12", "16", "18", "20"], a: "18", hint: "Multiples of 4 end in 0, 4, 8, 2, 6." },
+    { q: "What is 9 × 7?", options: ["54", "56", "63", "72"], a: "63", hint: "9 groups of 7 make 63." },
+    { q: "What is 84 ÷ 7?", options: ["10", "11", "12", "13"], a: "12", hint: "7 × 12 = 84." },
+    { q: "Which decimal is greater than 0.6?", options: ["0.4", "0.5", "0.7", "0.6"], a: "0.7", hint: "0.7 is greater than 0.6." },
+    { q: "What is 3/5 of 25?", options: ["10", "12", "15", "20"], a: "15", hint: "25 ÷ 5 = 5, then 5 × 3 = 15." },
+    { q: "The sum of two equal numbers is 18. What is each number?", options: ["8", "9", "10", "11"], a: "9", hint: "9 + 9 = 18." },
+    { q: "What is the next prime number after 11?", options: ["12", "13", "15", "17"], a: "13", hint: "13 is the next prime after 11." }
+  ]
+};
 
 export default grade1Math;

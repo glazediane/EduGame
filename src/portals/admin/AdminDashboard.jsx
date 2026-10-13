@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import AdminSettings from './AdminSettings'
 
-const gradeOptions = ['nursery', 'prekinder', 'kinder', 'grade1', 'grade2', 'grade3', 'grade4', 'grade5', 'grade6']
+const gradeOptions = ['grade1', 'grade2', 'grade3', 'grade4', 'grade5', 'grade6']
 
 export default function AdminDashboard({ user, onLogout }) {
   const safeUser = user || {}
@@ -19,7 +19,7 @@ export default function AdminDashboard({ user, onLogout }) {
     userId: '',
     fullName: '',
     password: '',
-    grade: 'kinder',
+    grade: 'grade1',
     teacherId: ''
   })
   const [editingUser, setEditingUser] = useState(null)
@@ -28,7 +28,7 @@ export default function AdminDashboard({ user, onLogout }) {
     userId: '',
     fullName: '',
     role: 'student',
-    grade: 'kinder',
+    grade: 'grade1',
     teacherId: '',
     password: ''
   })
@@ -103,7 +103,7 @@ export default function AdminDashboard({ user, onLogout }) {
         fullName: form.fullName.trim(),
         password: form.password.trim(),
         role: form.role,
-        grade: form.role === 'admin' ? 'kinder' : form.grade,
+        grade: form.role === 'admin' ? 'grade1' : form.grade,
         teacherId: form.role === 'student' ? form.teacherId.trim() : ''
       }
 
@@ -117,7 +117,7 @@ export default function AdminDashboard({ user, onLogout }) {
 
       if (data.success) {
         setFormMessage({ type: 'success', text: data.message || 'Account created successfully.' })
-        setForm({ role: 'student', userId: '', fullName: '', password: '', grade: 'kinder', teacherId: '' })
+        setForm({ role: 'student', userId: '', fullName: '', password: '', grade: 'grade1', teacherId: '' })
         refreshUsers()
       } else {
         setFormMessage({ type: 'error', text: data.message || 'Unable to create account.' })
@@ -181,7 +181,7 @@ export default function AdminDashboard({ user, onLogout }) {
       userId: account.userId,
       fullName: account.fullName || '',
       role: normalizedRole === 'administrator' ? 'admin' : normalizedRole,
-      grade: account.grade && account.grade !== 'N/A' ? account.grade : 'kinder',
+      grade: account.grade && account.grade !== 'N/A' ? account.grade : 'grade1',
       teacherId: account.teacherId || '',
       password: ''
     })
@@ -218,7 +218,7 @@ export default function AdminDashboard({ user, onLogout }) {
         oldRole: String(editingUser?.role || editForm.role || 'student').toLowerCase(),
         role: normalizedRole === 'administrator' ? 'admin' : normalizedRole,
         fullName: editForm.fullName.trim(),
-        grade: normalizedRole === 'admin' ? 'kinder' : editForm.grade,
+        grade: normalizedRole === 'admin' ? 'grade1' : editForm.grade,
         teacherId: normalizedRole === 'student' ? editForm.teacherId.trim() : '',
         password: editForm.password.trim()
       }
@@ -274,7 +274,6 @@ export default function AdminDashboard({ user, onLogout }) {
         <div style={{ display: 'flex', gap: '10px' }}>
           <button onClick={() => setActiveTab('students')} style={activeTab === 'students' ? activeTabStyle : navBtnStyle}>🏫 Student Directory</button>
           <button onClick={() => setActiveTab('teachers')} style={activeTab === 'teachers' ? activeTabStyle : navBtnStyle}>🧑‍🏫 Teacher Directory</button>
-          <button onClick={() => setActiveTab('manage')} style={activeTab === 'manage' ? activeTabStyle : navBtnStyle}>🛠️ Manage Accounts</button>
           <button onClick={() => setActiveTab('settings')} style={activeTab === 'settings' ? activeTabStyle : navBtnStyle}>⚙️ System Settings</button>
         </div>
       </header>
@@ -317,7 +316,7 @@ export default function AdminDashboard({ user, onLogout }) {
                     <tr key={student.id} style={{ borderBottom: '1px solid #E2E8F0' }}>
                       <td style={{ ...tdStyle, fontWeight: 'bold' }}>{student.id}</td>
                       <td style={{ ...tdStyle, textAlign: 'justify' }}>{student.name}</td>
-                      <td style={tdStyle}><span style={gradeBadgeStyle}>{student.grade ? student.grade.toUpperCase() : 'KINDER'}</span></td>
+                      <td style={tdStyle}><span style={gradeBadgeStyle}>{student.grade ? student.grade.toUpperCase() : 'GRADE 1'}</span></td>
                       <td style={tdStyle}>{student.locked ? <span style={lockedBadgeStyle}>🔒 Locked</span> : <span style={activeBadgeStyle}>✅ Active</span>}</td>
                       <td style={tdStyle}>
                         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
@@ -384,181 +383,6 @@ export default function AdminDashboard({ user, onLogout }) {
                 </tbody>
               </table>
             )}
-          </div>
-        )}
-
-        {activeTab === 'manage' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-            <div style={cardStyle}>
-              <h3 style={{ margin: '0 0 15px 0', color: '#1E293B' }}>🧑‍🏫 Add New Student or Teacher</h3>
-
-              {formMessage.text && (
-                <div style={{ marginBottom: '15px', padding: '10px 12px', borderRadius: '8px', backgroundColor: formMessage.type === 'success' ? '#DCFCE7' : '#FEE2E2', color: formMessage.type === 'success' ? '#166534' : '#991B1B', fontWeight: '700' }}>
-                  {formMessage.text}
-                </div>
-              )}
-
-              <form onSubmit={handleAddUser} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '15px' }}>
-                <div>
-                  <label style={labelStyle}>Role</label>
-                  <select value={form.role} onChange={e => handleInputChange('role', e.target.value)} style={inputStyle}>
-                    <option value="student">Student</option>
-                    <option value="teacher">Teacher</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label style={labelStyle}>User ID</label>
-                  <input value={form.userId} onChange={e => handleInputChange('userId', e.target.value)} style={inputStyle} placeholder="e.g. STU1001" />
-                </div>
-
-                <div>
-                  <label style={labelStyle}>Full Name</label>
-                  <input value={form.fullName} onChange={e => handleInputChange('fullName', e.target.value)} style={inputStyle} placeholder="Juan Dela Cruz" />
-                </div>
-
-                <div>
-                  <label style={labelStyle}>Password</label>
-                  <input type="password" value={form.password} onChange={e => handleInputChange('password', e.target.value)} style={inputStyle} placeholder="Set a password" />
-                </div>
-
-                {form.role !== 'admin' && (
-                  <div>
-                    <label style={labelStyle}>Grade</label>
-                    <select value={form.grade} onChange={e => handleInputChange('grade', e.target.value)} style={inputStyle}>
-                      {gradeOptions.map(grade => (
-                        <option key={grade} value={grade}>{grade.replace('grade', 'Grade ')}</option>
-                      ))}
-                    </select>
-                  </div>
-                )}
-
-                {form.role === 'student' && (
-                  <div>
-                    <label style={labelStyle}>Assigned Teacher ID</label>
-                    <input value={form.teacherId} onChange={e => handleInputChange('teacherId', e.target.value)} style={inputStyle} placeholder="Optional teacher ID" />
-                  </div>
-                )}
-
-                <div style={{ display: 'flex', alignItems: 'end' }}>
-                  <button type="submit" style={primaryBtnStyle}>Add Account</button>
-                </div>
-              </form>
-            </div>
-
-            {editingUser && (
-              <div style={cardStyle}>
-                <h3 style={{ margin: '0 0 15px 0', color: '#1E293B' }}>✏️ Edit Account</h3>
-
-                <div style={{ display: 'flex', gap: '10px', marginBottom: '15px', flexWrap: 'wrap' }}>
-                  <input
-                    value={editSearch}
-                    onChange={e => setEditSearch(e.target.value)}
-                    placeholder="Search by User ID or Name"
-                    style={{ ...inputStyle, maxWidth: '300px' }}
-                  />
-                  <button type="button" onClick={handleSearchEditUser} style={primaryBtnStyle}>Search User</button>
-                </div>
-
-                <form onSubmit={handleSaveEdit} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '15px' }}>
-                  <div>
-                    <label style={labelStyle}>Role</label>
-                    <select value={editForm.role} onChange={e => setEditForm({ ...editForm, role: e.target.value })} style={inputStyle}>
-                      <option value="student">Student</option>
-                      <option value="teacher">Teacher</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label style={labelStyle}>User ID</label>
-                    <input value={editForm.userId} disabled style={{ ...inputStyle, backgroundColor: '#E2E8F0', color: '#475569', cursor: 'not-allowed' }} />
-                  </div>
-
-                  <div>
-                    <label style={labelStyle}>Full Name</label>
-                    <input value={editForm.fullName} onChange={e => setEditForm({ ...editForm, fullName: e.target.value })} style={inputStyle} />
-                  </div>
-
-                  {editForm.role !== 'admin' && (
-                    <div>
-                      <label style={labelStyle}>Grade</label>
-                      <select value={editForm.grade} onChange={e => setEditForm({ ...editForm, grade: e.target.value })} style={inputStyle}>
-                        {gradeOptions.map(grade => (
-                          <option key={grade} value={grade}>{grade.replace('grade', 'Grade ')}</option>
-                        ))}
-                      </select>
-                    </div>
-                  )}
-
-                  {editForm.role === 'student' && (
-                    <div>
-                      <label style={labelStyle}>Assigned Teacher ID</label>
-                      <input value={editForm.teacherId} onChange={e => setEditForm({ ...editForm, teacherId: e.target.value })} style={inputStyle} placeholder="Optional teacher ID" />
-                    </div>
-                  )}
-
-                  <div>
-                    <label style={labelStyle}>New Password (optional)</label>
-                    <input type="password" value={editForm.password} onChange={e => setEditForm({ ...editForm, password: e.target.value })} style={inputStyle} placeholder="Leave blank to keep current password" />
-                  </div>
-
-                  <div style={{ display: 'flex', alignItems: 'end', gap: '10px' }}>
-                    <button type="submit" style={primaryBtnStyle}>Save Changes</button>
-                    <button type="button" onClick={() => setEditingUser(null)} style={secondaryBtnStyle}>Cancel</button>
-                  </div>
-                </form>
-              </div>
-            )}
-
-            <div style={cardStyle}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
-                <h3 style={{ margin: 0, color: '#1E293B' }}>📋 Remove or Edit Existing User Records</h3>
-                <input
-                  type="text"
-                  placeholder="Search user..."
-                  value={searchTerm}
-                  onChange={e => setSearchTerm(e.target.value)}
-                  style={searchInputStyle}
-                />
-              </div>
-
-              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                <thead>
-                  <tr style={{ backgroundColor: '#F1F5F9', textAlign: 'left' }}>
-                    <th style={thStyle}>Role</th>
-                    <th style={thStyle}>User ID</th>
-                    <th style={thStyle}>Full Name</th>
-                    <th style={thStyle}>Grade</th>
-                    <th style={thStyle}>Status</th>
-                    <th style={thStyle}>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {userDirectory.length === 0 ? (
-                    <tr>
-                      <td colSpan={6} style={{ padding: '20px', textAlign: 'center', color: '#64748B' }}>No student or teacher records found.</td>
-                    </tr>
-                  ) : (
-                    userDirectory.map(account => (
-                      <tr key={`${account.role}-${account.userId}`} style={{ borderBottom: '1px solid #E2E8F0' }}>
-                        <td style={tdStyle}><span style={{ ...roleBadgeStyle, background: account.role === 'student' ? '#DBEAFE' : '#DCFCE7' }}>{account.role}</span></td>
-                        <td style={tdStyle}>{account.userId}</td>
-                        <td style={tdStyle}>{account.fullName}</td>
-                        <td style={tdStyle}>{account.grade && account.grade !== 'N/A' ? account.grade.toUpperCase() : 'N/A'}</td>
-                        <td style={tdStyle}><span style={account.isLocked ? lockedBadgeStyle : activeBadgeStyle}>{account.isLocked ? '🔒 Locked' : '✅ Active'}</span></td>
-                        <td style={tdStyle}>
-                          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                            {account.isLocked && <button onClick={() => handleShowToken(account)} style={tokenBtnStyle}>Show Token</button>}
-                            <button onClick={() => startEdit(account)} style={editBtnStyle}>Edit</button>
-                            <button onClick={() => handleDeleteUser(account)} style={deleteBtnStyle}>Remove</button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
-            </div>
           </div>
         )}
 

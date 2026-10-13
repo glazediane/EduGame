@@ -4,7 +4,7 @@ export default function StudentSettings({ user, onLogout }) {
   const safeUser = user || {}
   const safeUserId = safeUser.userId || ''
   const safeUserName = safeUser.fullName || safeUser.name || 'Student'
-  const safeGrade = safeUser.grade || 'kinder'
+  const safeGrade = safeUser.grade || 'grade1'
 
   const [newPassword, setNewPassword] = useState('')
   const [msg, setMsg] = useState({ text: '', isError: false })

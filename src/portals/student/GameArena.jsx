@@ -5,7 +5,7 @@ const getQuestionText = (question) => question?.q || question?.question || 'Ques
 const getQuestionVisual = (question) => question?.visual || question?.emoji || ''
 
 export default function GameArena({ grade, subject, levelConfig, userId, onBack }) {
-  const userGrade = (grade || 'kinder').toLowerCase()
+  const userGrade = (grade || 'grade1').toLowerCase()
   const currentLevel = levelConfig?.level || 1
 
   const [lives, setLives] = useState(() => {

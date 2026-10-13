@@ -1,52 +1,13 @@
 import { useState } from 'react'
-import { apiFetch } from '../../api'
 
 export default function AdminSettings({ user, onLogout }) {
   const safeUser = user || {}
   const safeUserId = safeUser.userId || ''
   const safeUserName = safeUser.fullName || safeUser.name || 'Administrator'
-  const adminApiToken = 'EDUGAME_ADMIN_2026'
 
   const [maxAttempts, setMaxAttempts] = useState(3)
   const [autoLock, setAutoLock] = useState(true)
-  const [apiEndpoint, setApiEndpoint] = useState('/edugame_api/')
   const [message, setMessage] = useState('')
-  const [unlockUserId, setUnlockUserId] = useState('')
-  const [unlockRole, setUnlockRole] = useState('student')
-  const [unlockReason, setUnlockReason] = useState('')
-  const [unlockTokenInput, setUnlockTokenInput] = useState('')
-  const [tokenLookupLoading, setTokenLookupLoading] = useState(false)
-  const [unlockStatus, setUnlockStatus] = useState('')
-
-  const handleFetchUnlockToken = async () => {
-    if (!unlockUserId || !unlockRole) {
-      setMessage('⚠️ Enter a user ID and select a role first.')
-      return
-    }
-
-    setTokenLookupLoading(true)
-    setMessage('')
-
-    try {
-      const res = await apiFetch(`${apiEndpoint}get_unlock_token.php`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: unlockUserId, role: unlockRole })
-      })
-
-      if (res && res.success && res.unlockToken) {
-        setUnlockTokenInput(res.unlockToken)
-        setMessage('✅ Unlock token loaded for this user.')
-      } else {
-        setUnlockTokenInput('')
-        setMessage('⚠️ ' + (res?.message || 'No active unlock token found.'))
-      }
-    } catch (err) {
-      setMessage('Error: ' + err.message)
-    } finally {
-      setTokenLookupLoading(false)
-    }
-  }
 
   const handleSave = (e) => {
     e.preventDefault()
@@ -59,7 +20,7 @@ export default function AdminSettings({ user, onLogout }) {
       <div style={{ marginBottom: '20px' }}>
         <h3 style={{ margin: 0, color: '#0f172a' }}>⚙️ Admin System Settings</h3>
         <p style={{ margin: '5px 0 0 0', color: '#64748B', fontSize: '0.85rem' }}>
-          Configure global system security, connection parameters, and administrative controls.
+          Configure global system security and administrative controls.
         </p>
       </div>
 
@@ -67,7 +28,6 @@ export default function AdminSettings({ user, onLogout }) {
 
       <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
         
-        {/* Administrator Profile Card */}
         <div style={sectionCardStyle}>
           <h4 style={sectionHeaderStyle}>👤 Administrator Profile</h4>
           <div style={gridStyle}>
@@ -82,7 +42,6 @@ export default function AdminSettings({ user, onLogout }) {
           </div>
         </div>
 
-        {/* Security & Access Policy Settings */}
         <div style={sectionCardStyle}>
           <h4 style={sectionHeaderStyle}>🔒 Security & Attempt Lock Policy</h4>
           <div style={gridStyle}>
@@ -111,99 +70,9 @@ export default function AdminSettings({ user, onLogout }) {
           </div>
         </div>
 
-        {/* Database & Server Settings */}
-        <div style={sectionCardStyle}>
-          <h4 style={sectionHeaderStyle}>💾 XAMPP & Server Configuration</h4>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            <div>
-              <label style={labelStyle}>PHP / MySQL API Base URL</label>
-              <input 
-                type="text" 
-                value={apiEndpoint} 
-                onChange={(e) => setApiEndpoint(e.target.value)} 
-                style={inputStyle} 
-              />
-            </div>
-            <div style={{ fontSize: '0.85rem', color: '#64748B', display: 'flex', gap: '20px', marginTop: '5px' }}>
-              <span>Database Status: <strong style={{ color: '#16A34A' }}>● Connected (edugame_db)</strong></span>
-              <span>Web Server: <strong style={{ color: '#2563EB' }}>Apache / XAMPP</strong></span>
-            </div>
-          </div>
-        </div>
-
-        {/* Save Button */}
         <button type="submit" style={saveBtnStyle}>
           💾 Save Configuration
         </button>
-
-        {/* Simple Unlock UI */}
-        <div style={sectionCardStyle}>
-          <h4 style={sectionHeaderStyle}>🔓 Unlock User (Admin)</h4>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-            <div>
-              <label style={labelStyle}>User ID to Unlock</label>
-              <input value={unlockUserId} onChange={(e) => setUnlockUserId(e.target.value)} style={inputStyle} />
-            </div>
-            <div>
-              <label style={labelStyle}>Role</label>
-              <select value={unlockRole} onChange={(e) => setUnlockRole(e.target.value)} style={inputStyle}>
-                <option value="student">Student</option>
-                <option value="teacher">Teacher</option>
-                <option value="admin">Admin</option>
-              </select>
-            </div>
-            <div style={{ gridColumn: '1 / -1' }}>
-              <label style={labelStyle}>Reason (optional)</label>
-              <input value={unlockReason} onChange={(e) => setUnlockReason(e.target.value)} style={inputStyle} />
-            </div>
-            <div style={{ gridColumn: '1 / -1' }}>
-              <label style={labelStyle}>System Unlock Token</label>
-              <input value={unlockTokenInput} onChange={(e) => setUnlockTokenInput(e.target.value)} placeholder="Paste the generated unlock token from the user" style={inputStyle} />
-            </div>
-          </div>
-
-          <div style={{ marginTop: '12px', display: 'flex', gap: '10px' }}>
-            <button type="button" onClick={async () => {
-              try {
-                if (!safeUserId) {
-                  setUnlockStatus('⚠️ Administrator session is not ready yet.')
-                  return
-                }
-
-                setUnlockStatus('')
-                const res = await apiFetch(`${apiEndpoint}unlock_account.php`, {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ userId: unlockUserId, role: unlockRole, unlockToken: unlockTokenInput, adminToken: adminApiToken, adminUser: safeUserId, reason: unlockReason })
-                })
-
-                if (res && res.success) {
-                  setUnlockStatus('✅ Account Successfully Unlocked')
-                } else {
-                  setUnlockStatus('⚠️ ' + (res.message || 'Failed to unlock'))
-                }
-              } catch (err) {
-                setUnlockStatus('Error: ' + err.message)
-              }
-            }} style={{ ...saveBtnStyle, backgroundColor: '#16A34A' }} disabled={!safeUserId}>Unlock & Log</button>
-
-            <button type="button" onClick={() => { setUnlockUserId(''); setUnlockRole('student'); setUnlockReason(''); setUnlockTokenInput(''); setUnlockStatus(''); setMessage('') }} style={{ backgroundColor: '#E2E8F0', color: '#0F172A', border: '1px solid #CBD5E1', padding: '10px 14px', borderRadius: '8px', cursor: 'pointer', fontWeight: '700', fontSize: '0.95rem', minWidth: '90px' }}>Clear</button>
-          </div>
-
-          {unlockStatus && (
-            <div style={{
-              marginTop: '12px',
-              backgroundColor: unlockStatus.startsWith('✅') ? '#DCFCE7' : unlockStatus.startsWith('⚠️') || unlockStatus.startsWith('Error:') ? '#FEE2E2' : '#E0F2FE',
-              color: unlockStatus.startsWith('✅') ? '#15803D' : unlockStatus.startsWith('⚠️') || unlockStatus.startsWith('Error:') ? '#B91C1C' : '#0F172A',
-              padding: '10px 12px',
-              borderRadius: '8px',
-              fontWeight: 'bold',
-              border: '1px solid rgba(15, 23, 42, 0.08)'
-            }}>
-              {unlockStatus}
-            </div>
-          )}
-        </div>
 
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px' }}>
           <button type="button" onClick={onLogout || (() => window.location.reload())} style={{ backgroundColor: '#EF4444', color: 'white', border: 'none', padding: '10px 18px', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}>
