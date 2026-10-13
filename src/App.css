@@ -182,3 +182,9 @@
     border-right-color: var(--border);
   }
 }
+
+/* Global table text justification for directory and listings */
+table td,
+table th {
+  text-align: justify;
+}

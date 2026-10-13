@@ -5,6 +5,7 @@ export default function AdminSettings({ user, onLogout }) {
   const safeUser = user || {}
   const safeUserId = safeUser.userId || ''
   const safeUserName = safeUser.fullName || safeUser.name || 'Administrator'
+  const adminApiToken = 'EDUGAME_ADMIN_2026'
 
   const [maxAttempts, setMaxAttempts] = useState(3)
   const [autoLock, setAutoLock] = useState(true)
@@ -14,8 +15,8 @@ export default function AdminSettings({ user, onLogout }) {
   const [unlockRole, setUnlockRole] = useState('student')
   const [unlockReason, setUnlockReason] = useState('')
   const [unlockTokenInput, setUnlockTokenInput] = useState('')
-  const [adminTokenInput, setAdminTokenInput] = useState('')
   const [tokenLookupLoading, setTokenLookupLoading] = useState(false)
+  const [unlockStatus, setUnlockStatus] = useState('')
 
   const handleFetchUnlockToken = async () => {
     if (!unlockUserId || !unlockRole) {
@@ -135,7 +136,7 @@ export default function AdminSettings({ user, onLogout }) {
           💾 Save Configuration
         </button>
 
-        {/* Simple Unlock UI Example */}
+        {/* Simple Unlock UI */}
         <div style={sectionCardStyle}>
           <h4 style={sectionHeaderStyle}>🔓 Unlock User (Admin)</h4>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
@@ -157,16 +158,7 @@ export default function AdminSettings({ user, onLogout }) {
             </div>
             <div style={{ gridColumn: '1 / -1' }}>
               <label style={labelStyle}>System Unlock Token</label>
-              <div style={{ display: 'flex', gap: '10px' }}>
-                <input value={unlockTokenInput} onChange={(e) => setUnlockTokenInput(e.target.value)} placeholder="Paste the generated unlock token from the user" style={{ ...inputStyle, flex: 1 }} />
-                <button type="button" onClick={handleFetchUnlockToken} disabled={tokenLookupLoading} style={{ ...saveBtnStyle, backgroundColor: '#0EA5E9', padding: '10px 14px', minWidth: '150px' }}>
-                  {tokenLookupLoading ? 'Loading...' : 'Load Token'}
-                </button>
-              </div>
-            </div>
-            <div style={{ gridColumn: '1 / -1' }}>
-              <label style={labelStyle}>Admin Token</label>
-              <input value={adminTokenInput} onChange={(e) => setAdminTokenInput(e.target.value)} placeholder="Paste admin token here" style={inputStyle} />
+              <input value={unlockTokenInput} onChange={(e) => setUnlockTokenInput(e.target.value)} placeholder="Paste the generated unlock token from the user" style={inputStyle} />
             </div>
           </div>
 
@@ -174,29 +166,43 @@ export default function AdminSettings({ user, onLogout }) {
             <button type="button" onClick={async () => {
               try {
                 if (!safeUserId) {
-                  setMessage('⚠️ Administrator session is not ready yet.')
+                  setUnlockStatus('⚠️ Administrator session is not ready yet.')
                   return
                 }
 
-                setMessage('')
+                setUnlockStatus('')
                 const res = await apiFetch(`${apiEndpoint}unlock_account.php`, {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ userId: unlockUserId, role: unlockRole, adminToken: adminTokenInput, unlockToken: unlockTokenInput, adminUser: safeUserId, reason: unlockReason })
+                  body: JSON.stringify({ userId: unlockUserId, role: unlockRole, unlockToken: unlockTokenInput, adminToken: adminApiToken, adminUser: safeUserId, reason: unlockReason })
                 })
 
                 if (res && res.success) {
-                  setMessage('✅ ' + (res.message || 'Unlocked and logged'))
+                  setUnlockStatus('✅ Account Successfully Unlocked')
                 } else {
-                  setMessage('⚠️ ' + (res.message || 'Failed to unlock'))
+                  setUnlockStatus('⚠️ ' + (res.message || 'Failed to unlock'))
                 }
               } catch (err) {
-                setMessage('Error: ' + err.message)
+                setUnlockStatus('Error: ' + err.message)
               }
             }} style={{ ...saveBtnStyle, backgroundColor: '#16A34A' }} disabled={!safeUserId}>Unlock & Log</button>
 
-            <button type="button" onClick={() => { setUnlockUserId(''); setUnlockRole('student'); setUnlockReason(''); setUnlockTokenInput(''); setAdminTokenInput(''); setMessage('') }} style={{ backgroundColor: '#E2E8F0', border: 'none', padding: '10px 14px', borderRadius: '8px', cursor: 'pointer' }}>Clear</button>
+            <button type="button" onClick={() => { setUnlockUserId(''); setUnlockRole('student'); setUnlockReason(''); setUnlockTokenInput(''); setUnlockStatus(''); setMessage('') }} style={{ backgroundColor: '#E2E8F0', color: '#0F172A', border: '1px solid #CBD5E1', padding: '10px 14px', borderRadius: '8px', cursor: 'pointer', fontWeight: '700', fontSize: '0.95rem', minWidth: '90px' }}>Clear</button>
           </div>
+
+          {unlockStatus && (
+            <div style={{
+              marginTop: '12px',
+              backgroundColor: unlockStatus.startsWith('✅') ? '#DCFCE7' : unlockStatus.startsWith('⚠️') || unlockStatus.startsWith('Error:') ? '#FEE2E2' : '#E0F2FE',
+              color: unlockStatus.startsWith('✅') ? '#15803D' : unlockStatus.startsWith('⚠️') || unlockStatus.startsWith('Error:') ? '#B91C1C' : '#0F172A',
+              padding: '10px 12px',
+              borderRadius: '8px',
+              fontWeight: 'bold',
+              border: '1px solid rgba(15, 23, 42, 0.08)'
+            }}>
+              {unlockStatus}
+            </div>
+          )}
         </div>
 
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px' }}>

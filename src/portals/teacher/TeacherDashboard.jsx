@@ -49,6 +49,12 @@ export default function TeacherDashboard({ user, onLogout }) {
       const res = await fetch(`/edugame_api/get_leaderboard.php?teacherId=${encodedTeacherId}&grade=${encodedGrade}`)
       const data = await res.json()
       setLeaderboardData(data.success ? (data.leaderboard || []) : [])
+
+      if (!data.success || !(data.leaderboard || []).length) {
+        const fallbackRes = await fetch(`/edugame_api/get_leaderboard.php?grade=${encodedGrade}`)
+        const fallbackData = await fallbackRes.json()
+        setLeaderboardData(fallbackData.success ? (fallbackData.leaderboard || []) : [])
+      }
     } catch (err) {
       console.error('Error loading leaderboard:', err)
       setLeaderboardData([])

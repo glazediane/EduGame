@@ -176,8 +176,8 @@ export default function GameArena({ grade, subject, levelConfig, userId, onBack 
       <div style={containerStyle}>
         <div style={cardStyle}>
           <div style={{ fontSize: '3rem' }}>🧠❌</div>
-          <h2 style={{ color: '#DC2626', margin: '15px 0' }}>Out of lives. Come back later!</h2>
-          <p style={{ color: '#64748B', marginBottom: '20px' }}>
+          <h2 style={{ color: '#B91C1C', margin: '15px 0' }}>Out of lives. Come back later!</h2>
+          <p style={{ color: '#334155', marginBottom: '20px' }}>
             Locked for approximately <strong>{hoursRemaining} hour(s)</strong>.
           </p>
           <button onClick={onBack} style={btnStyle}>Exit Game</button>
@@ -190,7 +190,7 @@ export default function GameArena({ grade, subject, levelConfig, userId, onBack 
     return (
       <div style={containerStyle}>
         <div style={cardStyle}>
-          <h3>⏳ Loading level questions...</h3>
+          <h3 style={{ color: '#0f172a' }}>⏳ Loading level questions...</h3>
         </div>
       </div>
     )
@@ -200,8 +200,8 @@ export default function GameArena({ grade, subject, levelConfig, userId, onBack 
     return (
       <div style={containerStyle}>
         <div style={cardStyle}>
-          <h2 style={{ color: '#DC2626' }}>⚠️ No questions available</h2>
-          <p style={{ color: '#64748B', margin: '10px 0 20px' }}>
+          <h2 style={{ color: '#B91C1C' }}>⚠️ No questions available</h2>
+          <p style={{ color: '#334155', margin: '10px 0 20px' }}>
             This level could not load. Please try again or return to the arena.
           </p>
           <button onClick={onBack} style={btnStyle}>Return to Arena</button>
@@ -243,7 +243,7 @@ export default function GameArena({ grade, subject, levelConfig, userId, onBack 
       {!isCompleted ? (
         <div style={cardStyle}>
           <div style={{ marginBottom: '14px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', color: '#475569', marginBottom: '6px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', color: '#1E293B', marginBottom: '6px' }}>
               <span>Progress</span>
               <span>{Math.min(currentIndex + 1, questions.length)}/{questions.length}</span>
             </div>
@@ -259,7 +259,7 @@ export default function GameArena({ grade, subject, levelConfig, userId, onBack 
               />
             </div>
           </div>
-          <div style={{ fontSize: '0.85rem', color: '#64748B', marginBottom: '10px' }}>
+          <div style={{ fontSize: '0.85rem', color: '#334155', marginBottom: '10px' }}>
             Question {currentIndex + 1} of {questions.length}
           </div>
 
@@ -276,7 +276,7 @@ export default function GameArena({ grade, subject, levelConfig, userId, onBack 
             <div style={visualStyle}>{questionVisual}</div>
           )}
 
-          <h3 style={{ margin: '15px 0', color: '#1E293B', fontSize: '1.2rem', lineHeight: 1.5 }}>
+          <h3 style={{ margin: '15px 0', color: '#1E293B', fontSize: '1.2rem', lineHeight: 1.5, textAlign: 'justify' }}>
             {questionText}
           </h3>
 
@@ -323,7 +323,7 @@ export default function GameArena({ grade, subject, levelConfig, userId, onBack 
             </div>
           )}
 
-          {feedback && <div style={{ marginTop: '15px', fontWeight: 'bold', color: feedback.startsWith('✅') ? '#16A34A' : '#DC2626' }}>{feedback}</div>}
+          {feedback && <div style={{ marginTop: '15px', fontWeight: 'bold', color: feedback.startsWith('✅') ? '#166534' : '#991B1B' }}>{feedback}</div>}
           {activeHint && (
             <div style={hintBoxStyle}>
               <strong>🧩 Hint:</strong> {activeHint}
@@ -332,11 +332,11 @@ export default function GameArena({ grade, subject, levelConfig, userId, onBack 
         </div>
       ) : (
         <div style={cardStyle}>
-          <h2 style={{ color: '#059669' }}>🎉 Level {currentLevel} Completed!</h2>
-          <p style={{ fontSize: '1.1rem', margin: '15px 0' }}>
+          <h2 style={{ color: '#047857' }}>🎉 Level {currentLevel} Completed!</h2>
+          <p style={{ fontSize: '1.1rem', margin: '15px 0', color: '#0f172a' }}>
             You earned <strong>{score}</strong> point{score === 1 ? '' : 's'} in this level.
           </p>
-          <p style={{ fontSize: '1rem', margin: '10px 0 20px' }}>
+          <p style={{ fontSize: '1rem', margin: '10px 0 20px', color: '#334155' }}>
             Level {currentLevel + 1} is now unlocked!
           </p>
           <button onClick={onBack} style={btnStyle}>
@@ -350,14 +350,14 @@ export default function GameArena({ grade, subject, levelConfig, userId, onBack 
 }
 
 const containerStyle = { maxWidth: '700px', margin: '30px auto', fontFamily: 'Segoe UI, sans-serif', padding: '0 16px' }
-const headerStyle = { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', padding: '12px 16px', background: 'linear-gradient(135deg, #dbeafe 0%, #fef3c7 100%)', borderRadius: '12px', gap: '8px', flexWrap: 'wrap' }
-const cardStyle = { background: 'linear-gradient(180deg, #ffffff 0%, #f8fafc 100%)', padding: '30px', borderRadius: '18px', textAlign: 'center', boxShadow: '0 10px 25px rgba(14, 116, 144, 0.12)', border: '1px solid #dbeafe' }
+const headerStyle = { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', padding: '12px 16px', background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)', borderRadius: '12px', gap: '8px', flexWrap: 'wrap', color: '#0f172a', fontWeight: 700 }
+const cardStyle = { background: 'linear-gradient(180deg, #ffffff 0%, #f8fafc 100%)', padding: '30px', borderRadius: '18px', textAlign: 'center', boxShadow: '0 10px 25px rgba(14, 116, 144, 0.12)', border: '1px solid #cbd5e1', color: '#0f172a' }
 const badgeStyle = { display: 'inline-block', background: 'linear-gradient(135deg, #f59e0b 0%, #f97316 100%)', color: 'white', padding: '8px 14px', borderRadius: '999px', fontWeight: '700', fontSize: '0.8rem', marginBottom: '10px' }
 const mascotBubbleStyle = { display: 'inline-block', marginBottom: '12px', padding: '8px 12px', background: '#ecfeff', color: '#0f172a', borderRadius: '999px', border: '1px solid #bae6fd', fontSize: '0.82rem', fontWeight: '600' }
 const visualStyle = { fontSize: '3rem', margin: '14px 0 8px', display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '70px', background: 'linear-gradient(135deg, #ecfeff 0%, #fef3c7 100%)', borderRadius: '16px', border: '1px solid #bae6fd' }
-const optionBtnStyle = { width: '100%', padding: '14px', fontSize: '1rem', borderRadius: '10px', border: '1px solid #CBD5E1', fontWeight: '700', textAlign: 'center', boxShadow: '0 2px 8px rgba(15,23,42,0.06)' }
-const backBtnStyle = { padding: '6px 12px', backgroundColor: '#64748B', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer' }
-const btnStyle = { padding: '10px 20px', background: 'linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%)', color: '#082f49', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }
+const optionBtnStyle = { width: '100%', padding: '14px', fontSize: '1rem', borderRadius: '10px', border: '1px solid #CBD5E1', fontWeight: '700', textAlign: 'center', boxShadow: '0 2px 8px rgba(15,23,42,0.06)', color: '#0f172a' }
+const backBtnStyle = { padding: '6px 12px', backgroundColor: '#334155', color: '#f8fafc', border: 'none', borderRadius: '6px', cursor: 'pointer' }
+const btnStyle = { padding: '10px 20px', background: 'linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%)', color: '#ffffff', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }
 const hintBoxStyle = { marginTop: '12px', padding: '12px', backgroundColor: '#FEF3C7', color: '#92400E', borderRadius: '8px', fontSize: '0.85rem', textAlign: 'left' }
 const celebrationStyle = { marginTop: '14px', padding: '8px 12px', borderRadius: '999px', background: 'linear-gradient(135deg, #fef3c7 0%, #bbf7d0 100%)', color: '#166534', fontWeight: '800' }
 const burstStyle = { display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '10px', fontSize: '1.4rem', minHeight: '32px' }

@@ -49,7 +49,7 @@ export default function App() {
         font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
         overflow-x: hidden;
         background: radial-gradient(circle at top, #0b2236 0%, #071722 52%, #040d16 100%);
-        color: #e2e8f0;
+        color: #f8fafc;
       }
 
       select option {

@@ -1,6 +1,6 @@
-// src/data/questions/grade5/science.jsx
+// src/data/questions/grade5/math.jsx
 
-export const grade5Science = {
+export const grade5Math = {
   // ==================== EASY LEVELS (1 - 5) ====================
   1: [ // Easy: MATTER IN DAILY LIFE
    {q:"What is matter?",options:["Only things that are alive","Only things we can see","Only liquids","Anything that has mass and takes up space"],a:"Anything that has mass and takes up space",hint:"Matter has mass and takes up space."},
@@ -264,5 +264,5 @@ export const grade5Science = {
   ]
 };
 
-export default grade5Science;
+export default grade5Math;
 

@@ -316,7 +316,7 @@ export default function AdminDashboard({ user, onLogout }) {
                   {filteredStudents.map(student => (
                     <tr key={student.id} style={{ borderBottom: '1px solid #E2E8F0' }}>
                       <td style={{ ...tdStyle, fontWeight: 'bold' }}>{student.id}</td>
-                      <td style={tdStyle}>{student.name}</td>
+                      <td style={{ ...tdStyle, textAlign: 'justify' }}>{student.name}</td>
                       <td style={tdStyle}><span style={gradeBadgeStyle}>{student.grade ? student.grade.toUpperCase() : 'KINDER'}</span></td>
                       <td style={tdStyle}>{student.locked ? <span style={lockedBadgeStyle}>🔒 Locked</span> : <span style={activeBadgeStyle}>✅ Active</span>}</td>
                       <td style={tdStyle}>
@@ -371,7 +371,7 @@ export default function AdminDashboard({ user, onLogout }) {
                   {teacherDirectory.map(account => (
                     <tr key={`teacher-${account.userId}`} style={{ borderBottom: '1px solid #E2E8F0' }}>
                       <td style={{ ...tdStyle, fontWeight: 'bold' }}>{account.userId}</td>
-                      <td style={tdStyle}>{account.fullName}</td>
+                      <td style={{ ...tdStyle, textAlign: 'justify' }}>{account.fullName}</td>
                       <td style={tdStyle}><span style={gradeBadgeStyle}>{(account.grade && account.grade !== 'N/A') ? account.grade.toUpperCase() : 'ALL GRADES'}</span></td>
                       <td style={tdStyle}>
                         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
@@ -512,10 +512,10 @@ export default function AdminDashboard({ user, onLogout }) {
 
             <div style={cardStyle}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
-                <h3 style={{ margin: 0, color: '#1E293B' }}>📋 Remove Existing Student & Teacher Records</h3>
+                <h3 style={{ margin: 0, color: '#1E293B' }}>📋 Remove or Edit Existing User Records</h3>
                 <input
                   type="text"
-                  placeholder="Search user list..."
+                  placeholder="Search user..."
                   value={searchTerm}
                   onChange={e => setSearchTerm(e.target.value)}
                   style={searchInputStyle}
@@ -549,6 +549,7 @@ export default function AdminDashboard({ user, onLogout }) {
                         <td style={tdStyle}>
                           <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                             {account.isLocked && <button onClick={() => handleShowToken(account)} style={tokenBtnStyle}>Show Token</button>}
+                            <button onClick={() => startEdit(account)} style={editBtnStyle}>Edit</button>
                             <button onClick={() => handleDeleteUser(account)} style={deleteBtnStyle}>Remove</button>
                           </div>
                         </td>
@@ -573,7 +574,7 @@ const activeTabStyle = { background: 'linear-gradient(135deg, #e0f2fe 0%, #bae6f
 const logoutBtnStyle = { backgroundColor: '#EF4444', color: 'white', border: 'none', padding: '8px 14px', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold' }
 const searchInputStyle = { padding: '10px 15px', borderRadius: '8px', border: '1px solid #CBD5E1', width: '250px', fontSize: '0.9rem' }
 const thStyle = { padding: '12px', fontSize: '0.85rem', color: '#64748B' }
-const tdStyle = { padding: '12px', fontSize: '0.9rem', color: '#334155' }
+const tdStyle = { padding: '12px', fontSize: '0.9rem', color: '#334155', textAlign: 'justify' }
 const labelStyle = { display: 'block', marginBottom: '6px', color: '#475569', fontWeight: '700', fontSize: '0.85rem' }
 const inputStyle = { width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '0.9rem', boxSizing: 'border-box' }
 const primaryBtnStyle = { backgroundColor: '#0EA5E9', color: 'white', border: 'none', padding: '10px 18px', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }

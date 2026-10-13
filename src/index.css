@@ -1,15 +1,15 @@
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
+  --text: #334155;
+  --text-h: #0f172a;
   --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
+  --border: #cbd5e1;
+  --code-bg: #f8fafc;
   --edu-sky: #38bdf8;
   --edu-sky-soft: rgba(56, 189, 248, 0.12);
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
+  --accent: #7c3aed;
+  --accent-bg: rgba(124, 58, 237, 0.1);
+  --accent-border: rgba(124, 58, 237, 0.4);
+  --social-bg: rgba(241, 245, 249, 0.85);
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
