@@ -61,6 +61,9 @@ const grade6Science = extractData(Grade6ScienceModule, 'grade6Science');
 const normalizeGradeKey = (grade = 'grade1') => {
   const cleaned = String(grade || 'grade1').trim().toLowerCase().replace(/[^a-z0-9]+/g, '');
 
+  const numericGrade = cleaned.match(/^(?:grade)?([1-6])$/) || cleaned.match(/^ps([1-6])$/);
+  if (numericGrade) return `grade${numericGrade[1]}`;
+
   if (cleaned === 'grade1' || cleaned === 'ps1grade1' || cleaned === 'gradeone') return 'grade1';
   if (cleaned === 'grade2' || cleaned === 'ps2grade2' || cleaned === 'gradetwo') return 'grade2';
   if (cleaned === 'grade3' || cleaned === 'ps3grade3' || cleaned === 'gradethree') return 'grade3';
@@ -78,155 +81,11 @@ const normalizeGradeKey = (grade = 'grade1') => {
   return cleaned || 'grade1';
 };
 
-const SUBJECT_THEME = {
-  math: {
-    visuals: ['🔢', '🍎', '⭐', '📐', '🧮', '🎯', '🎲', '🌟', '🍉', '📏', '🔷', '🧩', '⚽', '🌈', '🏆'],
-    prompts: [
-      'Count the objects carefully.',
-      'Choose the correct number.',
-      'Solve the number pattern.',
-      'Find the right answer to the sum.',
-      'Pick the correct shape or number.',
-      'Which answer is correct?',
-      'Look closely and count again.',
-      'Find the missing value.',
-      'Choose the best answer.',
-      'Count, compare, and decide.',
-      'Solve the quick math challenge.',
-      'Which option matches the problem?',
-      'Try the pattern and choose wisely.',
-      'Use number sense to decide.',
-      'Pick the right answer.'
-    ]
-  },
-  english: {
-    visuals: ['📚', '🔤', '✨', '📝', '🎵', '🌈', '📖', '🧠', '🔠', '📘', '🎨', '🌟', '📒', '🪄', '💡'],
-    prompts: [
-      'Read the word carefully.',
-      'Choose the correct word.',
-      'Find the matching word.',
-      'Pick the right spelling.',
-      'Which word belongs here?',
-      'Listen to the sound and choose.',
-      'Read the sentence and decide.',
-      'Find the rhyming word.',
-      'Pick the best answer.',
-      'Choose the correct vowel.',
-      'Match the picture to the word.',
-      'Find the right sentence.',
-      'Read and select the correct option.',
-      'Choose the correct spelling.',
-      'Pick the best word choice.'
-    ]
-  },
-  science: {
-    visuals: ['🌍', '🔬', '🌱', '🌞', '🐠', '🌧️', '🦁', '⚡', '🌿', '🌙', '🪐', '🌊', '🧪', '🐝', '🌼'],
-    prompts: [
-      'Observe the picture and choose.',
-      'Which answer makes sense?',
-      'Look at the science clue.',
-      'Pick the correct science fact.',
-      'Which option is correct?',
-      'Use what you know about nature.',
-      'Choose the best observation.',
-      'Find the right science answer.',
-      'Think about the living thing.',
-      'Which answer fits the question?',
-      'Use the clue to choose wisely.',
-      'Look closely and decide.',
-      'Which option matches the fact?',
-      'Select the correct answer.',
-      'Think and choose the best response.'
-    ]
-  }
-};
-
-const createInteractiveQuestion = (grade, subject, level, index) => {
-  const safeSubject = (subject || 'math').toLowerCase();
-  const safeGrade = normalizeGradeKey(grade);
-  const theme = SUBJECT_THEME[safeSubject] || SUBJECT_THEME.math;
-  const visual = theme.visuals[(level + index) % theme.visuals.length];
-  const prompt = theme.prompts[(level * 3 + index) % theme.prompts.length];
-  const baseNumber = (level * 7 + index + 2);
-  const optionSet = [
-    `${baseNumber - 2}`,
-    `${baseNumber}`,
-    `${baseNumber + 2}`,
-    `${baseNumber + 5}`
-  ];
-
-  const answerPool = {
-    math: [
-      `${baseNumber}`,
-      `${baseNumber + 1}`,
-      `${baseNumber + 3}`,
-      `${baseNumber + 5}`
-    ],
-    english: [
-      'Read',
-      'Write',
-      'Play',
-      'Learn'
-    ],
-    science: [
-      'Sunlight',
-      'Water',
-      'Air',
-      'Plant'
-    ]
-  };
-
-  const correct = answerPool[safeSubject]?.[(level + index) % answerPool[safeSubject].length] || `${baseNumber}`;
-
-  return {
-    q: `[${safeGrade.toUpperCase()} - ${safeSubject.toUpperCase()}] Level ${level}: ${prompt}`,
-    visual,
-    options: safeSubject === 'math'
-      ? optionSet
-      : [correct, 'Option B', 'Option C', 'Option D'],
-    optionIcons: safeSubject === 'math'
-      ? ['1️⃣', '2️⃣', '3️⃣', '4️⃣']
-      : ['✅', '🎯', '🌟', '✨'],
-    a: safeSubject === 'math' ? `${baseNumber}` : correct,
-    hint: `Try again: ${prompt}`,
-    reward: `${visual} Learning Boost`
-  };
-};
-
-const getQuestionLimitForGrade = (grade) => (normalizeGradeKey(grade) === 'grade4' ? 10 : 15);
-
-const buildLevelQuestions = (grade, subject, level, existing = []) => {
-  const questions = Array.isArray(existing) ? [...existing] : [];
-  const questionLimit = getQuestionLimitForGrade(grade);
-
-  while (questions.length < questionLimit) {
-    questions.push(createInteractiveQuestion(grade, subject, level, questions.length));
-  }
-  return questions.slice(0, questionLimit);
-};
-
-const normalizeSubjectLevels = (grade, subject, subjectData = {}) => {
+// Keep authored questions from src/data/questions; missing levels remain empty.
+const normalizeSubjectLevels = (_grade, _subject, subjectData = {}) => {
   const normalized = {};
-  const questionLimit = getQuestionLimitForGrade(grade);
-
   for (let level = 1; level <= 15; level += 1) {
-    const existing = Array.isArray(subjectData[level]) ? subjectData[level] : [];
-    normalized[level] = Array.isArray(existing) && existing.length > 0
-      ? existing.slice(0, questionLimit).map((item) => ({
-          q: item.q || item.question || `Question ${level}`,
-          visual: item.visual || item.emoji || '',
-          options: Array.isArray(item.options) && item.options.length ? item.options : ['A', 'B', 'C', 'D'],
-          optionIcons: Array.isArray(item.optionIcons) && item.optionIcons.length ? item.optionIcons : ['1️⃣', '2️⃣', '3️⃣', '4️⃣'],
-          a: String(item.a ?? item.answer ?? item.options?.[0] ?? 'A'),
-          hint: item.hint || 'Think carefully and choose the best answer.',
-          reward: item.reward || '🎉 Learning Boost'
-        }))
-      : buildLevelQuestions(grade, subject, level, existing);
-    if (normalized[level].length < questionLimit) {
-      while (normalized[level].length < questionLimit) {
-        normalized[level].push(createInteractiveQuestion(grade, subject, level, normalized[level].length));
-      }
-    }
+    normalized[level] = Array.isArray(subjectData[level]) ? subjectData[level] : [];
   }
   return normalized;
 };
@@ -251,23 +110,13 @@ export const questionBank = {
   grade6: { math: normalizeSubjectLevels('grade6', 'math', grade6Math), english: normalizeSubjectLevels('grade6', 'english', grade6English), science: normalizeSubjectLevels('grade6', 'science', grade6Science) }
 };
 
-// Fallback riddle question generator if a level isn't explicitly detailed yet
-const generateRiddleQuestions = (grade, subject, level) => {
-  const questionLimit = getQuestionLimitForGrade(grade);
-  return Array.from({ length: questionLimit }, (_, i) => createInteractiveQuestion(grade, subject, level, i));
-};
-
-// Strictly pulls questions matching the student's assigned grade
+// Return authored questions only; missing grades, subjects, and levels stay empty.
 export const getQuestionsForLevel = (grade = 'grade1', subject = 'math', level = 1) => {
   const normalizedGrade = normalizeGradeKey(grade);
   const normalizedSubject = (subject || 'math').toLowerCase();
   const selectedGrade = questionBank[normalizedGrade];
 
-  if (selectedGrade && selectedGrade[normalizedSubject] && selectedGrade[normalizedSubject][level]) {
-    return selectedGrade[normalizedSubject][level];
-  }
-
-  return generateRiddleQuestions(normalizedGrade, normalizedSubject, level);
+  return selectedGrade?.[normalizedSubject]?.[level] || [];
 };
 
 export const questionsData = getQuestionsForLevel('grade1', 'math', 1);

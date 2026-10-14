@@ -55,15 +55,21 @@ export function keepSessionAlive(user, onExpired) {
   }
 
   checkSession()
-  const intervalId = window.setInterval(checkSession, 60_000)
+  const intervalId = window.setInterval(checkSession, 5_000)
   const handleVisibility = () => {
     if (document.visibilityState === 'visible') checkSession()
   }
+  const handlePageHide = (event) => {
+    // Keep a page restored from the back/forward cache signed in.
+    if (!event.persisted) releaseSession(user)
+  }
   document.addEventListener('visibilitychange', handleVisibility)
+  window.addEventListener('pagehide', handlePageHide)
 
   return () => {
     stopped = true
     window.clearInterval(intervalId)
     document.removeEventListener('visibilitychange', handleVisibility)
+    window.removeEventListener('pagehide', handlePageHide)
   }
 }

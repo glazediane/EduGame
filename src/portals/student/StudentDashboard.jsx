@@ -9,6 +9,8 @@ const normalizeGrade = (gradeStr) => {
 
   const cleaned = String(gradeStr).trim().toLowerCase().replace(/[^a-z0-9]+/g, '')
 
+  if (/^[1-6]$/.test(cleaned)) return `grade${cleaned}`
+
   if (cleaned.includes('grade1') || cleaned.includes('gradeone') || cleaned.includes('ps1')) return 'grade1'
   if (cleaned.includes('grade2') || cleaned.includes('gradetwo') || cleaned.includes('ps2')) return 'grade2'
   if (cleaned.includes('grade3') || cleaned.includes('gradethree') || cleaned.includes('ps3')) return 'grade3'

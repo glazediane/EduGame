@@ -21,7 +21,7 @@ export default function AdminDashboard({ user, onLogout }) {
   const [formMessage, setFormMessage] = useState({ type: '', text: '' })
   const [teacherFormMessage, setTeacherFormMessage] = useState({ type: '', text: '' })
   const [editingStudentId, setEditingStudentId] = useState(null)
-  const [editStudentForm, setEditStudentForm] = useState({ userId: '', fullName: '', password: '' })
+  const [editStudentForm, setEditStudentForm] = useState({ userId: '', fullName: '', grade: 'grade1', password: '' })
   const [editingUser, setEditingUser] = useState(null)
   const [editForm, setEditForm] = useState({ userId: '', fullName: '', role: 'student', grade: 'grade1', teacherId: '', password: '' })
   const [studentForm, setStudentForm] = useState({ role: 'student', userId: '', fullName: '', password: '', grade: 'grade1', teacherId: '' })
@@ -358,7 +358,7 @@ export default function AdminDashboard({ user, onLogout }) {
 
   const openEditStudent = (student) => {
     setEditingStudentId(student.id)
-    setEditStudentForm({ userId: student.id || '', fullName: student.name || '', password: '' })
+    setEditStudentForm({ userId: student.id || '', fullName: student.name || '', grade: student.grade || 'grade1', password: '' })
   }
 
   const handleSaveStudentEdit = async () => {
@@ -380,13 +380,13 @@ export default function AdminDashboard({ user, onLogout }) {
       const response = await fetch('/edugame_api/update_user.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: editingStudentId, newUserId: userId, oldRole: 'student', role: 'student', fullName, grade: 'grade1', teacherId: safeUserId, password: editStudentForm.password.trim() })
+        body: JSON.stringify({ userId: editingStudentId, newUserId: userId, oldRole: 'student', role: 'student', fullName, grade: editStudentForm.grade || 'grade1', teacherId: safeUserId, password: editStudentForm.password.trim() })
       })
       const data = await response.json()
       if (data.success) {
         alert(data.message || 'Student account updated successfully.')
         setEditingStudentId(null)
-        setEditStudentForm({ userId: '', fullName: '', password: '' })
+        setEditStudentForm({ userId: '', fullName: '', grade: 'grade1', password: '' })
         refreshUsers()
       } else {
         alert(data.message || 'Failed to update student account.')
