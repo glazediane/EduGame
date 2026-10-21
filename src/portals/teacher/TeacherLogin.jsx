@@ -31,7 +31,7 @@ export default function TeacherLogin({ onLoginSuccess }) {
       const message = String(data.message || '')
       const isInvalidLogin = /invalid credentials|user does not exist|wrong password|invalid teacher/i.test(message)
       setError(isInvalidLogin ? 'Invalid teacher ID or password. Please try again.' : (message || 'Invalid teacher ID or password. Please try again.'))
-    } catch (err) {
+    } catch {
       setError('Server connection error.')
     } finally {
       setIsLoading(false)
@@ -174,30 +174,6 @@ const errorMessageStyle = {
   fontWeight: '600',
   textAlign: 'center',
   marginBottom: '16px'
-}
-
-const tokenBoxStyle = {
-  width: '100%',
-  marginBottom: '16px',
-  padding: '14px 16px',
-  borderRadius: '12px',
-  background: 'rgba(251, 191, 36, 0.12)',
-  border: '1px solid rgba(251, 191, 36, 0.35)',
-  textAlign: 'center',
-  boxShadow: '0 8px 22px rgba(251, 191, 36, 0.08)'
-}
-
-const contactBtnStyle = {
-  width: '100%',
-  padding: '12px 14px',
-  borderRadius: '10px',
-  border: '1px solid rgba(125, 211, 252, 0.6)',
-  background: 'linear-gradient(135deg, rgba(14, 165, 233, 0.18), rgba(59, 130, 246, 0.12))',
-  color: '#e0f2fe',
-  fontSize: '13px',
-  fontWeight: '700',
-  cursor: 'pointer',
-  marginBottom: '14px'
 }
 
 const spinnerStyle = {

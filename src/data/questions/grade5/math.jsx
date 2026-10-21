@@ -1,6 +1,6 @@
 // src/data/questions/grade5/math.jsx
 
-export const grade5mathematics = {
+export const grade5math = {
   // ==================== EASY LEVELS (1 - 5) ====================
   1: [ // Easy: TIME AND WORLD TIME
    {q:"What is 7:30 AM in 24-hour time?",options:["07:30","17:30","19:30","12:30"],a:"07:30",hint:"For AM times, the hour stays the same in 24-hour time."},

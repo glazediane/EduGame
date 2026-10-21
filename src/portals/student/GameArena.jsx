@@ -1,3 +1,4 @@
+import { apiRequest } from '../../api.js'
 import { useState, useEffect } from 'react'
 import { getQuestionsForLevel } from '../../questions'
 
@@ -112,15 +113,15 @@ export default function GameArena({ grade, subject, levelConfig, userId, onBack 
   useEffect(() => {
     setLoading(true)
 
-    try {
-      const localQuestions = getQuestionsForLevel(userGrade, (subject || 'math').toLowerCase(), currentLevel)
-      setQuestions(localQuestions || [])
-    } catch (error) {
-      console.error('Failed to load local questions:', error)
-      setQuestions([])
-    } finally {
-      setLoading(false)
-    }
+    let cancelled = false
+    getQuestionsForLevel(userGrade, (subject || 'math').toLowerCase(), currentLevel)
+      .then((localQuestions) => { if (!cancelled) setQuestions(localQuestions || []) })
+      .catch((error) => {
+        console.error('Failed to load local questions:', error)
+        if (!cancelled) setQuestions([])
+      })
+      .finally(() => { if (!cancelled) setLoading(false) })
+    return () => { cancelled = true }
   }, [userGrade, subject, currentLevel, userId])
 
   const currentQ = questions[currentIndex]
@@ -218,7 +219,7 @@ export default function GameArena({ grade, subject, levelConfig, userId, onBack 
     }
 
     // Score is the number of correct answers; each correct answer = 1 point.
-    fetch('/edugame_api/save_progress.php', {
+    apiRequest('/edugame_api/save_progress.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

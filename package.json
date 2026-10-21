@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "oxlint",
+    "check:questions": "node scripts/validate-question-bank.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

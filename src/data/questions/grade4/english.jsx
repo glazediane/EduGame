@@ -42,7 +42,7 @@ export const grade4English = {
     { q: "What is the root word of 'unhappy'?", options: ["Happy", "Un", "Hap"], a: "Happy", hint: "Remove the prefix 'un-'." },
     { q: "What prefix means 'not' in the word 'disagree'?", options: ["Dis", "Agree", "Re"], a: "Dis", hint: "Letters added to the beginning." },
     { q: "What does the prefix 're-' mean in 'rewrite'?", options: ["Again", "Before", "Not"], a: "Again", hint: "To write ____." },
-    { q: "Which suffix means 'full of' in 'helpful'?", options: ["-ful", "-less", "-ness"], a: " -ful", hint: "Full of help." },
+    { q: "Which suffix means 'full of' in 'helpful'?", options: ["-ful", "-less", "-ness"], a: "-ful", hint: "Full of help." },
     { q: "What is the root word of 'careless'?", options: ["Care", "Less", "Careful"], a: "Care", hint: "The base word." },
     { q: "Adding '-less' to 'hope' creates a word that means:", options: ["Without hope", "Full of hope", "Hope again"], a: "Without hope", hint: "'-less' means without." },
     { q: "Which word contains a prefix?", options: ["Impossible", "Player", "Singing"], a: "Impossible", hint: "Look for 'im-' at the start." },

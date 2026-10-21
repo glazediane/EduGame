@@ -1,14 +1,24 @@
-import { useEffect, useRef, useState } from 'react'
-import { questionBank } from '../../questions'
+import { apiRequest } from '../../api.js'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { getQuestionBankForGrade } from '../../questions'
 import TeacherSettings from './TeacherSettings'
 import ReportAnalytics from '../shared/ReportAnalytics'
 
-const gradeOptions = ['grade1', 'grade2', 'grade3', 'grade4', 'grade5', 'grade6']
 const quizSubjects = [
   { key: 'math', label: 'Math' },
   { key: 'english', label: 'English' },
   { key: 'science', label: 'Science' }
 ]
+
+const normalizedGrade = (value) => {
+  const text = String(value || '').trim().toLowerCase().replace(/[_\s]+/g, ' ')
+  if (!text) return 'grade1'
+  const gradeMatch = text.match(/grade\s*(\d+)/)
+  if (gradeMatch) return `grade${gradeMatch[1]}`
+  const numberMatch = text.match(/(\d+)/)
+  if (numberMatch) return `grade${numberMatch[1]}`
+  return 'grade1'
+}
 
 export default function TeacherDashboard({ user, onLogout }) {
   const safeUser = user || {}
@@ -29,28 +39,14 @@ export default function TeacherDashboard({ user, onLogout }) {
   const [quizSubject, setQuizSubject] = useState('math')
   const [quizLevel, setQuizLevel] = useState(1)
   const [quizBank, setQuizBank] = useState({})
+  const [gradeQuestionBank, setGradeQuestionBank] = useState({})
   const [quizMessage, setQuizMessage] = useState({ type: '', text: '' })
   const importInputRef = useRef(null)
   const quizImportRef = useRef(null)
 
-  const normalizedGrade = (value) => {
-    const text = String(value || '').trim().toLowerCase().replace(/[_\s]+/g, ' ')
-    if (!text) return 'grade1'
-    const gradeMatch = text.match(/grade\s*(\d+)/)
-    if (gradeMatch) return `grade${gradeMatch[1]}`
-    const numberMatch = text.match(/(\d+)/)
-    if (numberMatch) return `grade${numberMatch[1]}`
-    return 'grade1'
-  }
-
-  const buildDefaultQuizBank = (gradeKey) => {
+  const buildDefaultQuizBank = (gradeKey, sourceData = gradeQuestionBank) => {
     const safeGrade = normalizedGrade(gradeKey)
-    const sourceData = questionBank?.[safeGrade] || {}
-    const baseBank = {
-      math: sourceData.math || {},
-      english: sourceData.english || {},
-      science: sourceData.science || {}
-    }
+    const baseBank = { ...sourceData }
 
     try {
       const stored = localStorage.getItem(`teacher_quiz_bank_${safeGrade}`)
@@ -190,9 +186,9 @@ export default function TeacherDashboard({ user, onLogout }) {
       }
 
       const mergedBank = {
-        math: { ...(questionBank?.[targetGrade]?.math || {}), ...(incomingData.math || {}) },
-        english: { ...(questionBank?.[targetGrade]?.english || {}), ...(incomingData.english || {}) },
-        science: { ...(questionBank?.[targetGrade]?.science || {}), ...(incomingData.science || {}) }
+        math: { ...(gradeQuestionBank.math || {}), ...(incomingData.math || {}) },
+        english: { ...(gradeQuestionBank.english || {}), ...(incomingData.english || {}) },
+        science: { ...(gradeQuestionBank.science || {}), ...(incomingData.science || {}) }
       }
 
       persistQuizBank(targetGrade, mergedBank)
@@ -212,10 +208,18 @@ export default function TeacherDashboard({ user, onLogout }) {
   useEffect(() => {
     const nextGrade = normalizedGrade(assignedGrade)
     setSelectedGrade(nextGrade)
-    const nextBank = buildDefaultQuizBank(nextGrade)
-    setQuizBank(nextBank)
     setQuizLevel(1)
     setQuizSubject('math')
+    let cancelled = false
+    getQuestionBankForGrade(nextGrade).then((loadedBank) => {
+      if (cancelled) return
+      setGradeQuestionBank(loadedBank)
+      setQuizBank(buildDefaultQuizBank(nextGrade, loadedBank))
+    }).catch((error) => {
+      console.error('Unable to load grade question bank:', error)
+      if (!cancelled) setQuizBank({})
+    })
+    return () => { cancelled = true }
   }, [assignedGrade])
 
   const parseCsvLine = (line) => {
@@ -244,11 +248,11 @@ export default function TeacherDashboard({ user, onLogout }) {
     return values
   }
 
-  const fetchRoster = async () => {
+  const fetchRoster = useCallback(async () => {
     setLoading(true)
     try {
       const gradeToFetch = normalizedGrade(selectedGrade || assignedGrade)
-      const res = await fetch(`/edugame_api/get_teacher_data.php?grade=${encodeURIComponent(gradeToFetch)}`)
+      const res = await apiRequest(`/edugame_api/get_teacher_data.php?grade=${encodeURIComponent(gradeToFetch)}`)
       const data = await res.json()
       setStudentsData(data.success ? (data.students || []) : [])
     } catch (error) {
@@ -257,22 +261,22 @@ export default function TeacherDashboard({ user, onLogout }) {
     } finally {
       setLoading(false)
     }
-  }
+  }, [selectedGrade, assignedGrade])
 
   useEffect(() => {
     setSelectedGrade(assignedGrade)
   }, [assignedGrade])
 
   useEffect(() => {
-    if (activeTab === 'roster') {
+    if (activeTab === 'roster' || activeTab === 'deactivated') {
       fetchRoster()
     }
-  }, [activeTab, selectedGrade, safeUserId])
+  }, [activeTab, fetchRoster])
 
-  const fetchLeaderboard = async () => {
+  const fetchLeaderboard = useCallback(async () => {
     setLeaderboardLoading(true)
     try {
-      const res = await fetch(`/edugame_api/get_leaderboard.php?teacherId=${encodeURIComponent(safeUserId)}&grade=${encodeURIComponent(selectedGrade)}`)
+      const res = await apiRequest(`/edugame_api/get_leaderboard.php?teacherId=${encodeURIComponent(safeUserId)}&grade=${encodeURIComponent(selectedGrade)}`)
       const data = await res.json()
       setLeaderboardData(data.success ? (data.leaderboard || []) : [])
     } catch (error) {
@@ -281,19 +285,23 @@ export default function TeacherDashboard({ user, onLogout }) {
     } finally {
       setLeaderboardLoading(false)
     }
-  }
+  }, [safeUserId, selectedGrade])
 
   useEffect(() => {
     if (activeTab === 'leaderboard') {
       fetchLeaderboard()
     }
-  }, [activeTab, selectedGrade, safeUserId])
+  }, [activeTab, fetchLeaderboard])
 
   const getStudentState = (student = {}) => {
     const isDeactivated = Boolean(student.isDeactivated ?? student.isLocked ?? student.locked ?? false)
     const isTemporarilyLocked = Boolean(student.isTemporarilyLocked ?? student.isTempLocked ?? false)
     return { isDeactivated, isTemporarilyLocked }
   }
+
+  const deactivatedStudents = studentsData.filter((student) => getStudentState(student).isDeactivated)
+  const rosterStudents = studentsData.filter((student) => !getStudentState(student).isDeactivated)
+  const displayedStudents = activeTab === 'deactivated' ? deactivatedStudents : rosterStudents
 
   const handleAddStudent = async (event) => {
     event.preventDefault()
@@ -313,7 +321,7 @@ export default function TeacherDashboard({ user, onLogout }) {
     }
 
     try {
-      const response = await fetch('/edugame_api/add_user.php', {
+      const response = await apiRequest('/edugame_api/add_user.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -398,7 +406,7 @@ export default function TeacherDashboard({ user, onLogout }) {
         }
 
         try {
-          const res = await fetch('/edugame_api/add_user.php', {
+          const res = await apiRequest('/edugame_api/add_user.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -453,7 +461,7 @@ export default function TeacherDashboard({ user, onLogout }) {
     }
 
     try {
-      const response = await fetch('/edugame_api/update_user.php', {
+      const response = await apiRequest('/edugame_api/update_user.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -488,7 +496,7 @@ export default function TeacherDashboard({ user, onLogout }) {
     if (!confirmed) return
 
     try {
-      const response = await fetch('/edugame_api/toggle_lock.php', {
+      const response = await apiRequest('/edugame_api/toggle_lock.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId: studentId, role: 'student', isLocked: 1 })
@@ -511,7 +519,7 @@ export default function TeacherDashboard({ user, onLogout }) {
     if (!confirmed) return
 
     try {
-      const response = await fetch('/edugame_api/toggle_lock.php', {
+      const response = await apiRequest('/edugame_api/toggle_lock.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId: studentId, role: 'student', isLocked: 0 })
@@ -534,7 +542,7 @@ export default function TeacherDashboard({ user, onLogout }) {
     if (!confirmed) return
 
     try {
-      const response = await fetch('/edugame_api/toggle_lock.php', {
+      const response = await apiRequest('/edugame_api/toggle_lock.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId: studentId, role: 'student', isLocked: 0 })
@@ -561,6 +569,7 @@ export default function TeacherDashboard({ user, onLogout }) {
         </div>
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
           <button onClick={() => setActiveTab('roster')} style={activeTab === 'roster' ? activeTabStyle : navBtnStyle}>📋 Class Roster</button>
+          <button onClick={() => setActiveTab('deactivated')} style={activeTab === 'deactivated' ? activeTabStyle : navBtnStyle}>Deactivated Accounts ({deactivatedStudents.length})</button>
           <button onClick={() => setActiveTab('leaderboard')} style={activeTab === 'leaderboard' ? activeTabStyle : navBtnStyle}>🏆 Leaderboard</button>
           <button onClick={() => setActiveTab('quizzes')} style={activeTab === 'quizzes' ? activeTabStyle : navBtnStyle}>🧠 Quiz Manager</button>
           <button onClick={() => setActiveTab('add-student')} style={activeTab === 'add-student' ? activeTabStyle : navBtnStyle}>➕ Add Student</button>
@@ -570,12 +579,12 @@ export default function TeacherDashboard({ user, onLogout }) {
       </header>
 
       <div style={{ maxWidth: '1200px', margin: '30px auto', padding: '0 20px' }}>
-        {activeTab === 'roster' && (
+        {(activeTab === 'roster' || activeTab === 'deactivated') && (
           <div style={cardStyle}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>
               <div>
                 <h3 style={{ margin: 0, color: '#1E293B' }}>📊 Student Roster</h3>
-                <p style={{ margin: '5px 0 0 0', color: '#64748B', fontSize: '0.85rem' }}>Track enrolled students, account status, and unlock progress.</p>
+                <p style={{ margin: '5px 0 0 0', color: '#64748B', fontSize: '0.85rem' }}>{activeTab === 'deactivated' ? 'Deactivated students remain stored here and can be reactivated.' : 'Track active enrolled students, account status, and unlock progress.'}</p>
               </div>
               <div>
                 <label style={{ marginRight: '10px', fontWeight: 'bold', fontSize: '0.9rem', color: '#475569' }}>Assigned Grade:</label>
@@ -585,8 +594,8 @@ export default function TeacherDashboard({ user, onLogout }) {
 
             {loading ? (
               <p style={{ textAlign: 'center', padding: '30px', color: '#64748B' }}>Fetching student records...</p>
-            ) : studentsData.length === 0 ? (
-              <p style={{ textAlign: 'center', padding: '30px', color: '#64748B' }}>No students found in this grade level.</p>
+            ) : displayedStudents.length === 0 ? (
+              <p style={{ textAlign: 'center', padding: '30px', color: '#64748B' }}>{activeTab === 'deactivated' ? 'No deactivated student accounts in this grade.' : 'No active students found in this grade level.'}</p>
             ) : (
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
@@ -600,7 +609,7 @@ export default function TeacherDashboard({ user, onLogout }) {
                   </tr>
                 </thead>
                 <tbody>
-                  {studentsData.map((student) => {
+                  {displayedStudents.map((student) => {
                     const state = getStudentState(student)
                     return (
                       <tr key={student.id} style={{ borderBottom: '1px solid #E2E8F0' }}>

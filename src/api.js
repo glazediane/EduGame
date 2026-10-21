@@ -1,8 +1,22 @@
-// Lightweight API helper for fetching from backend PHP endpoints
-export async function apiFetch(path, options = {}) {
-  const fetchOptions = { credentials: 'same-origin', ...options }
+import { getActiveSession } from './session.js'
 
-  const response = await fetch(path, fetchOptions)
+// Add the current sign-in proof to every application API call.
+export function apiRequest(path, options = {}) {
+  const fetchOptions = { credentials: 'same-origin', ...options }
+  const headers = new Headers(fetchOptions.headers || {})
+  const session = getActiveSession()
+  if (session?.userId && session?.role && session?.sessionToken) {
+    headers.set('X-EduGame-User', session.userId)
+    headers.set('X-EduGame-Role', session.role)
+    headers.set('X-EduGame-Session', session.sessionToken)
+  }
+  fetchOptions.headers = headers
+  return fetch(path, fetchOptions)
+}
+
+// Lightweight API helper for JSON endpoints.
+export async function apiFetch(path, options = {}) {
+  const response = await apiRequest(path, options)
 
   const contentType = response.headers.get('content-type') || ''
   if (!response.ok) {

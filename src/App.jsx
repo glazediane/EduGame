@@ -1,21 +1,22 @@
-import React, { useEffect, useState } from 'react'
+import React, { Suspense, lazy, useEffect, useState } from 'react'
 import bgImage from './assets/portal-background.jpg'
 import logoImage from './assets/TCM-Logo.jpg'
 import { keepSessionAlive, releaseSession } from './session'
 
 // Logins
-import StudentLogin from './portals/student/StudentLogin'
-import TeacherLogin from './portals/teacher/TeacherLogin'
-import AdminLogin from './portals/admin/AdminLogin'
+const StudentLogin = lazy(() => import('./portals/student/StudentLogin'))
+const TeacherLogin = lazy(() => import('./portals/teacher/TeacherLogin'))
+const AdminLogin = lazy(() => import('./portals/admin/AdminLogin'))
 
 // Dashboards
-import StudentDashboard from './portals/student/StudentDashboard'
-import TeacherDashboard from './portals/teacher/TeacherDashboard'
-import AdminDashboard from './portals/admin/AdminDashboard'
+const StudentDashboard = lazy(() => import('./portals/student/StudentDashboard'))
+const TeacherDashboard = lazy(() => import('./portals/teacher/TeacherDashboard'))
+const AdminDashboard = lazy(() => import('./portals/admin/AdminDashboard'))
 
 export default function App() {
   const [activePortal, setActivePortal] = useState('student')
   const [user, setUser] = useState(null)
+  const [sessionError, setSessionError] = useState('')
   const normalizedUserRole = String(user?.role || '').toLowerCase()
 
   useEffect(() => {
@@ -26,10 +27,16 @@ export default function App() {
     })
   }, [user])
 
-  const handleLogout = () => {
-    releaseSession(user)
-    setUser(null)
-    setActivePortal('student')
+  const handleLogout = async () => {
+    setSessionError('')
+    try {
+      await releaseSession(user)
+      setUser(null)
+      setActivePortal('student')
+    } catch (error) {
+      console.error('Could not release sign-in session:', error)
+      setSessionError('Could not sign out from the server. Check your connection and try again.')
+    }
   }
 
   const globalStyles = (
@@ -94,16 +101,18 @@ export default function App() {
 
   if (user) {
     return (
-      <>
+      <Suspense fallback={<div role="status" style={{ padding: 24, color: '#e2e8f0' }}>Loading portal…</div>}>
         {globalStyles}
+        {sessionError && <p role="alert" style={{ position: 'fixed', zIndex: 10, top: 12, left: '50%', transform: 'translateX(-50%)', margin: 0, padding: '10px 16px', borderRadius: 8, color: '#fecaca', background: '#7f1d1d' }}>{sessionError}</p>}
         {(normalizedUserRole === 'student' || normalizedUserRole === 'students') && <StudentDashboard user={user} onLogout={handleLogout} />}
         {(normalizedUserRole === 'teacher' || normalizedUserRole === 'teachers') && <TeacherDashboard user={user} onLogout={handleLogout} />}
         {(normalizedUserRole === 'admin' || normalizedUserRole === 'administrator' || normalizedUserRole === 'admins') && <AdminDashboard user={user} onLogout={handleLogout} />}
-      </>
+      </Suspense>
     )
   }
 
   return (
+    <Suspense fallback={<div role="status" style={{ minHeight: '100vh', display: 'grid', placeItems: 'center', color: '#e2e8f0' }}>Loading portal…</div>}>
     <div style={fullScreenContainerStyle}>
       {globalStyles}
       <div style={dimOverlayStyle} />
@@ -175,6 +184,7 @@ export default function App() {
         </div>
       </footer>
     </div>
+    </Suspense>
   )
 }
 

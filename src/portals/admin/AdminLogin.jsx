@@ -29,7 +29,7 @@ export default function AdminLogin({ onLoginSuccess }) {
       }
 
       setError(data.message || 'Invalid admin credentials')
-    } catch (err) {
+    } catch {
       setError('Server connection error.')
     } finally {
       setIsLoading(false)
@@ -180,30 +180,6 @@ const errorMessageStyle = {
   textAlign: 'center',
   marginBottom: '16px',
   boxSizing: 'border-box'
-}
-
-const tokenBoxStyle = {
-  width: '100%',
-  marginBottom: '16px',
-  padding: '14px 16px',
-  borderRadius: '12px',
-  background: 'rgba(251, 191, 36, 0.12)',
-  border: '1px solid rgba(251, 191, 36, 0.35)',
-  textAlign: 'center',
-  boxShadow: '0 8px 22px rgba(251, 191, 36, 0.08)'
-}
-
-const contactBtnStyle = {
-  width: '100%',
-  padding: '12px 14px',
-  borderRadius: '10px',
-  border: '1px solid rgba(125, 211, 252, 0.6)',
-  background: 'linear-gradient(135deg, rgba(14, 165, 233, 0.18), rgba(59, 130, 246, 0.12))',
-  color: '#e0f2fe',
-  fontSize: '13px',
-  fontWeight: '700',
-  cursor: 'pointer',
-  marginBottom: '14px'
 }
 
 const spinnerStyle = {

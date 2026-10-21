@@ -1,5 +1,6 @@
 const storageKey = (role, userId) =>
   `edugame_session_${String(role || '').trim().toLowerCase()}_${encodeURIComponent(String(userId || '').trim().toLowerCase())}`
+const activeSessionKey = 'edugame_active_session'
 
 export function getStoredSessionToken(role, userId) {
   return localStorage.getItem(storageKey(role, userId)) || ''
@@ -8,24 +9,32 @@ export function getStoredSessionToken(role, userId) {
 export function rememberSession(user) {
   if (!user?.sessionToken || !user?.userId || !user?.role) return
   localStorage.setItem(storageKey(user.role, user.userId), user.sessionToken)
+  localStorage.setItem(activeSessionKey, JSON.stringify({ userId: user.userId, role: user.role, sessionToken: user.sessionToken }))
+}
+
+export function getActiveSession() {
+  try { return JSON.parse(localStorage.getItem(activeSessionKey) || 'null') } catch { return null }
 }
 
 export function clearStoredSession(user) {
   if (!user?.userId || !user?.role) return
   localStorage.removeItem(storageKey(user.role, user.userId))
+  const active = getActiveSession()
+  if (active?.userId === user.userId && active?.role === user.role) localStorage.removeItem(activeSessionKey)
 }
 
-export function releaseSession(user) {
-  const sessionToken = getStoredSessionToken(user?.role, user?.userId)
+export async function releaseSession(user) {
+  const sessionToken = user?.sessionToken || getStoredSessionToken(user?.role, user?.userId)
   clearStoredSession(user)
 
   if (!sessionToken) return
-  fetch('/edugame_api/logout.php', {
+  const response = await fetch('/edugame_api/logout.php', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ userId: user.userId, role: user.role, sessionToken }),
     keepalive: true
-  }).catch((error) => console.error('Could not release sign-in session:', error))
+  })
+  if (!response.ok) throw new Error(`Sign-out failed (${response.status}).`)
 }
 
 export function keepSessionAlive(user, onExpired) {
@@ -55,21 +64,15 @@ export function keepSessionAlive(user, onExpired) {
   }
 
   checkSession()
-  const intervalId = window.setInterval(checkSession, 5_000)
+  const intervalId = window.setInterval(checkSession, 60_000)
   const handleVisibility = () => {
     if (document.visibilityState === 'visible') checkSession()
   }
-  const handlePageHide = (event) => {
-    // Keep a page restored from the back/forward cache signed in.
-    if (!event.persisted) releaseSession(user)
-  }
   document.addEventListener('visibilitychange', handleVisibility)
-  window.addEventListener('pagehide', handlePageHide)
 
   return () => {
     stopped = true
     window.clearInterval(intervalId)
     document.removeEventListener('visibilitychange', handleVisibility)
-    window.removeEventListener('pagehide', handlePageHide)
   }
 }

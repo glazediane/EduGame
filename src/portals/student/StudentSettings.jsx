@@ -1,3 +1,4 @@
+import { apiRequest } from '../../api.js'
 import { useState } from 'react'
 
 export default function StudentSettings({ user, onLogout }) {
@@ -20,8 +21,8 @@ export default function StudentSettings({ user, onLogout }) {
       setMessage({ type: 'error', text: 'New passwords do not match.' })
       return
     }
-    if (newPassword.length < 4) {
-      setMessage({ type: 'error', text: 'Password must be at least 4 characters long.' })
+    if (newPassword.length < 8) {
+      setMessage({ type: 'error', text: 'Password must be at least 8 characters long.' })
       return
     }
     if (!safeUserId) {
@@ -31,7 +32,7 @@ export default function StudentSettings({ user, onLogout }) {
 
     setLoading(true)
     try {
-      const res = await fetch('/edugame_api/update_password.php', {
+      const res = await apiRequest('/edugame_api/update_password.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId: safeUserId, currentPassword, newPassword, confirmPassword, role: 'student' })

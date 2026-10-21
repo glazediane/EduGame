@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { apiFetch } from '../../api';
 
 export default function StudentPerformance({ user }) {
@@ -6,30 +6,28 @@ export default function StudentPerformance({ user }) {
   const [subjectSummary, setSubjectSummary] = useState([]);
   const [leaderboard, setLeaderboard] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState('');
 
-  const loadPerformance = () => {
+  const loadPerformance = useCallback(() => {
     if (!user?.userId) return;
 
     setLoading(true);
-    Promise.all([
-      apiFetch(`/edugame_api/get_performance.php?user_id=${user.userId}`),
-      apiFetch(`/edugame_api/get_subject_summary.php?user_id=${user.userId}`),
-      apiFetch(`/edugame_api/get_leaderboard.php?user_id=${user.userId}`)
+    const userId = encodeURIComponent(user.userId);
+    Promise.allSettled([
+      apiFetch(`/edugame_api/get_performance.php?user_id=${userId}`),
+      apiFetch(`/edugame_api/get_subject_summary.php?user_id=${userId}`),
+      apiFetch(`/edugame_api/get_leaderboard.php?user_id=${userId}`)
     ])
-      .then(([performanceRes, summaryRes, leaderboardRes]) => {
-        if (performanceRes && performanceRes.success) {
-          setPerformanceData(performanceRes.data || []);
-        }
-        if (summaryRes && summaryRes.success) {
-          setSubjectSummary(summaryRes.data || []);
-        }
-        if (leaderboardRes && leaderboardRes.success) {
-          setLeaderboard(leaderboardRes.leaderboard || []);
-        }
+      .then((results) => {
+        const [performanceResult, summaryResult, leaderboardResult] = results;
+        const hasError = results.some((result) => result.status === 'rejected' || result.value?.success !== true);
+        setLoadError(hasError ? 'Some performance data could not be loaded. Please refresh to try again.' : '');
+        setPerformanceData(performanceResult.status === 'fulfilled' && performanceResult.value?.success ? performanceResult.value.data || [] : []);
+        setSubjectSummary(summaryResult.status === 'fulfilled' && summaryResult.value?.success ? summaryResult.value.data || [] : []);
+        setLeaderboard(leaderboardResult.status === 'fulfilled' && leaderboardResult.value?.success ? leaderboardResult.value.leaderboard || [] : []);
       })
-      .catch(err => console.error('Error loading performance:', err))
       .finally(() => setLoading(false));
-  };
+  }, [user?.userId]);
 
   useEffect(() => {
     loadPerformance();
@@ -40,7 +38,7 @@ export default function StudentPerformance({ user }) {
     return () => {
       window.removeEventListener('eduGameProgressUpdated', handleProgressUpdate);
     };
-  }, [user?.userId]);
+  }, [loadPerformance]);
 
   const totalLevelsCompleted = performanceData.length;
   const totalScoreEarned = performanceData.reduce((acc, curr) => acc + (Number(curr.score) || 0), 0);
@@ -54,6 +52,7 @@ export default function StudentPerformance({ user }) {
   return (
     <div style={{ background: 'linear-gradient(180deg, #10263d 0%, #0d1f2f 100%)', padding: '30px', borderRadius: '12px', border: '1px solid rgba(125, 211, 252, 0.22)' }}>
       <h2 style={{ color: 'white', marginTop: 0 }}>📊 My Game Performance</h2>
+      {loadError && <p role="alert" style={{ color: '#fecaca', background: 'rgba(127, 29, 29, .35)', padding: '10px 12px', borderRadius: 8 }}>{loadError}</p>}
 
       <div style={summaryGridStyle}>
         <div style={summaryCardStyle}>

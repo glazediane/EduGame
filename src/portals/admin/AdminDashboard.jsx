@@ -1,3 +1,4 @@
+import { apiRequest } from '../../api.js'
 import { useEffect, useRef, useState } from 'react'
 import AdminSettings from './AdminSettings'
 import ReportAnalytics from '../shared/ReportAnalytics'
@@ -24,7 +25,6 @@ export default function AdminDashboard({ user, onLogout }) {
   const [editStudentForm, setEditStudentForm] = useState({ userId: '', fullName: '', grade: 'grade1', password: '' })
   const [editingUser, setEditingUser] = useState(null)
   const [editForm, setEditForm] = useState({ userId: '', fullName: '', role: 'student', grade: 'grade1', teacherId: '', password: '' })
-  const [studentForm, setStudentForm] = useState({ role: 'student', userId: '', fullName: '', password: '', grade: 'grade1', teacherId: '' })
   const [teacherForm, setTeacherForm] = useState({ userId: '', firstName: '', lastName: '', password: '', grade: 'grade1' })
   const importStudentInputRef = useRef(null)
 
@@ -71,7 +71,7 @@ export default function AdminDashboard({ user, onLogout }) {
   const loadStudents = async () => {
     setLoading(true)
     try {
-      const res = await fetch('/edugame_api/get_students.php')
+      const res = await apiRequest('/edugame_api/get_students.php')
       const data = await res.json()
       setStudents(data.success ? (data.students || []) : [])
     } catch (error) {
@@ -84,7 +84,7 @@ export default function AdminDashboard({ user, onLogout }) {
 
   const loadAllUsers = async () => {
     try {
-      const res = await fetch('/edugame_api/get_all_users.php')
+      const res = await apiRequest('/edugame_api/get_all_users.php')
       const data = await res.json()
       setAllUsers(data.success ? (data.users || []) : [])
     } catch (error) {
@@ -106,7 +106,10 @@ export default function AdminDashboard({ user, onLogout }) {
     const fetchLeaderboard = async () => {
       setLeaderboardLoading(true)
       try {
-        const res = await fetch('/edugame_api/get_leaderboard.php?role=admin')
+        const gradeQuery = selectedLeaderboardGrade === 'all'
+          ? ''
+          : `&grade=${encodeURIComponent(selectedLeaderboardGrade)}`
+        const res = await apiRequest(`/edugame_api/get_leaderboard.php?role=admin${gradeQuery}`)
         const data = await res.json()
         setLeaderboardData(data.success ? (data.leaderboard || []) : [])
       } catch (error) {
@@ -117,7 +120,7 @@ export default function AdminDashboard({ user, onLogout }) {
       }
     }
     fetchLeaderboard()
-  }, [activeTab])
+  }, [activeTab, selectedLeaderboardGrade])
 
   const handleExportStudentTemplate = () => {
     const csv = 'User ID,First Name,Last Name,Grade\n20222794,Juan,Dela Cruz,Grade 1\nSTU1002,Maria,Santos,Grade 2\n'
@@ -187,7 +190,7 @@ export default function AdminDashboard({ user, onLogout }) {
           return selectedGrade === 'all' ? 'grade1' : selectedGrade
         })()
 
-        const response = await fetch('/edugame_api/add_user.php', {
+        const response = await apiRequest('/edugame_api/add_user.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ userId, fullName: `${firstName} ${lastName}`.trim(), password: defaultPassword.trim(), role: 'student', grade: resolvedGrade, teacherId: '' })
@@ -211,43 +214,6 @@ export default function AdminDashboard({ user, onLogout }) {
     }
   }
 
-  const handleAddUser = async (event) => {
-    event.preventDefault()
-    setFormMessage({ type: '', text: '' })
-
-    if (!studentForm.userId || !studentForm.fullName || !studentForm.password) {
-      setFormMessage({ type: 'error', text: 'Please fill in User ID, Full Name, and Password.' })
-      return
-    }
-
-    try {
-      const response = await fetch('/edugame_api/add_user.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userId: studentForm.userId.trim(),
-          fullName: studentForm.fullName.trim(),
-          password: studentForm.password.trim(),
-          role: studentForm.role,
-          grade: studentForm.role === 'admin' ? 'grade1' : studentForm.grade,
-          teacherId: studentForm.role === 'student' ? studentForm.teacherId.trim() : ''
-        })
-      })
-
-      const data = await response.json()
-      if (data.success) {
-        setFormMessage({ type: 'success', text: data.message || 'Account created successfully.' })
-        setStudentForm({ role: 'student', userId: '', fullName: '', password: '', grade: 'grade1', teacherId: '' })
-        refreshUsers()
-      } else {
-        setFormMessage({ type: 'error', text: data.message || 'Unable to create account.' })
-      }
-    } catch (error) {
-      console.error('Error creating account:', error)
-      setFormMessage({ type: 'error', text: 'Server connection failed while creating the account.' })
-    }
-  }
-
   const handleAddTeacher = async (event) => {
     event.preventDefault()
     setTeacherFormMessage({ type: '', text: '' })
@@ -260,7 +226,7 @@ export default function AdminDashboard({ user, onLogout }) {
     }
 
     try {
-      const response = await fetch('/edugame_api/add_user.php', {
+      const response = await apiRequest('/edugame_api/add_user.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -292,7 +258,7 @@ export default function AdminDashboard({ user, onLogout }) {
     if (!confirmed) return
 
     try {
-      const response = await fetch('/edugame_api/toggle_lock.php', {
+      const response = await apiRequest('/edugame_api/toggle_lock.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId: account.userId || account.id, role: (account.role || 'student').toLowerCase(), isLocked: 1 })
@@ -315,7 +281,7 @@ export default function AdminDashboard({ user, onLogout }) {
     if (!confirmed) return
 
     try {
-      const response = await fetch('/edugame_api/toggle_lock.php', {
+      const response = await apiRequest('/edugame_api/toggle_lock.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId: account.userId || account.id, role: (account.role || 'student').toLowerCase(), isLocked: 0 })
@@ -338,7 +304,7 @@ export default function AdminDashboard({ user, onLogout }) {
     if (!confirmed) return
 
     try {
-      const response = await fetch('/edugame_api/toggle_lock.php', {
+      const response = await apiRequest('/edugame_api/toggle_lock.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId: account.userId || account.id, role: (account.role || 'student').toLowerCase(), isLocked: 0 })
@@ -377,7 +343,7 @@ export default function AdminDashboard({ user, onLogout }) {
     }
 
     try {
-      const response = await fetch('/edugame_api/update_user.php', {
+      const response = await apiRequest('/edugame_api/update_user.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId: editingStudentId, newUserId: userId, oldRole: 'student', role: 'student', fullName, grade: editStudentForm.grade || 'grade1', teacherId: safeUserId, password: editStudentForm.password.trim() })
@@ -414,7 +380,8 @@ export default function AdminDashboard({ user, onLogout }) {
     try {
       const role = String(editForm.role || 'student').toLowerCase()
       const payload = {
-        userId: editForm.userId,
+        userId: editingUser?.userId || '',
+        newUserId: editForm.userId.trim(),
         oldRole: String(editingUser?.role || role || 'student').toLowerCase(),
         role: role === 'administrator' ? 'admin' : role,
         fullName: editForm.fullName.trim(),
@@ -428,15 +395,19 @@ export default function AdminDashboard({ user, onLogout }) {
         return
       }
 
-      const response = await fetch('/edugame_api/update_user.php', {
+      const response = await apiRequest('/edugame_api/update_user.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       })
       const data = await response.json()
+      if (!response.ok || !data.success) {
+        alert(data.message || 'Failed to update user.')
+        return
+      }
       alert(data.message || 'Profile updated.')
       setEditingUser(null)
-      refreshUsers()
+      await refreshUsers()
     } catch (error) {
       console.error('Error updating user:', error)
       alert('Failed to update user.')
@@ -444,15 +415,18 @@ export default function AdminDashboard({ user, onLogout }) {
   }
 
   const filteredStudents = students.filter((student) => {
+    if (getAccountState(student).isDeactivated) return false
     const matchesGrade = selectedGrade === 'all' || normalizeGrade(student.grade) === normalizeGrade(selectedGrade)
     const matchesSearch = (student.id || '').toLowerCase().includes(searchTerm.toLowerCase()) || (student.name || '').toLowerCase().includes(searchTerm.toLowerCase())
     return matchesGrade && matchesSearch
   })
 
-  const teacherDirectory = (allUsers || []).filter((account) => account.role === 'teacher').filter((account) => {
+  const teacherDirectory = (allUsers || []).filter((account) => account.role === 'teacher' && !getAccountState(account).isDeactivated).filter((account) => {
     const search = searchTerm.toLowerCase()
     return (account.fullName || '').toLowerCase().includes(search) || (account.userId || '').toLowerCase().includes(search) || (account.grade || '').toLowerCase().includes(search)
   })
+
+  const deactivatedAccounts = (allUsers || []).filter((account) => getAccountState(account).isDeactivated)
 
   const leaderboardRows = (leaderboardData || []).filter((entry) => {
     if (selectedLeaderboardGrade === 'all') return true
@@ -472,10 +446,12 @@ export default function AdminDashboard({ user, onLogout }) {
           <button onClick={() => setActiveTab('teachers')} style={activeTab === 'teachers' ? activeTabStyle : navBtnStyle}>🧑‍🏫 Teacher Directory</button>
           <button onClick={() => setActiveTab('reports')} style={activeTab === 'reports' ? activeTabStyle : navBtnStyle}>📊 Reports</button>
           <button onClick={() => setActiveTab('settings')} style={activeTab === 'settings' ? activeTabStyle : navBtnStyle}>⚙️ System Settings</button>
+          <button onClick={() => setActiveTab('deactivated')} style={activeTab === 'deactivated' ? activeTabStyle : navBtnStyle}>Deactivated Accounts ({deactivatedAccounts.length})</button>
         </div>
       </header>
 
       <div style={{ maxWidth: '1200px', margin: '30px auto', padding: '0 20px' }}>
+        {formMessage.text && <div role="status" aria-live="polite" style={{ marginBottom: 16, padding: '12px 16px', borderRadius: 8, background: formMessage.type === 'success' ? '#DCFCE7' : '#FEE2E2', color: formMessage.type === 'success' ? '#166534' : '#991B1B' }}>{formMessage.text}</div>}
         {activeTab === 'students' && (
           <div style={cardStyle}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', gap: '12px', flexWrap: 'wrap' }}>
@@ -599,6 +575,50 @@ export default function AdminDashboard({ user, onLogout }) {
                   ))}
                 </tbody>
               </table>
+            )}
+          </div>
+        )}
+
+        {activeTab === 'deactivated' && (
+          <div style={cardStyle}>
+            <div style={{ marginBottom: '18px' }}>
+              <h3 style={{ margin: 0, color: '#1E293B' }}>Deactivated Accounts</h3>
+              <p style={{ margin: '5px 0 0', color: '#64748B', fontSize: '0.9rem' }}>Deactivated accounts stay stored here until reactivated.</p>
+            </div>
+            {deactivatedAccounts.length === 0 ? (
+              <p style={{ textAlign: 'center', padding: '24px', color: '#64748B' }}>There are no deactivated accounts.</p>
+            ) : (
+              <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                  <thead>
+                    <tr style={{ backgroundColor: '#F1F5F9', textAlign: 'left' }}>
+                      <th style={thStyle}>User ID</th>
+                      <th style={thStyle}>Full Name</th>
+                      <th style={thStyle}>Role</th>
+                      <th style={thStyle}>Grade</th>
+                      <th style={thStyle}>Status</th>
+                      <th style={thStyle}>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {deactivatedAccounts.map((account) => {
+                      const state = getAccountState(account)
+                      return (
+                        <tr key={`${account.role}-${account.userId}`} style={{ borderBottom: '1px solid #E2E8F0' }}>
+                          <td style={{ ...tdStyle, fontWeight: 'bold' }}>{account.userId}</td>
+                          <td style={tdStyle}>{account.fullName}</td>
+                          <td style={tdStyle}>{String(account.role || '').toUpperCase()}</td>
+                          <td style={tdStyle}>{account.grade && account.grade !== 'N/A' ? String(account.grade).toUpperCase() : 'N/A'}</td>
+                          <td style={tdStyle}><span style={deactivatedBadgeStyle}>{state.isTemporarilyLocked ? 'Deactivated & Locked' : 'Deactivated'}</span></td>
+                          <td style={tdStyle}>
+                            <button type="button" onClick={() => handleReactivateAccount(account)} style={reactiveBtnStyle}>Reactivate Account</button>
+                          </td>
+                        </tr>
+                      )
+                    })}
+                  </tbody>
+                </table>
+              </div>
             )}
           </div>
         )}

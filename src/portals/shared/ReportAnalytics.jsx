@@ -1,3 +1,4 @@
+import { apiRequest } from '../../api.js'
 import { useEffect, useMemo, useState } from 'react'
 
 const panel = { background: '#fff', borderRadius: 12, padding: 22, boxShadow: '0 4px 15px rgba(0,0,0,.05)', color: '#1e293b' }
@@ -24,7 +25,7 @@ export default function ReportAnalytics({ role, teacherId = '', assignedGrade = 
     }
     setLoading(true)
     setError('')
-    fetch(`/edugame_api/get_learning_report.php?${params}`, { signal: controller.signal })
+    apiRequest(`/edugame_api/get_learning_report.php?${params}`, { signal: controller.signal })
       .then(async (response) => {
         const data = await response.json()
         if (!response.ok || !data.success) throw new Error(data.message || 'Unable to load report data.')

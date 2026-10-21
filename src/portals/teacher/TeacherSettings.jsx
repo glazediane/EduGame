@@ -1,3 +1,4 @@
+import { apiRequest } from '../../api.js'
 import { useState } from 'react'
 
 export default function TeacherSettings({ user, onLogout }) {
@@ -24,8 +25,8 @@ export default function TeacherSettings({ user, onLogout }) {
       return
     }
 
-    if (newPassword.length < 4) {
-      setMessage({ type: 'error', text: 'Password must be at least 4 characters long.' })
+    if (newPassword.length < 8) {
+      setMessage({ type: 'error', text: 'Password must be at least 8 characters long.' })
       return
     }
 
@@ -37,7 +38,7 @@ export default function TeacherSettings({ user, onLogout }) {
     setLoading(true)
 
     try {
-      const res = await fetch('/edugame_api/change_password.php', {
+      const res = await apiRequest('/edugame_api/change_password.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -181,8 +182,6 @@ const labelStyle = { display: 'block', fontSize: '0.85rem', fontWeight: 'bold', 
 const inputStyle = { width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #CBD5E1', fontSize: '0.9rem', boxSizing: 'border-box' }
 const disabledInputStyle = { ...inputStyle, backgroundColor: '#E2E8F0', color: '#64748B', cursor: 'not-allowed' }
 
-const checkboxLabelStyle = { fontSize: '0.9rem', fontWeight: 'bold', color: '#334155', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }
-const checkboxStyle = { width: '18px', height: '18px', cursor: 'pointer' }
 
 const saveBtnStyle = { color: 'white', border: 'none', padding: '10px 20px', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', fontSize: '0.9rem', marginTop: '5px' }
 const successBannerStyle = { backgroundColor: '#DCFCE7', color: '#15803D', padding: '10px 14px', borderRadius: '6px', fontWeight: 'bold', fontSize: '0.85rem', marginBottom: '10px' }
