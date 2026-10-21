@@ -9,8 +9,9 @@ const apiProxy = {
   }
 }
 
-// https://vite.dev/config/
+// https://vite.dev
 export default defineConfig({
+  base: '/EduGame/',
   server: {
     host: '0.0.0.0',
     port: 4174,
