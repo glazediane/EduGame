@@ -16,6 +16,7 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 4174,
     strictPort: true,
+    allowedHosts: ['wielder-retract-frenzy.ngrok-free.dev'],
     proxy: apiProxy
   },
   preview: {
