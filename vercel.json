@@ -2,11 +2,11 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "services": {
     "app": {
-      "root": "EduGame",
+      "root": ".",
       "framework": "vite"
     },
     "edugame": {
-      "root": "EduGame",
+      "root": ".",
       "framework": "vite"
     }
   },
